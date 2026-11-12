@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Mini-jeux à plusieurs : demi-roue, Qui de nous deux, Même réponse, Tu préfères, Imposteur…">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Entre Nous — mini-jeux à plusieurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a0f33;--card:#2a1a55;--card2:#352268;--line:rgba(255,255,255,.12);--tx:#fff6fb;--mut:#bfb0e6;--pink:#ff4d8d;--yel:#ffd23f;--teal:#2de2c4;--ora:#ff8a3d;--vio:#8f7bff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;color:var(--tx);font-family:Nunito,system-ui,sans-serif;font-weight:700}
+body{min-height:100vh;background:radial-gradient(900px 520px at 0% -10%,#47207f 0%,transparent 60%),radial-gradient(800px 500px at 110% 0%,#6a1650 0%,transparent 55%),var(--bg);background-attachment:fixed}
+#app{max-width:680px;margin:0 auto;padding:14px 16px 110px}
+h1,h2,h3{font-family:Fredoka,Nunito,system-ui,sans-serif;font-weight:600;margin:0 0 8px}
+h2{font-size:26px}h3{font-size:20px}
+p{line-height:1.45;margin:8px 0}
+.mut{color:var(--mut);font-weight:600}.c{text-align:center}
+.lbl{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);font-weight:800;margin:14px 0 8px;display:block}
+.lbl:first-child{margin-top:0}
+.hero{text-align:center;padding:26px 0 18px}
+.logo{font-family:Fredoka,Nunito,system-ui,sans-serif;font-weight:700;font-size:54px;line-height:1;letter-spacing:-1px;transform:rotate(-2deg)}
+.logo span,.logo-s span{color:var(--pink)}
+.tag{color:var(--mut);max-width:420px;margin:12px auto 0;font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin:12px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.two .card{margin:0}
+@media(max-width:560px){.two{grid-template-columns:1fr}.two .card{margin:0}}
+.cta h3{margin-bottom:2px}.cta p{margin:4px 0 14px;font-size:14px}
+.row{display:flex;gap:10px;align-items:center;margin:12px 0}.grow{flex:1}
+.btn{appearance:none;border:0;border-radius:16px;padding:14px 18px;font:800 16px Nunito,sans-serif;cursor:pointer;color:#1a0f33;background:var(--yel);box-shadow:0 4px 0 rgba(0,0,0,.35);transition:transform .08s,box-shadow .08s;white-space:nowrap}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.35)}
+.btn.pink{background:var(--pink);color:#fff}.btn.teal{background:var(--teal)}
+.btn.ghost{background:rgba(255,255,255,.07);color:var(--tx);box-shadow:none;border:1px solid var(--line)}
+.btn.block{width:100%;display:block}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.txt{width:100%;min-width:0;padding:14px 16px;border-radius:14px;border:2px solid var(--line);background:#140a2a;color:var(--tx);font:700 17px Nunito,sans-serif;outline:none}
+.txt:focus{border-color:var(--pink)}
+select.txt{padding:12px}
+.txt.code{text-transform:lowercase;letter-spacing:.2em;font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:20px}
+.avs{display:flex;flex-wrap:wrap;gap:6px}
+.avb{width:44px;height:44px;border-radius:14px;border:2px solid transparent;background:rgba(255,255,255,.06);font-size:24px;cursor:pointer;padding:0}
+.avb.on{border-color:var(--pink);background:rgba(255,77,141,.2);transform:scale(1.08)}
+.gl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.gmini{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;color:var(--mut);background:rgba(255,255,255,.04)}
+.gmini span{margin-right:6px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 8px}
+.tt{font-family:Fredoka,Nunito,system-ui,sans-serif;font-weight:600;font-size:22px;display:flex;gap:8px;align-items:center}
+.logo-s{font-weight:700;font-size:26px}
+.tbtns{display:flex;gap:6px}
+.ib{width:42px;height:42px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--tx);font:800 18px Nunito,system-ui,sans-serif;cursor:pointer}
+.invite{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#ff4d8d22,#8f7bff22),var(--card)}
+.bigcode{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:44px;font-weight:700;letter-spacing:.18em;color:var(--yel);line-height:1}
+.hrow{display:flex;justify-content:space-between;align-items:baseline}
+.plist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px}
+.pl{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.05);border-left:4px solid var(--pc)}
+.pl .av{font-size:22px}.pl .pn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pl i{color:var(--mut);font-style:normal;font-size:12px}
+.psc{font-family:Fredoka,Nunito,system-ui,sans-serif;color:var(--yel)}
+.sect{margin:22px 0 4px}.waitmsg{margin:0 0 8px}
+.games{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+@media(max-width:520px){.games{grid-template-columns:1fr}}
+.game{text-align:left;cursor:pointer;color:var(--tx);border:0;border-radius:22px;padding:16px;background:linear-gradient(160deg,color-mix(in srgb,var(--gc) 34%,transparent),transparent 70%),var(--card);border:1px solid color-mix(in srgb,var(--gc) 45%,transparent);display:flex;flex-direction:column;gap:4px;font-family:Nunito,system-ui,sans-serif;transition:transform .1s}
+.game:hover{transform:translateY(-2px)}
+.ge{font-size:34px}.gn{font-family:Fredoka,Nunito,system-ui,sans-serif;font-weight:600;font-size:20px}.gd{color:var(--mut);font-size:14px;font-weight:600;line-height:1.35}.gm{font-size:12px;color:var(--gc);margin-top:4px;font-weight:800}
+.rnd{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--mut);margin:0 0 6px}
+.role{margin:4px 0 10px;font-size:15px}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px 4px 6px;border-radius:999px;background:color-mix(in srgb,var(--pc) 22%,transparent);border:1px solid color-mix(in srgb,var(--pc) 60%,transparent);margin:2px;font-size:14px}
+.chip .av{font-size:16px}
+.qcard{border-radius:26px;padding:24px 20px;margin:10px 0 14px;text-align:center;background:linear-gradient(150deg,color-mix(in srgb,var(--gc) 45%,#2a1a55),#2a1a55 80%);border:1px solid color-mix(in srgb,var(--gc) 50%,transparent);box-shadow:0 10px 30px -12px color-mix(in srgb,var(--gc) 60%,transparent)}
+.qpre{font-size:14px;text-transform:uppercase;letter-spacing:.12em;color:#ffe9f3;opacity:.85;margin-bottom:8px;font-weight:800}
+.qpre.c{margin:16px 0 6px;color:var(--mut)}
+.qtxt{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:28px;line-height:1.2;font-weight:600}
+.qcat{margin-top:10px;font-size:13px;opacity:.75}
+.choice2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.big2{border:2px solid color-mix(in srgb,var(--pc) 55%,transparent);background:color-mix(in srgb,var(--pc) 14%,var(--card));color:var(--tx);border-radius:22px;padding:20px 10px;font:800 20px Fredoka,Nunito,system-ui,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .1s}
+.big2 span{font-size:40px}
+.big2.on{background:var(--pc);color:#1a0f33;transform:scale(1.03)}
+.agree{text-align:center;font-size:15px;color:var(--mut)}.agree b{color:var(--teal);font-size:20px}
+.rev2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rv{border-radius:20px;padding:16px;text-align:center;background:color-mix(in srgb,var(--pc) 16%,var(--card));border:2px solid color-mix(in srgb,var(--pc) 50%,transparent);animation:pop .4s ease both}
+.rv:nth-child(2){animation-delay:.15s}
+.rvn{font-size:14px;color:var(--mut)}.rva{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:26px;margin:6px 0}.rvs{font-size:13px;color:var(--mut)}
+.verdict{margin:14px 0;border-radius:20px;padding:16px;text-align:center;font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:24px;animation:pop .5s .25s ease both}
+.verdict.yes{background:linear-gradient(135deg,#2de2c4,#5ad1ff);color:#10213a}.verdict.no{background:linear-gradient(135deg,#ff4d8d,#ff8a3d);color:#fff}
+@keyframes pop{0%{opacity:0;transform:scale(.85)}70%{transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+.bets{text-align:center;margin:8px 0}
+.status{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
+.st{position:relative;font-size:24px;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.06);border:2px dashed color-mix(in srgb,var(--pc) 60%,transparent);opacity:.65}
+.st.ok{opacity:1;border-style:solid;background:color-mix(in srgb,var(--pc) 25%,transparent)}
+.st b{position:absolute;right:-4px;bottom:-4px;font-size:11px;background:var(--bg);border-radius:999px;padding:1px 4px;border:1px solid var(--line)}
+.st.ok b{background:var(--teal);color:#10213a}
+.hctl{margin-top:18px}
+.hint{font-size:15px;background:linear-gradient(135deg,#ff4d8d33,transparent),var(--card)}
+.clue{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:30px;text-align:center;margin:6px 0 4px;color:var(--yel)}
+.wheelwrap{margin:6px auto 4px;max-width:520px}
+.wheel{width:100%;display:block;touch-action:none;user-select:none}
+.wheel.inter{cursor:grab}
+.zl{fill:#1a0f33;font:800 16px Fredoka,Nunito,system-ui,sans-serif;text-anchor:middle}
+.nl{font-size:20px;text-anchor:middle}
+.ends{display:flex;justify-content:space-between;gap:10px;margin-top:6px;font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:17px}
+.e1{color:#8fb0ff}.e2{color:#ff8fa5;text-align:right}
+.pulse{animation:pl 1.6s ease-in-out infinite}
+@keyframes pl{50%{opacity:.55}}
+.pts{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin:12px 0}.pts b{color:var(--yel)}
+.truth{text-align:center;margin:12px 0;padding:16px;border-radius:20px;background:var(--card2);border:1px solid var(--line)}
+.truth .lbl{margin:0 0 4px}.tv{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:30px;color:var(--teal)}
+.guesses{display:grid;gap:8px}
+.gs{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:var(--card);border:2px solid var(--line);color:var(--tx);font:700 16px Nunito,system-ui,sans-serif;text-align:left;width:100%}
+button.gs{cursor:pointer}
+.gs.on{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 18%,var(--card))}
+.gsn{color:var(--mut);font-size:14px;min-width:90px}.gsv{flex:1;font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:20px}.gsk{font-size:22px;color:var(--teal)}
+.sent{text-align:center;font-size:18px;margin:10px 0}
+.tpch,.tprev{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:stretch;margin:10px 0}
+@media(max-width:520px){.tpch,.tprev{grid-template-columns:1fr}}
+.ou{align-self:center;justify-self:center;font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:20px;color:var(--mut)}
+.tpb{border:0;border-radius:24px;padding:26px 14px;font:600 22px Fredoka,Nunito,system-ui,sans-serif;cursor:pointer;color:#1a0f33;min-height:130px;transition:transform .1s;box-shadow:0 5px 0 rgba(0,0,0,.3)}
+.tpb.a,.tpc.a{background:linear-gradient(160deg,#ffd23f,#ff8a3d)}.tpb.b,.tpc.b{background:linear-gradient(160deg,#5ad1ff,#8f7bff)}
+.tpb.on{outline:4px solid #fff;transform:scale(1.03)}
+.tpch:has(.on) .tpb:not(.on){opacity:.45}
+.tpc{border-radius:24px;padding:18px;color:#1a0f33;text-align:center;animation:pop .4s ease both}
+.tpp{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:40px;line-height:1}.tpt{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:20px;margin:6px 0 10px}
+.tpl .chip{background:rgba(255,255,255,.55);border-color:transparent;color:#1a0f33}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:10px 0}
+.pbtn{border:2px solid color-mix(in srgb,var(--pc) 55%,transparent);background:color-mix(in srgb,var(--pc) 12%,var(--card));color:var(--tx);border-radius:20px;padding:14px 8px;font:800 16px Nunito,system-ui,sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.pbtn span{font-size:34px}.pbtn.on{background:var(--pc);color:#1a0f33}
+.bars{display:grid;gap:10px;margin:12px 0}
+.bn{font-size:15px;margin-bottom:4px}
+.bt{position:relative;height:34px;border-radius:12px;background:rgba(255,255,255,.06);overflow:hidden}
+.bf{position:absolute;inset:0 auto 0 0;background:var(--pc);border-radius:12px;animation:grow .7s ease both;transform-origin:left}
+@keyframes grow{from{transform:scaleX(0)}}
+.bt span{position:relative;line-height:34px;padding-left:12px;color:#1a0f33;font-weight:900;text-shadow:0 0 6px rgba(255,255,255,.5)}
+.secret{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:40px;color:var(--yel);margin:12px 0}
+.words{display:grid;grid-template-columns:1fr 1fr;gap:10px}.words>div{background:var(--card);border-radius:18px;padding:12px;text-align:center;border:1px solid var(--line)}.words b{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:20px;display:block}
+.words .lbl{margin:0 0 4px}
+.ov{position:fixed;inset:0;background:rgba(10,4,24,.72);backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;z-index:50;padding:12px}
+@media(min-width:600px){.ov{align-items:center}}
+.modal{background:#2a1a55;border:1px solid var(--line);border-radius:26px;padding:22px;max-width:520px;width:100%;max-height:88vh;overflow:auto;animation:pop .25s ease both}
+.modal .btn.block{margin-top:10px}
+.cats{display:grid;gap:8px}.cat{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);cursor:pointer}
+.cat input{width:18px;height:18px;accent-color:var(--pink)}
+.warn{color:var(--ora)}
+.sclist{display:grid;gap:8px;margin:12px 0}
+.scr{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.05);border-left:4px solid var(--pc)}
+.scr.gone{opacity:.5}.scr .rk{width:28px;text-align:center}.scr .av{font-size:22px}.scr .pn{flex:1}.scr b{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:20px;color:var(--yel)}
+.center{text-align:center;margin-top:40px}.big{font-size:54px}
+#banner{position:fixed;left:50%;bottom:12px;transform:translateX(-50%) translateY(150%);max-width:calc(100% - 24px);width:560px;background:#3a2672;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:13px;font-weight:700;transition:transform .3s;z-index:40;text-align:center}
+#banner.show{transform:translateX(-50%)}#banner.err{background:#6b1838}#banner.info{background:#22305e}
+#toast{position:fixed;top:16px;left:50%;transform:translate(-50%,-160%);background:var(--yel);color:#1a0f33;padding:10px 18px;border-radius:999px;font-weight:900;z-index:60;transition:transform .25s;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+#toast.show{transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="banner"></div>
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js"></script>
+<script>window.mqtt||document.write('<script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"><\/script>')</script>
+<script>
+// ====== BANQUES DE QUESTIONS ======
+const SPECTRES=[
+["Froid","Chaud"],["Nul","Génial"],["Triste","Joyeux"],["Inutile","Indispensable"],["Facile","Difficile"],
+["Moche","Magnifique"],["Pas cher","Hors de prix"],["Calme","Bruyant"],["Mauvais pour la santé","Bon pour la santé"],
+["Ennuyeux","Passionnant"],["Minuscule","Énorme"],["Lent","Rapide"],["Ringard","Stylé"],["Sans danger","Très dangereux"],
+["Inconnu","Ultra célèbre"],["Salé","Sucré"],["Pour les enfants","Pour les adultes"],["Doux","Piquant"],["Rare","Partout"],
+["Ancien","Moderne"],["Sous-coté","Surcoté"],["Mauvaise idée","Excellente idée"],["Gênant","Classe"],["Fragile","Indestructible"],
+["Sale","Propre"],["Mou","Dur"],["Tue-l'amour","Romantique"],["Vacances ratées","Vacances de rêve"],["Héros","Méchant"],
+["Odeur horrible","Odeur divine"],["Talent inutile","Talent utile"],["Plat de cantine","Plat gastronomique"],["Navet","Chef-d'œuvre"],
+["Pire ennemi","Meilleur ami"],["Introverti","Extraverti"],["Naturel","Artificiel"],["Démodé","Tendance"],["Plutôt l'été","Plutôt l'hiver"],
+["Activité solo","Activité de groupe"],["Juste","Injuste"],["Cadeau nul","Cadeau parfait"],["Rassurant","Terrifiant"],
+["Pur hasard","Pure stratégie"],["Simple","Compliqué"],["Tatouage regrettable","Tatouage stylé"],["Arnaque","Bonne affaire"],
+["Banal","Bizarre"],["Silencieux","Assourdissant"],["Petite bêtise","Crime grave"],["Petit snack","Repas complet"],
+["Plutôt le matin","Plutôt le soir"],["Pire 1er rendez-vous","1er rendez-vous parfait"],["Meilleur froid","Meilleur chaud"],
+["Pas attirant","Très attirant"],["Pire animal de compagnie","Animal de compagnie idéal"],["Chanson triste","Chanson joyeuse"],
+["Reposant","Stressant"],["Mauvais conseil","Conseil en or"],["Green flag","Red flag"],["Facile à dessiner","Impossible à dessiner"],
+["Immangeable","Délicieux"],["Super-pouvoir nul","Super-pouvoir ultime"],["Old school","Futuriste"],["Excuse bidon","Excuse parfaite"],
+["Fait maison","Ultra industriel"],["Pas drôle","Hilarant"],["Inoffensif","Mortel"],["Chill","Intense"],["Week-end raté","Week-end parfait"],
+["Low cost","Grand luxe"],["Cliché","Original"],["Sport facile","Sport extrême"],["Personne ne le fait","Tout le monde le fait"],
+["Overdose de mignon","Pas mignon du tout"],["Mauvaise habitude","Bonne habitude"],["Pour un date","Pour une soirée entre potes"]
+];
+
+const QDN_CATS={
+quotidien:{label:"🏠 Quotidien",q:[
+"se lève le plus tard le week-end ?","met le plus de temps à se préparer ?","fait le plus souvent la vaisselle ?","laisse traîner ses affaires partout ?",
+"ronfle le plus ?","vole toute la couette la nuit ?","perd toujours ses clés ?","cuisine le mieux ?","commande le plus souvent à manger ?",
+"passe le plus de temps sur son téléphone ?","regarde des épisodes en cachette sans l'autre ?","est toujours en retard ?","dépense le plus en shopping ?",
+"chante le plus sous la douche ?","prend les douches les plus longues ?","a le plus de vêtements ?","range le mieux ?","met le plus de temps à répondre aux messages ?",
+"conduit le mieux ?","se perd le plus facilement ?","mange le plus ?","finit toujours l'assiette de l'autre ?","grignote le plus entre les repas ?",
+"a toujours froid ?","a le plus de mal à se réveiller le matin ?","s'endort devant les films ?","choisit le film du soir ?","monopolise la télécommande ?",
+"fait les courses le plus souvent ?","gère le mieux le budget ?","s'occupe des araignées ?","bricole le mieux ?","pique les vêtements de l'autre ?",
+"oublie d'arroser les plantes ?","prend le plus de photos ?","fait le plus de selfies ?","passe le plus de temps sur les réseaux sociaux ?",
+"laisse le plus de vaisselle dans l'évier ?","oublie de fermer la porte à clé ?","a le plus de mal à se décider au restaurant ?","prend toute la place dans le lit ?",
+"remplit le plus le frigo de trucs inutiles ?","met la musique trop fort ?","fait le plus de bruit le matin ?"]},
+caractere:{label:"🧠 Caractère",q:[
+"fait le plus de crises de jalousie ?","boude le plus longtemps ?","s'excuse en premier après une dispute ?","est de plus mauvaise humeur au réveil ?",
+"a la tête la plus dure ?","se met le plus vite en colère ?","pleure le plus devant les films ?","fait le plus rire l'autre ?","rigole à ses propres blagues ?",
+"stresse le plus pour rien ?","a le plus de patience ?","a le plus de mauvaise foi ?","gagne toujours les débats ?","dramatise le plus ?",
+"est le plus romantique ?","est le plus susceptible ?","est le plus timide ?","est le plus sociable ?","est le plus maniaque ?","planifie tout à l'avance ?",
+"improvise le plus ?","prend les décisions dans le couple ?","a le plus d'imagination ?","a le plus gros appétit ?","fait le plus de sport ?",
+"réclame le plus de câlins ?","dit le plus de gros mots ?","ment le plus mal ?","garde le mieux un secret ?","supporte le moins bien de perdre ?",
+"triche aux jeux de société ?","a le plus peur devant un film d'horreur ?","est le plus hypocondriaque ?","en fait des tonnes avec un simple rhume ?",
+"se vexe le plus facilement ?","parle le plus ?","écoute le mieux ?","donne les meilleurs conseils ?","fait le plus de cadeaux ?","oublie les dates importantes ?",
+"a la meilleure mémoire ?","est le plus nostalgique ?","est le plus optimiste ?","râle le plus ?","craque le plus pour des achats inutiles ?","économise le plus ?",
+"a le plus de goût pour la déco ?","s'habille le mieux ?","a le meilleur sens de l'orientation ?","est le plus têtu ?","est le plus curieux ?","est le plus spontané ?"]},
+romance:{label:"💘 Romance",q:[
+"a fait le premier pas ?","a dit « je t'aime » en premier ?","a craqué en premier ?","a envoyé le premier message ?","a proposé le premier rendez-vous ?",
+"avait le plus le trac au premier rendez-vous ?","se souvient le mieux de la date de votre rencontre ?","organise le plus de surprises ?","fait les meilleurs cadeaux ?",
+"écrit les messages les plus mignons ?","envoie le plus de messages dans la journée ?","fait le plus de bisous ?","dit le plus souvent « je t'aime » ?",
+"donne le plus de surnoms à l'autre ?","est le plus fleur bleue ?","pense le plus au mariage ?","veut le plus d'enfants ?","rêve le plus d'adopter un animal ?",
+"choisit les destinations de vacances ?","a présenté l'autre à sa famille en premier ?","s'entend le mieux avec la belle-famille ?","fait le plus de compromis ?",
+"a le plus changé depuis le début de la relation ?","avait le plus peur de perdre l'autre au début ?","joue le mieux l'infirmier quand l'autre est malade ?",
+"réconforte le mieux l'autre ?","demande le plus souvent « tu m'aimes ? »","danse le mieux ?","fera la demande en mariage ?","pleurera le plus au mariage ?",
+"se souvient de la tenue de l'autre au premier rendez-vous ?","a le plus de photos de l'autre dans son téléphone ?","a le plus stalké les ex de l'autre ?",
+"tient la main en premier dans la rue ?","prépare les petits-déjeuners au lit ?","choisit la musique en voiture ?","cède le plus vite pendant une dispute ?",
+"a le plus de mal à dire « désolé » ?","penserait à fêter votre anniversaire de couple ?","fait le plus de déclarations ?"]},
+fun:{label:"🎉 Délires",q:[
+"survivrait le plus longtemps à une apocalypse zombie ?","deviendrait célèbre en premier ?","gagnerait à un jeu télé ?","se ferait arrêter par la police en premier ?",
+"tiendrait un mois sans internet ?","survivrait sur une île déserte ?","partirait vivre au bout du monde sur un coup de tête ?","flamberait l'argent du loto en une semaine ?",
+"adopterait dix chats si c'était possible ?","se ferait un tatouage regrettable ?","chanterait au karaoké sans hésiter ?","pleurerait devant un dessin animé ?",
+"mangerait un insecte pour 100 € ?","oserait sauter en parachute ?","hurlerait dans une maison hantée ?","perdrait son téléphone en vacances ?","raterait l'avion ?",
+"parlerait à un inconnu dans le métro ?","deviendrait influenceur ?","serait le parent le plus strict ?","serait le parent le plus cool ?","gâterait le plus les enfants ?",
+"pourrait manger la même chose tous les jours ?","mangerait le dernier morceau de gâteau en cachette ?","aurait un fou rire au pire moment ?","tomberait dans une arnaque ?",
+"crierait le plus fort sur un manège ?","mourrait en premier dans un film d'horreur ?","gagnerait un concours de danse ?","ferait le meilleur détective ?",
+"changerait de métier du jour au lendemain ?","finirait à la campagne avec des poules ?","ferait un road trip sans rien prévoir ?","pourrait dormir 14 heures d'affilée ?",
+"serait le meilleur président ?","inventerait le plus d'excuses pour sécher le sport ?","se battrait avec une mouette pour un sandwich ?","se ferait virer d'un mariage ?",
+"ouvrirait un restaurant ?","parlerait à ses plantes ?","gagnerait une bataille de polochons ?","se déguiserait le plus volontiers ?"]}
+};
+
+const DUO=[
+["Quel est ton plat préféré ?","Quel est le plat préféré de {N} ?"],
+["Quel est ton dessert préféré ?","Quel est le dessert préféré de {N} ?"],
+["Quelle est ta boisson préférée ?","Quelle est la boisson préférée de {N} ?"],
+["Quelle est ta couleur préférée ?","Quelle est la couleur préférée de {N} ?"],
+["Quel est ton film préféré ?","Quel est le film préféré de {N} ?"],
+["Quelle est ta série préférée ?","Quelle est la série préférée de {N} ?"],
+["Quel est ton artiste ou groupe préféré ?","Quel est l'artiste ou le groupe préféré de {N} ?"],
+["Quelle chanson chantes-tu le plus souvent ?","Quelle chanson {N} chante le plus souvent ?"],
+["Quel est ton animal préféré ?","Quel est l'animal préféré de {N} ?"],
+["Quelle est ta saison préférée ?","Quelle est la saison préférée de {N} ?"],
+["Quelle est ta destination de rêve ?","Quelle est la destination de rêve de {N} ?"],
+["Quel est ton fast-food préféré ?","Quel est le fast-food préféré de {N} ?"],
+["Quel est ton parfum de glace préféré ?","Quel est le parfum de glace préféré de {N} ?"],
+["Quel est ton jour préféré de la semaine ?","Quel est le jour préféré de {N} ?"],
+["Quel était ton dessin animé préféré enfant ?","Quel était le dessin animé préféré de {N} enfant ?"],
+["Quel est ton jeu (vidéo ou de société) préféré ?","Quel est le jeu préféré de {N} ?"],
+["Quel est ton sport préféré ?","Quel est le sport préféré de {N} ?"],
+["Quelle est ta pizza préférée ?","Quelle est la pizza préférée de {N} ?"],
+["Quel aliment détestes-tu ?","Quel aliment {N} déteste ?"],
+["Quel est ton plus grand rêve ?","Quel est le plus grand rêve de {N} ?"],
+["Quel métier rêvais-tu de faire enfant ?","Quel métier {N} rêvait de faire enfant ?"],
+["Quelle est ta plus grande peur ?","Quelle est la plus grande peur de {N} ?"],
+["Quel super-pouvoir choisirais-tu ?","Quel super-pouvoir {N} choisirait ?"],
+["Quelle célébrité aimerais-tu rencontrer ?","Quelle célébrité {N} aimerait rencontrer ?"],
+["Quel est ton crush célébrité ?","Quel est le crush célébrité de {N} ?"],
+["Que ferais-tu en premier avec 1 million d'euros ?","Que ferait {N} en premier avec 1 million d'euros ?"],
+["Quelle est ta pire habitude ?","Quelle est la pire habitude de {N} ?"],
+["Quel est ton plus gros défaut ?","Quel est le plus gros défaut de {N} ?"],
+["Quelle est ta plus grande qualité ?","Quelle est la plus grande qualité de {N} ?"],
+["Quelle expression dis-tu tout le temps ?","Quelle expression {N} dit tout le temps ?"],
+["Quelle appli utilises-tu le plus ?","Quelle appli {N} utilise le plus ?"],
+["Quel est ton emoji préféré ?","Quel est l'emoji préféré de {N} ?"],
+["Qu'y a-t-il sur ton fond d'écran ?","Qu'y a-t-il sur le fond d'écran de {N} ?"],
+["Combien de temps mets-tu à te préparer le matin ?","Combien de temps {N} met à se préparer le matin ?"],
+["À quelle heure te couches-tu en semaine ?","À quelle heure {N} se couche en semaine ?"],
+["Que manges-tu au petit-déjeuner ?","Que mange {N} au petit-déjeuner ?"],
+["Quelle est ta pointure ?","Quelle est la pointure de {N} ?"],
+["Quel est ton signe astrologique ?","Quel est le signe astrologique de {N} ?"],
+["Quelle était ta matière préférée à l'école ?","Quelle était la matière préférée de {N} à l'école ?"],
+["Quel était ton surnom enfant ?","Quel était le surnom de {N} enfant ?"],
+["Quel est ton plus beau voyage ?","Quel est le plus beau voyage de {N} ?"],
+["Quel est le pire cadeau que tu aies reçu ?","Quel est le pire cadeau que {N} ait reçu ?"],
+["Qu'est-ce qui t'énerve le plus ?","Qu'est-ce qui énerve le plus {N} ?"],
+["Qu'est-ce qui te fait rire à coup sûr ?","Qu'est-ce qui fait rire {N} à coup sûr ?"],
+["Qu'est-ce qui te met de bonne humeur instantanément ?","Qu'est-ce qui met {N} de bonne humeur instantanément ?"],
+["Quel est ton plaisir coupable ?","Quel est le plaisir coupable de {N} ?"],
+["Quel est ton talent caché ?","Quel est le talent caché de {N} ?"],
+["Si tu étais un animal, lequel serais-tu ?","Si {N} était un animal, lequel ce serait ?"],
+["Si tu étais un plat, lequel serais-tu ?","Si {N} était un plat, lequel ce serait ?"],
+["Quelle odeur préfères-tu ?","Quelle odeur {N} préfère ?"],
+["Quelle est ta marque de vêtements préférée ?","Quelle est la marque de vêtements préférée de {N} ?"],
+["Quel est ton restaurant préféré ?","Quel est le restaurant préféré de {N} ?"],
+["Que prends-tu au cinéma ?","Que prend {N} au cinéma ?"],
+["Que commandes-tu au café ?","Que commande {N} au café ?"],
+["Café ou thé ?","Café ou thé, pour {N} ?"],
+["Plage ou montagne ?","Plage ou montagne, pour {N} ?"],
+["Chien ou chat ?","Chien ou chat, pour {N} ?"],
+["Sucré ou salé ?","Sucré ou salé, pour {N} ?"],
+["Lève-tôt ou couche-tard ?","Lève-tôt ou couche-tard, pour {N} ?"],
+["Ville ou campagne ?","Ville ou campagne, pour {N} ?"],
+["Douche ou bain ?","Douche ou bain, pour {N} ?"],
+["Dans quelle position dors-tu ?","Dans quelle position dort {N} ?"],
+["De quel côté du lit dors-tu ?","De quel côté du lit dort {N} ?"],
+["Combien d'enfants veux-tu ?","Combien d'enfants {N} veut ?"],
+["Quel prénom donnerais-tu à un enfant ?","Quel prénom {N} donnerait à un enfant ?"],
+["Où te vois-tu dans 10 ans ?","Où {N} se voit dans 10 ans ?"],
+["Quel est ton rendez-vous idéal ?","Quel est le rendez-vous idéal de {N} ?"],
+["Qu'est-ce qui t'a plu en premier chez ta moitié ?","Qu'est-ce qui a plu en premier à {N} chez sa moitié ?"],
+["Quel est ton moment préféré de la journée ?","Quel est le moment préféré de {N} dans la journée ?"],
+["Quel film t'a le plus fait pleurer ?","Quel film a le plus fait pleurer {N} ?"],
+["Quel est le dernier truc que tu as acheté en ligne ?","Quel est le dernier truc que {N} a acheté en ligne ?"],
+["Quel est ton plat signature en cuisine ?","Quel est le plat signature de {N} en cuisine ?"],
+["Que fais-tu en premier au réveil ?","Que fait {N} en premier au réveil ?"],
+["Qu'emporterais-tu sur une île déserte ?","Qu'emporterait {N} sur une île déserte ?"],
+["Quel est ton chiffre porte-bonheur ?","Quel est le chiffre porte-bonheur de {N} ?"],
+["À quelle époque aurais-tu aimé vivre ?","À quelle époque {N} aurait aimé vivre ?"],
+["Quel pays rêves-tu de visiter ?","Quel pays {N} rêve de visiter ?"],
+["Quelle est ta chanson de soirée ?","Quelle est la chanson de soirée de {N} ?"],
+["Quel personnage de fiction te ressemble le plus ?","Quel personnage de fiction ressemble le plus à {N} ?"],
+["Quel compliment préfères-tu recevoir ?","Quel compliment {N} préfère recevoir ?"],
+["Comment te détends-tu après une longue journée ?","Comment {N} se détend après une longue journée ?"],
+["Quelle est ta gourmandise préférée ?","Quelle est la gourmandise préférée de {N} ?"],
+["Quel est ton plus beau souvenir d'enfance ?","Quel est le plus beau souvenir d'enfance de {N} ?"],
+["Quel objet ne quittes-tu jamais ?","Quel objet {N} ne quitte jamais ?"],
+["Quelle est ta plus grosse dépense récente ?","Quelle est la plus grosse dépense récente de {N} ?"],
+["Quel est ton surnom préféré ?","Quel est le surnom préféré de {N} ?"]
+];
+
+const TP=[
+["Pouvoir voler","Être invisible"],["Ne plus jamais manger de fromage","Ne plus jamais manger de chocolat"],["Vivre sans musique","Vivre sans films ni séries"],
+["Avoir toujours trop chaud","Avoir toujours trop froid"],["Parler toutes les langues","Parler aux animaux"],["Voyager dans le passé","Voyager dans le futur"],
+["Être riche sans amis","Être fauché avec plein d'amis"],["Plus jamais de téléphone","Plus jamais de télé"],["Manger de la pizza tous les jours","Ne plus jamais en manger"],
+["Avoir un dragon","Être un dragon"],["Vivre à la mer","Vivre à la montagne"],["Lire dans les pensées","Voir l'avenir"],
+["Être célèbre","Être très riche mais inconnu"],["Road trip en van","Croisière de luxe"],["Dormir 4 h et être en forme","Dormir 12 h et être crevé"],
+["Un bouton pause","Un bouton retour arrière"],["Ne porter que du jaune","Ne porter que du rose fluo"],["Chanter dès que tu parles","Danser dès que tu marches"],
+["Cuisiner comme un chef","Chanter comme une star"],["Coincé dans un ascenseur avec ton ex","Coincé avec ton patron"],["Plus d'internet","Plus d'eau chaude"],
+["Revivre ta vie depuis tes 10 ans","Sauter directement à tes 50 ans"],["Être la personne la plus drôle de la pièce","La plus intelligente de la pièce"],
+["Un week-end à Rome","Un week-end à New York"],["Ne manger que salé","Ne manger que sucré"],["Découvrir une nouvelle espèce","Découvrir une nouvelle planète"],
+["Un chef cuisinier perso","Un chauffeur perso"],["Te téléporter","Arrêter le temps"],["Vivre dans un film d'horreur","Vivre dans une comédie romantique ringarde"],
+["Affronter 1 canard géant","Affronter 100 chevaux miniatures"],["Toujours dire ce que tu penses","Ne plus jamais parler"],["Avoir 10 enfants","Pas d'enfant du tout"],
+["Être un super-héros","Être un super-méchant"],["Un château hanté","Une maison minuscule"],["Gagner au loto","Trouver l'amour de ta vie"],
+["Revivre votre premier rendez-vous","Voir votre futur en avance"],["Plus jamais de café","Plus jamais d'alcool"],["Une vie sans réseaux sociaux","Une vie sans sucre"],
+["20 m² en plein centre-ville","Une villa isolée à la campagne"],["Respirer sous l'eau","Marcher sur l'eau"],["Faire le tour du monde seul","Rester chez toi avec tes potes"],
+["Historique internet public","Messages privés publics"],["Un rire de cochon","Un éternuement de chat"],["3 mois de vacances d'un coup","Un jour off chaque semaine"],
+["Maître des échecs","Champion de karaoké"],["Vivre sans fromage","Vivre sans pain"],["Soirée jeux de société","Soirée en boîte"],["Netflix sous un plaid","Sortie au resto"],
+["Un baiser sous la pluie","Un baiser sous les étoiles"],["Une lettre d'amour","Un cadeau surprise"],["Recevoir des fleurs","Recevoir des chocolats"],
+["Plage au soleil","Chalet sous la neige"],["Être un chat","Être un chien"],["Cheveux arc-en-ciel à vie","Chauve à vie"],["Ne jamais pouvoir mentir","Ne jamais garder un secret"],
+["Pouvoir de guérison","Force surhumaine"],["Concert de ton idole","Dîner avec ton idole"],["Meilleur à un jeu vidéo","Meilleur à un sport"],
+["Vivre dans l'univers de Harry Potter","Vivre dans l'univers de Star Wars"],["Un plat ultra épicé","Un plat ultra amer"],["Saut à l'élastique","Saut en parachute"],
+["Retourner à l'école","Travailler 60 h par semaine"],["Un robot domestique","Une voiture volante"],["Oublier tous tes souvenirs","Ne plus en créer de nouveaux"],
+["Toujours 10 min en retard","Toujours 30 min en avance"],["Chaussettes mouillées pour toujours","Un caillou dans la chaussure pour toujours"],
+["Tout savoir sur ta moitié","Garder un peu de mystère"],["Pique-nique au parc","Dîner gastronomique"],["Une moitié qui chante faux tous les matins","Une moitié qui ronfle tous les soirs"],
+["Petit-déj au lit","Dîner aux chandelles"],["Vacances improvisées","Vacances planifiées à la minute"],["Avoir un majordome","Avoir un jardin secret magique"],
+["Voir tous les films en avant-première","Avoir tous les concerts gratuits"],["Être une licorne","Être un phénix"]
+];
+
+const PLUS=[
+"devenir célèbre","oublier son propre anniversaire","pleurer devant un dessin animé","se perdre dans sa propre ville","rater son avion","devenir millionnaire",
+"se marier à Las Vegas sur un coup de tête","adopter 10 chats","survivre à une apocalypse zombie","mourir en premier dans un film d'horreur",
+"dire une bêtise à un repas de famille","envoyer un message à la mauvaise personne","s'endormir en pleine soirée","finir l'assiette de tout le monde",
+"avoir un fou rire au pire moment","partir vivre à l'étranger","devenir influenceur","se faire arnaquer en ligne","tomber amoureux en vacances",
+"chanter faux au karaoké avec fierté","mentir sur son âge","arriver en retard à son propre mariage","casser son téléphone cette semaine",
+"acheter un truc inutile à 3 h du matin","parler à ses plantes","faire une sieste de 4 heures","oublier où est garée sa voiture","se faire virer pour une bêtise",
+"gagner à un jeu télé","écrire un livre","lancer un business improbable","pleurer au mariage de quelqu'un d'autre","avoir une collection bizarre","croire aux fantômes",
+"se battre avec une mouette pour un sandwich","manger un truc tombé par terre","se faire tatouer le prénom de quelqu'un","finir une série entière en un week-end",
+"réveiller tout le monde en rentrant","rire à ses propres blagues","stalker un ex sur les réseaux","s'énerver pendant un jeu de société","tricher au Monopoly",
+"danser sur la table en soirée","devenir président","appeler sa mère tous les jours","rater une recette ultra simple","partir en voyage sans valise",
+"passer 2 heures à choisir un film","répondre aux messages 3 jours après","organiser une fête surprise","garder un secret toute sa vie",
+"raconter un secret en moins d'une heure","avoir 7 enfants","survivre seul en forêt","avoir peur d'un papillon","prendre 200 photos de son assiette",
+"se reconvertir en éleveur de chèvres","vivre dans une yourte","se faire un ami au supermarché","se tromper de prénom en plein discours",
+"perdre ses clés trois fois par semaine","regarder des films de Noël en juillet","passer la nuit sur un jeu vidéo","finir en garde à vue pour un truc ridicule",
+"pleurer en écoutant une chanson","faire une demande en mariage en public","porter des chaussettes avec des sandales","avoir un compte secret sur les réseaux",
+"courir un marathon","abandonner un régime au bout d'une journée","parler pendant son sommeil","trouver un trésor","devenir une star de la cuisine",
+"inventer un mot et l'utiliser partout","rester coincé dans un ascenseur","dépenser tout son salaire en un week-end","se perdre dans un magasin de meubles",
+"draguer quelqu'un sans s'en rendre compte","devenir prof","gagner une partie de cache-cache contre des enfants"
+];
+
+const IMP=[
+["Chat","Chien"],["Pizza","Burger"],["Plage","Piscine"],["Café","Thé"],["Avion","Hélicoptère"],["Lion","Tigre"],["Guitare","Violon"],["Football","Rugby"],
+["Pomme","Poire"],["Hiver","Automne"],["Vélo","Trottinette"],["Netflix","YouTube"],["Montagne","Volcan"],["Chocolat","Caramel"],["Médecin","Infirmier"],
+["Train","Métro"],["Soleil","Lune"],["Bière","Vin"],["Instagram","TikTok"],["Château","Palais"],["Vampire","Zombie"],["Mariage","Anniversaire"],
+["Fourchette","Cuillère"],["Sushi","Ramen"],["Requin","Dauphin"],["Plombier","Électricien"],["Neige","Glace"],["Bougie","Lampe"],["Crêpe","Gaufre"],
+["Paris","Londres"],["Roi","Président"],["Livre","Magazine"],["Piano","Batterie"],["Fantôme","Sorcière"],["Cinéma","Théâtre"],["Pirate","Viking"],
+["Ski","Snowboard"],["Lunettes","Lentilles"],["Oreiller","Couette"],["Mer","Lac"],["Abeille","Guêpe"],["Douche","Bain"],["Tomate","Fraise"],
+["Policier","Pompier"],["Moustache","Barbe"],["Tennis","Ping-pong"],["Licorne","Pégase"],["Croissant","Pain au chocolat"],["Chaussette","Gant"],
+["Ours","Loup"],["Jus d'orange","Limonade"],["Ordinateur","Tablette"],["Fusée","Satellite"],["Coiffeur","Barbier"],["Clown","Magicien"],["Désert","Savane"],
+["Moto","Scooter"],["Marteau","Tournevis"],["Bonbon","Chewing-gum"],["Hôtel","Camping"],["Escargot","Limace"],["Noël","Halloween"],["Bisou","Câlin"],
+["Pyjama","Peignoir"],["Frites","Chips"],["Karaoké","Concert"],["Dentiste","Chirurgien"],["Parapluie","Imperméable"]
+];
+
+// ====== ENTRE NOUS — moteur multijoueur ======
+const APP='en1';
+const SHARE_URL=location.href.split('#')[0];
+const AV=['🦊','🐼','🐸','🐙','🦄','🐯','🐨','🐵','🦁','🐧','🐢','🦋','🍕','🌵','👽','🤖','🎃','🐳','🦖','🍓','🐰','🦉','🐝','🍩'];
+const COLORS=['#ff4d8d','#ffd23f','#2de2c4','#ff8a3d','#8f7bff','#5ad1ff','#a6ff4d','#ff6bd6','#ffb38a','#7dffb2','#f5f5f5','#c08bff'];
+const GAMES={
+ roue:{e:'🎯',n:'La demi-roue',d:'Un indice, une aiguille : trouve la cible cachée entre deux extrêmes.',min:2,c:'#ff4d8d',
+  r:"À chaque manche, un joueur devient le <b>médium</b> : lui seul voit où se cache la cible sur la demi-roue, entre deux extrêmes (ex. <i>Froid ↔ Chaud</i>). Il donne <b>un seul indice</b> (un mot, un objet, un perso…). Les autres placent leur aiguille là où ils pensent que se trouve la cible. En plein dans le mille : 4 pts, puis 3 et 2. Le médium gagne la moyenne des points des autres."},
+ qdn:{e:'💞',n:'Qui de nous deux ?',d:'Version couple : « Moi » ou « Lui/Elle » ? Révélez si vous êtes d\'accord.',min:2,c:'#ff6b9a',
+  r:"Une question « Qui de nous deux… ? » s'affiche. Chacun des deux répond en secret : <b>Moi</b> ou <b>le prénom de l'autre</b>. Puis on révèle : si vous désignez la même personne, c'est un <b>accord</b> 💚. Les autres joueurs présents peuvent parier sur la réponse."},
+ duo:{e:'🧠',n:'Même réponse',d:'« Quel est mon plat préféré ? » / « Quel est son plat préféré ? » — répondez pareil !',min:2,c:'#2de2c4',
+  r:"À chaque manche, un joueur est la <b>cible</b>. Il reçoit la question sur lui-même (« Quel est ton plat préféré ? ») et les autres reçoivent la même question à son sujet (« Quel est le plat préféré de Léa ? »). On révèle, la cible valide les bonnes réponses : <b>+1 pour chacun</b> quand ça matche. La cible change à chaque manche."},
+ tp:{e:'⚖️',n:'Tu préfères ?',d:'Deux choix impossibles. On vote, puis on voit qui a choisi quoi.',min:2,c:'#ffd23f',
+  r:"Deux options, un seul choix. Tout le monde vote en secret, puis on révèle qui a choisi quoi. Le camp <b>majoritaire</b> gagne 1 point."},
+ plus:{e:'👑',n:'Qui est le plus… ?',d:'« Qui est le plus susceptible de… » Votez pour un joueur !',min:3,c:'#8f7bff',
+  r:"« Qui est le plus susceptible de… ? » Chacun vote pour le joueur qui correspond le mieux (on peut voter pour soi). Ceux qui ont voté pour le grand « gagnant » marquent 1 point."},
+ imp:{e:'🕵️',n:"L'Imposteur",d:'Tout le monde a le même mot… sauf un. Démasquez-le !',min:3,c:'#ff8a3d',
+  r:"Tout le monde reçoit le même mot secret… sauf l'<b>imposteur</b>, qui reçoit un mot proche (ou rien du tout en mode <i>Mister White</i>). À tour de rôle, chacun dit <b>un mot</b> en rapport avec le sien, à voix haute ou en appel. Puis on vote. Imposteur démasqué : +1 pour les autres. Sinon : +2 pour l'imposteur."}
+};
+
+// ---------- utils ----------
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rid=n=>{const a='abcdefghjkmnpqrstuvwxyz23456789';let s='';for(let i=0;i<n;i++)s+=a[Math.floor(Math.random()*a.length)];return s};
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuffled(arr,seed){const a=arr.slice(),r=rng(seed);for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const range=n=>Array.from({length:n},(_,i)=>i);
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const ss={get(k,d){try{const v=sessionStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{sessionStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const QDN=[];for(const k in QDN_CATS)QDN_CATS[k].q.forEach(q=>QDN.push({c:k,q}));
+
+// ---------- state ----------
+const S={
+ me:Object.assign({n:'',av:AV[Math.floor(Math.random()*AV.length)]},ls.get('en_me',{}),{pid:ss.get('en_pid',null)||rid(10)}),
+ code:null,host:false,st:null,lastSt:null,joinedAt:0,modal:null,sig:'',lives:[],after:[],needle:90,showWord:false,lastPushed:''
+};
+ss.set('en_pid',S.me.pid);
+
+// ---------- réseau (salle temps réel, avec repli local entre onglets) ----------
+const Net={mode:'init',room:null,bc:null,mine:{},others:new Map(),conn:false,tab:rid(8),
+ async init(){
+  let r=null;
+  try{if(window.claude&&typeof window.claude.use==='function')r=await window.claude.use('room')}catch(e){r=null}
+  if(r){this.room=r;this.mode='room';
+   r.onPeers(()=>onNet(),e=>{this.mode='err';onNet()});
+   r.onConnection(c=>{this.conn=c;onNet()},()=>{});
+   if(Object.keys(this.mine).length)r.presence(this.mine).catch(()=>{});
+   onNet();return}
+  const beat=()=>setInterval(()=>{this.send('p');const now=Date.now();let ch=false;for(const[k,v]of this.others)if(now-v.ts>7000){this.others.delete(k);ch=true}if(ch)onNet()},2000);
+  if(await this.initMqtt()){beat();addEventListener('pagehide',()=>this.send('bye'));onNet();return}
+  try{this.bc=new BroadcastChannel('entre-nous-v1');this.mode='local';this.conn=true;
+   this.bc.onmessage=e=>this.onMsg(e.data);
+   this.send('hello');beat();
+   addEventListener('pagehide',()=>this.send('bye'));
+  }catch(e){this.mode='none'}
+  onNet();
+ },
+ onMsg(m){if(!m||!m.tab||m.tab===this.tab)return;
+  if(m.t==='bye')this.others.delete(m.tab);else{this.others.set(m.tab,{p:m.p||{},ts:Date.now()});if(m.t==='hello')this.send('p')}
+  onNet()},
+ // ---- relais MQTT public (version hébergée hors claude.ai) ----
+ mq:null,topic:null,
+ initMqtt(){return new Promise(res=>{
+  if(!window.mqtt||typeof window.mqtt.connect!=='function')return res(false);
+  const brokers=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt','wss://test.mosquitto.org:8081/mqtt'];let i=0;
+  const tryB=()=>{if(i>=brokers.length)return res(false);const url=brokers[i++];let done=false;
+   let c;try{c=window.mqtt.connect(url,{clientId:'en_'+this.tab+'_'+rid(4),reconnectPeriod:2000,connectTimeout:6000,clean:true,keepalive:30})}catch(e){return tryB()}
+   const fail=()=>{if(done)return;done=true;try{c.end(true)}catch(e){}tryB()};
+   const to=setTimeout(fail,7000);
+   c.on('message',(t,buf)=>{if(this.mq!==c)return;try{this.onMsg(JSON.parse(buf.toString()))}catch(e){}});
+   c.on('connect',()=>{if(!done){done=true;clearTimeout(to);this.mq=c;this.mode='mqtt';this.conn=true;this.topic=null;this.sync();res(true)}
+    else if(this.mq===c){this.conn=true;this.topic=null;this.sync();onNet()}});
+   c.on('close',()=>{if(this.mq===c){this.conn=false;onNet()}});
+   c.on('offline',()=>{if(this.mq===c){this.conn=false;onNet()}});
+   c.on('error',()=>{if(!this.mq)fail()});
+  };tryB()})},
+ sync(){if(this.mode!=='mqtt'||!this.mq)return;const want=this.mine.code?'entrenous-v1/'+this.mine.code:null;
+  if(want===this.topic)return;
+  if(this.topic){try{this.mq.publish(this.topic,JSON.stringify({t:'bye',tab:this.tab}));this.mq.unsubscribe(this.topic)}catch(e){}}
+  this.others.clear();this.topic=want;
+  if(want){this.mq.subscribe(want,{qos:0},()=>this.send('hello'))}
+  onNet()},
+ send(t){const msg={t,tab:this.tab,p:this.mine};
+  if(this.mode==='mqtt'){if(this.mq&&this.topic&&this.mq.connected){try{this.mq.publish(this.topic,JSON.stringify(msg),{qos:0})}catch(e){}}return}
+  try{this.bc&&this.bc.postMessage(msg)}catch(e){}},
+ set(patch){for(const k in patch){if(patch[k]===null||patch[k]===undefined)delete this.mine[k];else this.mine[k]=patch[k]}
+  if(this.mode==='room'){const p={};for(const k in patch)p[k]=patch[k]===undefined?null:patch[k];this.room.presence(p).catch(e=>console.warn('presence',e))}
+  else if(this.mode==='mqtt'){const want=this.mine.code?'entrenous-v1/'+this.mine.code:null;if(want!==this.topic)this.sync();else this.send('p')}
+  else if(this.mode==='local')this.send('p');
+  onNet()},
+ list(){const out=[{self:true,p:this.mine}];
+  if(this.mode==='room'){for(const pe of this.room.peers()){if(pe.isMe&&pe.sameTab)continue;out.push({self:false,p:pe.presence||{}})}}
+  else for(const v of this.others.values())out.push({self:false,p:v.p});
+  return out}
+};
+let rafq=0;function onNet(){if(rafq)return;rafq=requestAnimationFrame(()=>{rafq=0;tick()})}
+
+// ---------- joueurs ----------
+function present(){if(!S.code)return[];const m=new Map();
+ for(const{self,p}of Net.list()){if(!p||p.app!==APP||p.code!==S.code||!p.pid)continue;if(self||!m.has(p.pid)||!m.get(p.pid).self)m.set(p.pid,Object.assign({},p,{self}))}
+ const g=G();const order=g?g.pl:[];
+ return[...m.values()].sort((a,b)=>{const ia=order.indexOf(a.pid),ib=order.indexOf(b.pid);return(ia<0?999:ia)-(ib<0?999:ib)})}
+function hostPeer(){let best=null;for(const{self,p}of Net.list()){if(!p||p.app!==APP||p.code!==S.code||!p.h||!p.st)continue;if(!best||(p.st.ep||0)>(best.st.ep||0))best=p}return best}
+function G(){if(S.host)return S.st;const h=hostPeer();return h?h.st:null}
+function ans(p,g){g=g||G();return p&&p.a&&g&&p.a.k===g.r&&p.a.g===g.g?p.a.v:undefined}
+function myAns(){return ans(Object.assign({},Net.mine))}
+function pinfo(pid){const g=G();const ps=present();const p=ps.find(x=>x.pid===pid);
+ const nm=p?[p.n,p.av]:(g&&g.nm&&g.nm[pid])||['?','❔'];const idx=g?g.pl.indexOf(pid):0;return{n:nm[0]||'?',av:nm[1]||'❔',c:COLORS[(idx<0?0:idx)%COLORS.length],here:!!p}}
+function chip(pid,extra=''){const i=pinfo(pid);return`<span class="chip" style="--pc:${i.c}"><span class="av">${esc(i.av)}</span>${esc(i.n)}${extra}</span>`}
+function firstName(pid){return pinfo(pid).n}
+
+// ---------- hôte ----------
+function newSt(){return{v:1,ep:Date.now(),r:0,g:null,ph:null,pl:[S.me.pid],nm:{},sc:{},n:0,cfg:{},seed:1,i:0,mi:-1}}
+function pushSt(){if(!S.host||!S.st)return;const j=JSON.stringify(S.st);if(j===S.lastPushed)return;S.lastPushed=j;Net.set({st:JSON.parse(j)});ls.set('en_host_'+S.code,S.st)}
+function hostTick(){
+ if(!S.host||!S.st)return;
+ // un autre hôte plus récent ? on lui cède la place
+ for(const{self,p}of Net.list()){if(self||!p||p.app!==APP||p.code!==S.code||!p.h||!p.st)continue;if((p.st.ep||0)>(S.st.ep||0)){S.host=false;S.st=null;Net.set({h:null,st:null});saveSess();return}}
+ const st=S.st,ps=present();
+ for(const p of ps){if(!st.pl.includes(p.pid))st.pl.push(p.pid);st.nm[p.pid]=[String(p.n||'').slice(0,18),p.av];if(st.sc[p.pid]==null)st.sc[p.pid]=0}
+ if(st.g&&st.ph!=='reveal'){const ex=expected(st,ps);if(ex&&ex.length&&ex.every(p=>ans(p,st)!==undefined))doReveal(st,ps)}
+ pushSt();
+}
+function expected(g,ps){
+ switch(g.g){
+  case'roue':{const med=ps.find(p=>p.pid===g.med);if(!med||!ans(med,g))return null;return ps.filter(p=>p.pid!==g.med)}
+  case'qdn':return ps.filter(p=>g.cfg.cp.includes(p.pid)).length===2?ps.filter(p=>g.cfg.cp.includes(p.pid)):null;
+  case'duo':return ps.some(p=>p.pid===g.sub)&&ps.length>1?ps:null;
+  case'tp':case'plus':return ps;
+  case'imp':return g.ph==='vote'?ps:null;
+ }return null}
+function pick(st,list){const d=shuffled(list,st.seed);return d[st.i%d.length]}
+function setupRound(st){
+ const ps=present();const order=ps.map(p=>p.pid);
+ st.r++;st.i++;st.n++;st.ph='play';st.last=null;
+ switch(st.g){
+  case'roue':st.mi=(st.mi+1)%Math.max(1,order.length);st.med=order[st.mi];st.sp=pick(st,range(SPECTRES.length));st.t=Math.round(12+Math.random()*156);break;
+  case'qdn':{let l=range(QDN.length).filter(i=>st.cfg.cats.includes(QDN[i].c));if(!l.length)l=range(QDN.length);st.q=pick(st,l);break}
+  case'duo':st.mi=(st.mi+1)%Math.max(1,order.length);st.sub=order[st.mi];st.q=pick(st,range(DUO.length));break;
+  case'tp':st.q=pick(st,range(TP.length));break;
+  case'plus':st.q=pick(st,range(PLUS.length));break;
+  case'imp':st.ph='words';st.imp=order[Math.floor(Math.random()*order.length)];st.q=pick(st,range(IMP.length));st.sw=Math.random()<.5?0:1;st.first=order[Math.floor(Math.random()*order.length)];break;
+ }
+}
+function addPts(st,last){st.last=last;for(const k in last)st.sc[k]=(st.sc[k]||0)+last[k]}
+function zonePts(d){d=Math.abs(d);return d<=4?4:d<=11?3:d<=18?2:0}
+function doReveal(st,ps){
+ ps=ps||present();const last={};
+ switch(st.g){
+  case'roue':{let sum=0,n=0;for(const p of ps){if(p.pid===st.med)continue;const v=ans(p,st);if(typeof v!=='number')continue;const pts=zonePts(v-st.t);last[p.pid]=pts;sum+=pts;n++}
+   if(n)last[st.med]=Math.round(sum/n);break}
+  case'qdn':{const [a,b]=st.cfg.cp;const pa=ps.find(p=>p.pid===a),pb=ps.find(p=>p.pid===b);const va=ans(pa,st),vb=ans(pb,st);
+   if(va&&vb){st.qn=(st.qn||0)+1;if(va===vb){st.m=(st.m||0)+1;last[a]=1;last[b]=1;for(const p of ps){if(st.cfg.cp.includes(p.pid))continue;if(ans(p,st)===va)last[p.pid]=1}}}break}
+  case'tp':{let A=0,B=0;ps.forEach(p=>{const v=ans(p,st);if(v==='a')A++;if(v==='b')B++});if(A!==B){const w=A>B?'a':'b';ps.forEach(p=>{if(ans(p,st)===w)last[p.pid]=1})}break}
+  case'plus':{const t={};ps.forEach(p=>{const v=ans(p,st);if(v)t[v]=(t[v]||0)+1});const mx=Math.max(0,...Object.values(t));const win=Object.keys(t).filter(k=>t[k]===mx);
+   st.win=win;ps.forEach(p=>{if(win.includes(ans(p,st)))last[p.pid]=1});break}
+  case'imp':{const t={};ps.forEach(p=>{const v=ans(p,st);if(v)t[v]=(t[v]||0)+1});const mx=Math.max(0,...Object.values(t));const top=Object.keys(t).filter(k=>t[k]===mx);
+   st.out=top.length===1?top[0]:null;st.caught=st.out===st.imp;
+   if(st.caught)ps.forEach(p=>{if(p.pid!==st.imp)last[p.pid]=1});else last[st.imp]=2;break}
+ }
+ if(st.g!=='duo')addPts(st,last);
+ st.ph='reveal';
+}
+function doNext(st){
+ if(st.g==='duo'&&st.ph==='reveal'){const subP=present().find(p=>p.pid===st.sub);const ok=subP&&subP.ok&&subP.ok.k===st.r?subP.ok.l:[];const last={};
+  ok.forEach(pid=>{last[pid]=(last[pid]||0)+1;last[st.sub]=(last[st.sub]||0)+1});addPts(st,last);st.ddone=st.r}
+ setupRound(st)}
+function hostDo(fn){if(!S.host||!S.st)return;fn(S.st);pushSt();onNet()}
+
+// ---------- sessions ----------
+function saveSess(){ss.set('en_sess',S.code?{code:S.code,host:S.host}:null)}
+function enter(code,asHost){
+ S.code=code;S.host=asHost;S.joinedAt=Date.now();S.modal=null;
+ if(asHost){S.st=ls.get("en_host_"+code,null)||newSt();if(!S.st.pl.includes(S.me.pid))S.st.pl.push(S.me.pid)}
+ Net.set({app:APP,code,pid:S.me.pid,n:S.me.n,av:S.me.av,h:asHost?true:null,st:null,a:null,ok:null});
+ S.lastPushed='';pushSt();saveSess();
+ try{if(location.hash!=='#'+code)history.replaceState(null,'','#'+code)}catch(e){try{location.hash=code}catch(_){}}
+}
+function leave(){S.code=null;S.host=false;S.st=null;S.lastSt=null;S.modal=null;Net.set({code:null,h:null,st:null,a:null,ok:null});saveSess();try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}onNet()}
+function answer(v){const g=G();if(!g)return;Net.set({a:{k:g.r,g:g.g,v}})}
+
+// ---------- rendu ----------
+function L(id,fn){S.lives.push({id,fn,last:null});return`<div id="${id}">${fn()}</div>`}
+function screen(){if(!S.code)return'home';const g=G();if(!g)return'wait';return g.g?'game':'lobby'}
+function sigOf(){const sc=screen();const g=G();const ps=present();const parts=[sc,Net.mode,S.modal&&JSON.stringify(S.modal),S.host,ps.map(p=>p.pid+p.n+p.av).join(',')];
+ if(sc==='wait')parts.push(!!S.lastSt,Date.now()-S.joinedAt>6000);
+ if(g&&g.g){parts.push(g.g,g.ph,g.r,JSON.stringify(myAns()),S.showWord);
+  if(g.g==='roue'){const m=ps.find(p=>p.pid===g.med);parts.push(!!ans(m,g))}
+  if(g.ph==='reveal')parts.push(ps.map(p=>JSON.stringify(ans(p,g))).join('|'));
+ }
+ if(sc==='lobby')parts.push(JSON.stringify(g.cfg));
+ return parts.join('§')}
+function tick(){
+ hostTick();
+ if(!S.host){const h=hostPeer();if(h)S.lastSt=h.st}
+ const sig=sigOf();
+ if(sig!==S.sig){S.sig=sig;render()}else updateLives();
+ banner();
+}
+function updateLives(){for(const l of S.lives){const h=l.fn();if(h!==l.last){l.last=h;const el=document.getElementById(l.id);if(el)el.innerHTML=h}}}
+function render(){
+ const keep={};document.querySelectorAll('input[id],textarea[id],select[id]').forEach(el=>{keep[el.id]=el.type==='checkbox'?el.checked:el.value});
+ const act=document.activeElement&&document.activeElement.id;
+ S.lives=[];S.after=[];
+ const sc=screen();let h='';
+ if(sc==='home')h=vHome();else if(sc==='wait')h=vWait();else if(sc==='lobby')h=vLobby();else h=vGame();
+ if(S.modal)h+=vModal();
+ $('#app').innerHTML=h;
+ for(const id in keep){const el=document.getElementById(id);if(el){if(el.type==='checkbox')el.checked=keep[id];else el.value=keep[id]}}
+ for(const l of S.lives)l.last=document.getElementById(l.id)?.innerHTML;
+ if(act){const el=document.getElementById(act);if(el&&el.focus)el.focus()}
+ S.after.forEach(f=>f());
+}
+function banner(){const b=$('#banner');let t='',cls='';
+ if(Net.mode==='init'){t='Connexion au salon…'}
+ else if((Net.mode==='room'||Net.mode==='mqtt')&&!Net.conn){t='Reconnexion…'}
+ else if(Net.mode==='local'){t='Serveur de jeu injoignable : seuls les onglets de cet appareil se voient. Vérifie ta connexion et recharge la page.';cls='info'}
+ else if(Net.mode==='none'||Net.mode==='err'){t='Multijoueur indisponible. Vérifie ta connexion et recharge la page.';cls='err'}
+ b.className=t?'show '+cls:'';b.textContent=t}
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2200)}
+
+// ---------- écrans ----------
+function vHome(){
+ const hash=(location.hash||'').slice(1).toLowerCase();const pre=/^[a-z0-9]{4,8}$/.test(hash)?hash:'';
+ return`<div class="hero">
+  <div class="logo">Entre<span>Nous</span></div>
+  <p class="tag">Mini-jeux à plusieurs, chacun sur son téléphone. Crée une partie, partage le code, c'est parti.</p>
+ </div>
+ <div class="card">
+  <label class="lbl">Ton avatar</label>
+  <div class="avs">${AV.map(a=>`<button class="avb ${a===S.me.av?'on':''}" data-act="av" data-v="${a}">${a}</button>`).join('')}</div>
+  <label class="lbl" for="name">Ton prénom</label>
+  <input id="name" class="txt" maxlength="18" placeholder="Ex. Léa" value="${esc(S.me.n)}" autocomplete="off">
+ </div>
+ <div class="two">
+  <div class="card cta">
+   <h3>Nouvelle partie</h3><p class="mut">Tu seras l'hôte : c'est toi qui lances les jeux.</p>
+   <button class="btn pink block" data-act="create">Créer une partie</button>
+  </div>
+  <div class="card cta">
+   <h3>Rejoindre</h3><p class="mut">Entre le code donné par l'hôte.</p>
+   <div class="row"><input id="jcode" class="txt code" maxlength="8" placeholder="code" value="${esc(pre)}" autocomplete="off" autocapitalize="off"><button class="btn teal" data-act="join">Go</button></div>
+  </div>
+ </div>
+ <div class="gl">${Object.entries(GAMES).map(([k,g])=>`<div class="gmini" style="--gc:${g.c}"><span>${g.e}</span>${esc(g.n)}</div>`).join('')}</div>`}
+
+function vWait(){const late=Date.now()-S.joinedAt>6000;
+ if(!late)S.after.push(()=>setTimeout(onNet,6200));
+ return`<div class="center card"><div class="big">⏳</div>
+  ${S.lastSt?`<h2>L'hôte s'est déconnecté</h2><p class="mut">La partie <b>${esc(S.code)}</b> est en pause. Attends son retour ou reprends la main.</p><button class="btn pink" data-act="takeover">Devenir l'hôte</button>`
+  :late?`<h2>Partie introuvable</h2><p class="mut">Personne n'héberge la partie <b>${esc(S.code)}</b> pour l'instant. Vérifie le code, ou demande à l'hôte d'ouvrir la page.</p>`
+  :`<h2>Connexion à la partie ${esc(S.code)}…</h2>`}
+  <p><button class="btn ghost" data-act="leave">Retour</button></p></div>`}
+
+function playersHTML(){const g=G();const ps=present();const hp=hostPeer();
+ return`<div class="plist">${ps.map(p=>{const i=pinfo(p.pid);return`<div class="pl" style="--pc:${i.c}"><span class="av">${esc(i.av)}</span><span class="pn">${esc(i.n)}${p.self?' <i>(toi)</i>':''}</span>${p.h?'<span class="crown" title="Hôte">👑</span>':''}<span class="psc">${g&&g.sc[p.pid]||0}</span></div>`}).join('')}</div>`}
+
+function vLobby(){const g=G();const n=present().length;
+ return`${topbar()}
+ <div class="card invite">
+  <div><div class="lbl">Code de la partie</div><div class="bigcode">${esc(S.code)}</div></div>
+  <button class="btn" data-act="copy">📋 Copier l'invitation</button>
+ </div>
+ <div class="card"><div class="hrow"><h3>Joueurs</h3><span class="mut" id="pc">${n} connecté${n>1?'s':''}</span></div>${L('players',playersHTML)}</div>
+ <h3 class="sect">${S.host?'Choisis un jeu':'Jeux'}</h3>
+ ${S.host?'':`<p class="mut waitmsg">⏳ L'hôte choisit le prochain jeu…</p>`}
+ <div class="games">${Object.entries(GAMES).map(([k,x])=>`<button class="game" style="--gc:${x.c}" data-act="${S.host?'cfg':'rules'}" data-g="${k}">
+   <span class="ge">${x.e}</span><span class="gn">${esc(x.n)}</span><span class="gd">${esc(x.d)}</span><span class="gm">${x.min}+ joueurs</span></button>`).join('')}</div>`}
+
+function topbar(inGame){const g=G();const x=inGame&&GAMES[g.g];
+ return`<div class="top">${x?`<div class="tt"><span>${x.e}</span>${esc(x.n)}</div>`:`<div class="tt logo-s">Entre<span>Nous</span></div>`}
+ <div class="tbtns">${x?`<button class="ib" data-act="rules" data-g="${g.g}" title="Règles">?</button>`:''}<button class="ib" data-act="scores" title="Scores">🏆</button>
+ ${inGame&&S.host?`<button class="ib" data-act="tolobby" title="Changer de jeu">☰</button>`:''}${!inGame?`<button class="ib" data-act="leave" title="Quitter">✕</button>`:''}</div></div>`}
+
+function statusHTML(list,label){const g=G();if(!list||!list.length)return'';
+ return`<div class="status">${list.map(p=>{const d=ans(p,g)!==undefined;const i=pinfo(p.pid);return`<span class="st ${d?'ok':''}" style="--pc:${i.c}" title="${esc(i.n)}">${esc(i.av)}<b>${d?'✓':'…'}</b></span>`}).join('')}</div>`}
+
+function hostCtl(){const g=G();if(!S.host)return`<div class="hctl mut">${g.ph==='reveal'?'L\'hôte lance la suite…':''}</div>`;
+ if(g.g==='imp'&&g.ph==='words')return`<div class="hctl"><button class="btn pink block" data-act="tovote">Passer au vote 🗳️</button></div>`;
+ if(g.ph==='reveal')return`<div class="hctl"><button class="btn pink block" data-act="next">Manche suivante ➜</button></div>`;
+ return`<div class="hctl"><button class="btn ghost block" data-act="reveal">Révéler maintenant</button></div>`}
+
+function vGame(){const g=G();let body='';
+ try{body=({roue:vRoue,qdn:vQdn,duo:vDuo,tp:vTp,plus:vPlus,imp:vImp})[g.g](g)}catch(e){console.error(e);body=`<div class="card">Oups, petite erreur d'affichage.</div>`}
+ return`${topbar(true)}<div class="rnd">Manche ${g.n}</div>${body}${L('hctl',hostCtl)}`}
+
+function lastPts(){const g=G();if(!g.last)return'';const ks=Object.keys(g.last).filter(k=>g.last[k]>0);if(!ks.length)return'<p class="mut c">Personne ne marque cette manche.</p>';
+ return`<div class="pts">${ks.sort((a,b)=>g.last[b]-g.last[a]).map(k=>chip(k,` <b>+${g.last[k]}</b>`)).join('')}</div>`}
+
+// ----- la demi-roue -----
+const CX=200,CY=205,R=185;
+function pt(a,r){const t=a*Math.PI/180;return[CX-r*Math.cos(t),CY-r*Math.sin(t)]}
+function wedge(a1,a2,r,fill){a1=Math.max(0,a1);a2=Math.min(180,a2);if(a2<=a1)return'';const[x1,y1]=pt(a1,r),[x2,y2]=pt(a2,r);return`<path d="M${CX} ${CY}L${x1.toFixed(1)} ${y1.toFixed(1)}A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}Z" fill="${fill}"/>`}
+function wheel(o){const sp=SPECTRES[o.sp];let z='';
+ if(o.t!=null){const t=o.t;z+=wedge(t-18,t-11,R,'#ffd23f')+wedge(t-11,t-4,R,'#ff8a3d')+wedge(t-4,t+4,R,'#ff4d8d')+wedge(t+4,t+11,R,'#ff8a3d')+wedge(t+11,t+18,R,'#ffd23f');
+  [[t-14.5,'2'],[t-7.5,'3'],[t,'4'],[t+7.5,'3'],[t+14.5,'2']].forEach(([a,l])=>{if(a<1||a>179)return;const[x,y]=pt(a,R-22);z+=`<text x="${x}" y="${y+6}" class="zl">${l}</text>`})}
+ let nd='';(o.needles||[]).forEach(n=>{const[x,y]=pt(n.a,R-8);const[lx,ly]=pt(n.a,R-40);nd+=`<line x1="${CX}" y1="${CY}" x2="${x}" y2="${y}" stroke="${n.c}" stroke-width="5" stroke-linecap="round" opacity=".95"/><text x="${lx}" y="${ly+7}" class="nl">${esc(n.l)}</text>`});
+ let it='';if(o.inter){const[x,y]=pt(S.needle,R-8);it=`<line id="needle" x1="${CX}" y1="${CY}" x2="${x}" y2="${y}" stroke="#fff" stroke-width="7" stroke-linecap="round"/><circle id="knob" cx="${x}" cy="${y}" r="13" fill="#fff" stroke="#1a0f33" stroke-width="3"/>`}
+ return`<div class="wheelwrap"><svg id="${o.inter?'wheel':'wheelro'}" viewBox="0 0 400 215" class="wheel ${o.inter?'inter':''}">
+  <defs><linearGradient id="wg" x1="0" x2="1"><stop offset="0" stop-color="#3d6bff"/><stop offset=".5" stop-color="#7a4bd1"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient></defs>
+  ${wedge(0,180,R,'url(#wg)')}${wedge(0,180,R-1,'rgba(20,10,40,.35)')}${z}${nd}${it}<circle cx="${CX}" cy="${CY}" r="16" fill="#1a0f33" stroke="#fff" stroke-width="3"/></svg>
+  <div class="ends"><span class="e1">⟵ ${esc(sp[0])}</span><span class="e2">${esc(sp[1])} ⟶</span></div></div>`}
+function bindWheel(){const svg=document.getElementById('wheel');if(!svg)return;let drag=false;
+ const upd=e=>{const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(svg.getScreenCTM().inverse());let th=Math.atan2(CY-q.y,q.x-CX)*180/Math.PI;if(th<0)th=q.x<CX?180:0;let a=180-th;a=Math.max(0,Math.min(180,a));S.needle=Math.round(a*10)/10;
+  const[x,y]=pt(S.needle,R-8);const n=document.getElementById('needle'),k=document.getElementById('knob');n.setAttribute('x2',x);n.setAttribute('y2',y);k.setAttribute('cx',x);k.setAttribute('cy',y)};
+ svg.addEventListener('pointerdown',e=>{drag=true;try{svg.setPointerCapture(e.pointerId)}catch(_){}upd(e);e.preventDefault()});
+ svg.addEventListener('pointermove',e=>{if(drag)upd(e)});
+ svg.addEventListener('pointerup',()=>drag=false);svg.addEventListener('pointercancel',()=>drag=false)}
+function vRoue(g){const ps=present();const isMed=S.me.pid===g.med;const medP=ps.find(p=>p.pid===g.med);const ma=ans(medP,g);const clue=ma&&ma.c;const mine=myAns();
+ const guessers=()=>present().filter(p=>p.pid!==g.med);
+ const head=`<div class="role">🔮 Médium : ${chip(g.med)}</div>`;
+ if(g.ph==='reveal'){const needles=ps.filter(p=>p.pid!==g.med&&typeof ans(p,g)==='number').map(p=>{const i=pinfo(p.pid);return{a:ans(p,g),c:i.c,l:i.av}});
+  return`${head}<div class="clue">« ${esc(clue||'—')} »</div>${wheel({sp:g.sp,t:g.t,needles})}${lastPts()}`}
+ if(isMed){if(!clue){S.after.push(()=>{const i=document.getElementById('clue');i&&i.focus()});
+   return`${head}<div class="card hint">C'est toi le médium ! La cible est cachée ici. Donne <b>un indice</b> pour que les autres la trouvent.</div>${wheel({sp:g.sp,t:g.t})}
+   <div class="row"><input id="clue" class="txt" maxlength="40" placeholder="Ton indice…" autocomplete="off"><button class="btn pink" data-act="sendclue">Envoyer</button></div>`}
+  return`${head}<div class="clue">« ${esc(clue)} »</div>${wheel({sp:g.sp,t:g.t})}<p class="mut c">Les autres cherchent la cible…</p>${L('stat',()=>statusHTML(guessers()))}`}
+ if(!clue)return`${head}${wheel({sp:g.sp})}<div class="card c pulse">🔮 ${esc(firstName(g.med))} réfléchit à un indice…</div>`;
+ if(typeof mine==='number')return`${head}<div class="clue">« ${esc(clue)} »</div>${wheel({sp:g.sp,needles:[{a:mine,c:pinfo(S.me.pid).c,l:S.me.av}]})}<p class="mut c">Aiguille verrouillée ✓ En attente des autres…</p>${L('stat',()=>statusHTML(guessers()))}`;
+ S.after.push(bindWheel);
+ return`${head}<div class="clue">« ${esc(clue)} »</div>${wheel({sp:g.sp,inter:true})}<p class="mut c">Fais glisser l'aiguille, puis valide.</p><button class="btn pink block" data-act="lockneedle">Valider ma réponse</button>${L('stat',()=>statusHTML(guessers()))}`}
+
+// ----- qui de nous deux -----
+function vQdn(g){const cp=g.cfg.cp||[];const inC=cp.includes(S.me.pid);const other=cp.find(p=>p!==S.me.pid);const q=QDN[g.q];const mine=myAns();const ps=present();
+ const score=`<div class="agree">Accord : <b>${g.m||0}</b> / ${g.qn||0}${g.qn?` · ${Math.round(100*(g.m||0)/g.qn)}%`:''}</div>`;
+ const qcard=`<div class="qcard" style="--gc:${GAMES.qdn.c}"><div class="qpre">Qui de nous deux…</div><div class="qtxt">${esc(q.q)}</div><div class="qcat">${QDN_CATS[q.c].label}</div></div>`;
+ if(cp.length<2)return`<div class="card">Il faut 2 joueurs pour ce jeu.</div>`;
+ if(g.ph==='reveal'){const pa=ps.find(p=>p.pid===cp[0]),pb=ps.find(p=>p.pid===cp[1]);const va=ans(pa,g),vb=ans(pb,g);const same=va&&va===vb;
+  const who=(v,self)=>v?(v===self?'Moi !':esc(firstName(v))):'—';
+  const bets=ps.filter(p=>!cp.includes(p.pid)&&ans(p,g));
+  return`${score}${qcard}<div class="rev2">
+   <div class="rv" style="--pc:${pinfo(cp[0]).c}"><div class="rvn">${esc(pinfo(cp[0]).av)} ${esc(firstName(cp[0]))}</div><div class="rva">${who(va,cp[0])}</div><div class="rvs">désigne ${va?esc(pinfo(va).av)+' '+esc(firstName(va)):'—'}</div></div>
+   <div class="rv" style="--pc:${pinfo(cp[1]).c}"><div class="rvn">${esc(pinfo(cp[1]).av)} ${esc(firstName(cp[1]))}</div><div class="rva">${who(vb,cp[1])}</div><div class="rvs">désigne ${vb?esc(pinfo(vb).av)+' '+esc(firstName(vb)):'—'}</div></div></div>
+   <div class="verdict ${same?'yes':'no'}">${same?`💚 Même réponse : ${esc(firstName(va))} !`:va&&vb?'💥 Pas d\'accord !':'Réponse manquante'}</div>
+   ${bets.length?`<div class="bets"><span class="mut">Paris :</span> ${bets.map(p=>chip(p.pid,` → ${esc(firstName(ans(p,g)))}`)).join('')}</div>`:''}`}
+ const stat=L('stat',()=>statusHTML(present().filter(p=>cp.includes(p.pid))));
+ if(inC){return`${score}${qcard}<div class="choice2">
+   <button class="big2 ${mine===S.me.pid?'on':''}" data-act="ans" data-v="${S.me.pid}" style="--pc:${pinfo(S.me.pid).c}"><span>${esc(S.me.av)}</span>Moi</button>
+   <button class="big2 ${mine===other?'on':''}" data-act="ans" data-v="${other}" style="--pc:${pinfo(other).c}"><span>${esc(pinfo(other).av)}</span>${esc(firstName(other))}</button></div>
+   ${mine?'<p class="mut c">Réponse enregistrée. On attend l\'autre…</p>':''}${stat}`}
+ return`${score}${qcard}<p class="mut c">Tu es spectateur. Ton pari :</p><div class="choice2">${cp.map(pid=>`<button class="big2 ${mine===pid?'on':''}" data-act="ans" data-v="${pid}" style="--pc:${pinfo(pid).c}"><span>${esc(pinfo(pid).av)}</span>${esc(firstName(pid))}</button>`).join('')}</div>${stat}`}
+
+// ----- même réponse -----
+function vDuo(g){const isSub=S.me.pid===g.sub;const q=DUO[g.q];const name=firstName(g.sub);const mine=myAns();const ps=present();
+ const head=`<div class="role">🎯 Question sur : ${chip(g.sub)}</div>`;
+ if(g.ph==='reveal'){const subP=ps.find(p=>p.pid===g.sub);const sa=ans(subP,g);
+  return`${head}<div class="qcard" style="--gc:${GAMES.duo.c}"><div class="qtxt">${esc(q[1].replace('{N}',name))}</div></div>
+   <div class="truth"><div class="lbl">${esc(pinfo(g.sub).av)} ${esc(name)} a répondu</div><div class="tv">${esc(sa||'—')}</div></div>
+   ${isSub?'<p class="mut c">Touche les réponses qui correspondent à la tienne ✓</p>':''}
+   ${L('guesses',()=>{const sp=present().find(p=>p.pid===g.sub);const ok=sp&&sp.ok&&sp.ok.k===g.r?sp.ok.l:[];
+     return`<div class="guesses">${present().filter(p=>p.pid!==g.sub).map(p=>{const v=ans(p,g);const on=ok.includes(p.pid);const i=pinfo(p.pid);
+      return`<${isSub?'button data-act="okt" data-v="'+p.pid+'"':'div'} class="gs ${on?'on':''}" style="--pc:${i.c}"><span class="gsn">${esc(i.av)} ${esc(i.n)}</span><span class="gsv">${esc(v||'—')}</span><span class="gsk">${on?'✓':isSub?'○':''}</span></${isSub?'button':'div'}>`}).join('')}</div>`})}`}
+ const stat=L('stat',()=>statusHTML(present()));
+ const qtxt=isSub?q[0]:q[1].replace('{N}',name);
+ if(mine!==undefined)return`${head}<div class="qcard" style="--gc:${GAMES.duo.c}"><div class="qtxt">${esc(qtxt)}</div></div><div class="sent">Ta réponse : <b>${esc(mine)}</b></div><p class="mut c">En attente des autres…</p>${stat}`;
+ S.after.push(()=>{const i=document.getElementById('dans');i&&i.focus()});
+ return`${head}<div class="qcard" style="--gc:${GAMES.duo.c}">${isSub?'<div class="qpre">Question sur toi</div>':`<div class="qpre">Devine ce que ${esc(name)} va répondre</div>`}<div class="qtxt">${esc(qtxt)}</div></div>
+  <div class="row"><input id="dans" class="txt" maxlength="60" placeholder="Ta réponse…" autocomplete="off"><button class="btn teal" data-act="sendtxt">Envoyer</button></div>${stat}`}
+
+// ----- tu préfères -----
+function vTp(g){const q=TP[g.q];const mine=myAns();const ps=present();
+ if(g.ph==='reveal'){const A=ps.filter(p=>ans(p,g)==='a'),B=ps.filter(p=>ans(p,g)==='b');const tot=Math.max(1,A.length+B.length);
+  const col=(l,t,cls)=>`<div class="tpc ${cls}"><div class="tpp">${Math.round(100*l.length/tot)}%</div><div class="tpt">${esc(t)}</div><div class="tpl">${l.map(p=>chip(p.pid)).join('')||'<span class="mut">personne</span>'}</div></div>`;
+  return`<div class="qpre c">Tu préfères…</div><div class="tprev">${col(A,q[0],'a')}<div class="ou">ou</div>${col(B,q[1],'b')}</div>${lastPts()}`}
+ return`<div class="qpre c">Tu préfères…</div><div class="tpch">
+  <button class="tpb a ${mine==='a'?'on':''}" data-act="ans" data-v="a">${esc(q[0])}</button><div class="ou">ou</div>
+  <button class="tpb b ${mine==='b'?'on':''}" data-act="ans" data-v="b">${esc(q[1])}</button></div>${L('stat',()=>statusHTML(present()))}`}
+
+// ----- qui est le plus -----
+function vPlus(g){const q=PLUS[g.q];const mine=myAns();const ps=present();
+ const qc=`<div class="qcard" style="--gc:${GAMES.plus.c}"><div class="qpre">Qui est le plus susceptible de…</div><div class="qtxt">${esc(q)} ?</div></div>`;
+ if(g.ph==='reveal'){const t={};ps.forEach(p=>{const v=ans(p,g);if(v)t[v]=(t[v]||0)+1});const mx=Math.max(1,...Object.values(t));
+  const rows=Object.keys(t).sort((a,b)=>t[b]-t[a]);
+  return`${qc}<div class="bars">${rows.map(pid=>{const i=pinfo(pid);const voters=ps.filter(p=>ans(p,g)===pid).map(p=>esc(pinfo(p.pid).av)).join(' ');return`<div class="bar" style="--pc:${i.c}"><div class="bn">${(g.win||[]).includes(pid)?'👑 ':''}${esc(i.av)} ${esc(i.n)}</div><div class="bt"><div class="bf" style="width:${100*t[pid]/mx}%"></div><span>${t[pid]} · ${voters}</span></div></div>`}).join('')}</div>${lastPts()}`}
+ return`${qc}<div class="pgrid">${ps.map(p=>{const i=pinfo(p.pid);return`<button class="pbtn ${mine===p.pid?'on':''}" data-act="ans" data-v="${p.pid}" style="--pc:${i.c}"><span>${esc(i.av)}</span>${esc(i.n)}${p.self?' (moi)':''}</button>`}).join('')}</div>${L('stat',()=>statusHTML(present()))}`}
+
+// ----- imposteur -----
+function vImp(g){const pair=IMP[g.q];const isImp=S.me.pid===g.imp;const blanc=g.cfg.mode==='blanc';const myWord=isImp?(blanc?null:pair[1-g.sw]):pair[g.sw];const mine=myAns();const ps=present();
+ if(g.ph==='reveal'){const t={};ps.forEach(p=>{const v=ans(p,g);if(v)t[v]=(t[v]||0)+1});
+  return`<div class="verdict ${g.caught?'yes':'no'}">${g.caught?'🎉 Imposteur démasqué !':g.out?`😈 Raté ! Vous avez éliminé ${esc(firstName(g.out))}…`:'😈 Égalité : l\'imposteur s\'en sort !'}</div>
+  <div class="truth"><div class="lbl">L'imposteur était</div><div class="tv">${esc(pinfo(g.imp).av)} ${esc(firstName(g.imp))}</div></div>
+  <div class="words"><div><span class="lbl">Mot des autres</span><b>${esc(pair[g.sw])}</b></div><div><span class="lbl">Mot de l'imposteur</span><b>${blanc?'(aucun — Mister White)':esc(pair[1-g.sw])}</b></div></div>
+  <div class="bars">${Object.keys(t).sort((a,b)=>t[b]-t[a]).map(pid=>{const i=pinfo(pid);return`<div class="bar" style="--pc:${i.c}"><div class="bn">${esc(i.av)} ${esc(i.n)}</div><div class="bt"><div class="bf" style="width:${100*t[pid]/Math.max(...Object.values(t))}%"></div><span>${t[pid]} vote${t[pid]>1?'s':''}</span></div></div>`}).join('')}</div>${lastPts()}`}
+ if(g.ph==='words'){return`<div class="card c"><div class="lbl">Ton mot secret</div>
+   ${S.showWord?`<div class="secret">${myWord?esc(myWord):'🤫 Tu n\'as pas de mot :<br>tu es Mister White !'}</div>${!myWord?'<p class="mut">Écoute les autres et bluffe.</p>':''}<button class="btn ghost" data-act="word">Cacher</button>`
+   :`<button class="btn pink" data-act="word">👀 Afficher mon mot</button>`}</div>
+   <div class="card"><p>🗣️ À tour de rôle, chacun dit <b>un mot</b> en rapport avec son mot secret, à voix haute ou en appel. Ne sois ni trop clair, ni trop vague !</p><p>Commence : ${chip(g.first)}</p></div>
+   ${S.host?'':'<p class="mut c">L\'hôte lancera le vote quand tout le monde aura parlé.</p>'}`}
+ return`<div class="qpre c">🗳️ Qui est l'imposteur ?</div><div class="pgrid">${ps.filter(p=>!p.self).map(p=>{const i=pinfo(p.pid);return`<button class="pbtn ${mine===p.pid?'on':''}" data-act="ans" data-v="${p.pid}" style="--pc:${i.c}"><span>${esc(i.av)}</span>${esc(i.n)}</button>`}).join('')}</div>
+  <p class="mut c">Rappel de ton mot : <b>${myWord?esc(myWord):'aucun'}</b></p>${L('stat',()=>statusHTML(present()))}`}
+
+// ----- modales -----
+function vModal(){const m=S.modal;let h='';
+ if(m.t==='rules'){const x=GAMES[m.g];h=`<h2>${x.e} ${esc(x.n)}</h2><p>${x.r}</p><p class="mut">${x.min} joueurs minimum.</p><button class="btn block" data-act="close">Compris</button>`}
+ else if(m.t==='scores'){const g=G();const ids=g?g.pl.filter(pid=>g.sc[pid]!=null):[];ids.sort((a,b)=>(g.sc[b]||0)-(g.sc[a]||0));
+  h=`<h2>🏆 Scores</h2><div class="sclist">${ids.map((pid,i)=>{const p=pinfo(pid);return`<div class="scr ${p.here?'':'gone'}" style="--pc:${p.c}"><span class="rk">${['🥇','🥈','🥉'][i]||i+1}</span><span class="av">${esc(p.av)}</span><span class="pn">${esc(p.n)}</span><b>${g.sc[pid]||0}</b></div>`}).join('')||'<p class="mut">Pas encore de points.</p>'}</div>
+  ${S.host?'<button class="btn ghost block" data-act="resetsc">Remettre les scores à zéro</button>':''}<button class="btn block" data-act="close">Fermer</button>`}
+ else if(m.t==='cfg'){const x=GAMES[m.g];const ps=present();const enough=ps.length>=x.min;let opts='';
+  if(m.g==='qdn'){const opt=sel=>ps.map(p=>`<option value="${p.pid}" ${p.pid===sel?'selected':''}>${esc(p.av)} ${esc(p.n)}</option>`).join('');
+   opts=`<div class="lbl">Le couple</div><div class="row"><select id="c1" class="txt">${opt(ps[0]&&ps[0].pid)}</select><span>💞</span><select id="c2" class="txt">${opt(ps[1]&&ps[1].pid)}</select></div>
+   <div class="lbl">Thèmes</div><div class="cats">${Object.entries(QDN_CATS).map(([k,c])=>`<label class="cat"><input type="checkbox" id="cat-${k}" checked> ${c.label} <span class="mut">(${c.q.length})</span></label>`).join('')}</div>`}
+  if(m.g==='imp')opts=`<div class="lbl">Mode</div><select id="impmode" class="txt"><option value="mot">Undercover : l'imposteur a un mot proche (et ne sait pas qu'il l'est)</option><option value="blanc">Mister White : l'imposteur n'a aucun mot</option></select>`;
+  h=`<h2>${x.e} ${esc(x.n)}</h2><p>${x.r}</p>${opts}${enough?'':`<p class="warn">Il faut au moins ${x.min} joueurs connectés (${ps.length} actuellement).</p>`}
+  <div class="row"><button class="btn ghost" data-act="close">Annuler</button><button class="btn pink grow" data-act="start" data-g="${m.g}" ${enough?'':'disabled'}>Lancer le jeu</button></div>`}
+ return`<div class="ov" data-act="ovclose"><div class="modal" role="dialog">${h}</div></div>`}
+
+// ---------- actions ----------
+const ACT={
+ av(el){S.me.av=el.dataset.v;ls.set('en_me',{n:S.me.n,av:S.me.av});document.querySelectorAll('.avb').forEach(b=>b.classList.toggle('on',b.dataset.v===S.me.av))},
+ create(){if(!readName())return;enter(rid(5),true)},
+ join(){if(!readName())return;const c=($('#jcode').value||'').trim().toLowerCase();if(!/^[a-z0-9]{4,8}$/.test(c))return toast('Code invalide');enter(c,false)},
+ leave(){leave()},
+ takeover(){S.host=true;S.st=JSON.parse(JSON.stringify(S.lastSt));S.st.ep=Date.now();Net.set({h:true});S.lastPushed='';pushSt();saveSess();toast('Tu es maintenant l\'hôte')},
+ copy(){const t=SHARE_URL?`Rejoins ma partie Entre Nous 🎉\n${SHARE_URL}#${S.code}\nCode : ${S.code}`:`Rejoins ma partie Entre Nous 🎉 Code : ${S.code}`;
+  try{navigator.clipboard.writeText(t).then(()=>toast('Invitation copiée !'),()=>toast('Code : '+S.code))}catch(e){toast('Code : '+S.code)}},
+ rules(el){S.modal={t:'rules',g:el.dataset.g};onNet()},
+ scores(){S.modal={t:'scores'};onNet()},
+ cfg(el){S.modal={t:'cfg',g:el.dataset.g};onNet()},
+ close(){S.modal=null;onNet()},
+ ovclose(el,e){if(e.target===el){S.modal=null;onNet()}},
+ start(el){const k=el.dataset.g;const cfg={};
+  if(k==='qdn'){const a=$('#c1').value,b=$('#c2').value;if(!a||!b||a===b)return toast('Choisis deux joueurs différents');cfg.cp=[a,b];cfg.cats=Object.keys(QDN_CATS).filter(c=>$('#cat-'+c).checked);if(!cfg.cats.length)return toast('Choisis au moins un thème')}
+  if(k==='imp')cfg.mode=$('#impmode').value;
+  S.modal=null;hostDo(st=>{st.g=k;st.cfg=cfg;st.seed=Math.floor(Math.random()*1e9);st.i=-1;st.n=0;st.m=0;st.qn=0;st.mi=-1;setupRound(st)})},
+ tolobby(){hostDo(st=>{st.g=null;st.ph=null})},
+ next(){hostDo(doNext)},
+ reveal(){hostDo(st=>doReveal(st))},
+ tovote(){hostDo(st=>{st.ph='vote'})},
+ resetsc(){hostDo(st=>{for(const k in st.sc)st.sc[k]=0;st.m=0;st.qn=0})},
+ ans(el){answer(el.dataset.v)},
+ sendclue(){const v=($('#clue').value||'').trim();if(!v)return toast('Écris un indice');answer({c:v.slice(0,40)})},
+ lockneedle(){answer(S.needle)},
+ sendtxt(){const v=($('#dans').value||'').trim();if(!v)return toast('Écris ta réponse');answer(v.slice(0,60))},
+ okt(el){const g=G();const cur=Net.mine.ok&&Net.mine.ok.k===g.r?Net.mine.ok.l.slice():[];const v=el.dataset.v;const i=cur.indexOf(v);if(i<0)cur.push(v);else cur.splice(i,1);Net.set({ok:{k:g.r,l:cur}})},
+ word(){S.showWord=!S.showWord;onNet()}
+};
+function readName(){const n=($('#name').value||'').trim().slice(0,18);if(!n){toast('Entre ton prénom');$('#name').focus();return false}S.me.n=n;ls.set('en_me',{n,av:S.me.av});return true}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const f=ACT[el.dataset.act];if(f)f(el,e)});
+document.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const id=e.target&&e.target.id;
+ const map={clue:'sendclue',dans:'sendtxt',jcode:'join',name:null};if(id in map&&map[id])ACT[map[id]]()});
+// reset showWord à chaque manche
+let lastR=null;setInterval(()=>{const g=G();if(g&&g.r!==lastR){lastR=g.r;if(S.showWord){S.showWord=false;onNet()}}},400);
+
+// ---------- démarrage ----------
+(function boot(){
+ render();banner();
+ const sess=ss.get('en_sess',null);
+ if(sess&&sess.code&&S.me.n)enter(sess.code,!!sess.host);
+ Net.init();
+ setInterval(onNet,1500);
+})();
+
+</script>
+</body>
+</html>
