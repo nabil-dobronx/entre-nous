@@ -7,6 +7,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Entre Nous — mini-jeux à plusieurs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<meta name="theme-color" content="#1a0f33">
+<meta property="og:title" content="Entre Nous — mini-jeux à plusieurs">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#1a0f33;--card:#2a1a55;--card2:#352268;--line:rgba(255,255,255,.12);--tx:#fff6fb;--mut:#bfb0e6;--pink:#ff4d8d;--yel:#ffd23f;--teal:#2de2c4;--ora:#ff8a3d;--vio:#8f7bff}
@@ -143,6 +147,13 @@ button.gs{cursor:pointer}
 .sclist{display:grid;gap:8px;margin:12px 0}
 .scr{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.05);border-left:4px solid var(--pc)}
 .scr.gone{opacity:.5}.scr .rk{width:28px;text-align:center}.scr .av{font-size:22px}.scr .pn{flex:1}.scr b{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:20px;color:var(--yel)}
+.avi{width:1.15em;height:1.15em;border-radius:50%;object-fit:cover;vertical-align:middle;display:inline-block}
+.big2 .avi,.pbtn .avi{width:44px;height:44px;border:3px solid var(--pc)}
+.me-row{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.me-av{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.08);display:grid;place-items:center;font-size:36px;overflow:hidden;border:3px solid var(--pink);flex:none}
+.me-av img{width:100%;height:100%;object-fit:cover}
+.me-btns{display:flex;gap:8px;flex-wrap:wrap}.me-btns .btn{padding:10px 14px;font-size:14px}
+.inl-code{font-family:Fredoka,Nunito,system-ui,sans-serif;color:var(--yel);letter-spacing:.15em;font-size:18px}
 .center{text-align:center;margin-top:40px}.big{font-size:54px}
 #banner{position:fixed;left:50%;bottom:12px;transform:translateX(-50%) translateY(150%);max-width:calc(100% - 24px);width:560px;background:#3a2672;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:13px;font-weight:700;transition:transform .3s;z-index:40;text-align:center}
 #banner.show{transform:translateX(-50%)}#banner.err{background:#6b1838}#banner.info{background:#22305e}
@@ -154,8 +165,7 @@ button.gs{cursor:pointer}
 <div id="app"></div>
 <div id="banner"></div>
 <div id="toast"></div>
-<script src="https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js"></script>
-<script>window.mqtt||document.write('<script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"><\/script>')</script>
+<script>window.MQTT_READY=new Promise(r=>{const add=(u,next)=>{const s=document.createElement("script");s.src=u;s.async=true;s.onload=()=>r(true);s.onerror=next;document.head.appendChild(s)};add("https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js",()=>add("https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js",()=>r(false)))});</script>
 <script>
 // ====== BANQUES DE QUESTIONS ======
 const SPECTRES=[
@@ -380,7 +390,7 @@ const IMP=[
 // ====== ENTRE NOUS — moteur multijoueur ======
 const APP='en1';
 const SHARE_URL=location.href.split('#')[0];
-const AV=['🦊','🐼','🐸','🐙','🦄','🐯','🐨','🐵','🦁','🐧','🐢','🦋','🍕','🌵','👽','🤖','🎃','🐳','🦖','🍓','🐰','🦉','🐝','🍩'];
+const AV=['⚔️','🗡️','🛡️','🏹','🏐','🐉','🌸','⚡','🔥','❄️','🌙','⭐','🎴','🍜','🍙','🎸','🎤','👑','💎','🐺','🦅','🌊','🦊','🐼','🐸','🐙','🦄','🐯','🐵','🦁','🐧','🦋','🍕','👽','🤖','🎃','🦖','🍓','🐰','🦉'];
 const COLORS=['#ff4d8d','#ffd23f','#2de2c4','#ff8a3d','#8f7bff','#5ad1ff','#a6ff4d','#ff6bd6','#ffb38a','#7dffb2','#f5f5f5','#c08bff'];
 const GAMES={
  roue:{e:'🎯',n:'La demi-roue',d:'Un indice, une aiguille : trouve la cible cachée entre deux extrêmes.',min:2,c:'#ff4d8d',
@@ -403,6 +413,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const rid=n=>{const a='abcdefghjkmnpqrstuvwxyz23456789';let s='';for(let i=0;i<n;i++)s+=a[Math.floor(Math.random()*a.length)];return s};
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function shuffled(arr,seed){const a=arr.slice(),r=rng(seed);for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function validImg(u){return typeof u==='string'&&u.length<9000&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(u)}
 const range=n=>Array.from({length:n},(_,i)=>i);
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const ss={get(k,d){try{const v=sessionStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{sessionStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
@@ -410,10 +421,11 @@ const QDN=[];for(const k in QDN_CATS)QDN_CATS[k].q.forEach(q=>QDN.push({c:k,q}))
 
 // ---------- state ----------
 const S={
- me:Object.assign({n:'',av:AV[Math.floor(Math.random()*AV.length)]},ls.get('en_me',{}),{pid:ss.get('en_pid',null)||rid(10)}),
- code:null,host:false,st:null,lastSt:null,joinedAt:0,modal:null,sig:'',lives:[],after:[],needle:90,showWord:false,lastPushed:''
+ me:Object.assign({n:'',av:AV[Math.floor(Math.random()*AV.length)],img:null},ls.get('en_me',{}),{pid:ss.get('en_pid',null)||ls.get('en_pid',null)||rid(10)}),
+ code:null,host:false,st:null,lastSt:null,hostSeen:0,joinedAt:0,modal:null,sig:'',lives:[],after:[],needle:90,showWord:false,lastPushed:''
 };
-ss.set('en_pid',S.me.pid);
+ss.set('en_pid',S.me.pid);ls.set('en_pid',S.me.pid);
+if(S.me.img&&!validImg(S.me.img))S.me.img=null;
 
 // ---------- réseau (salle temps réel, avec repli local entre onglets) ----------
 const Net={mode:'init',room:null,bc:null,mine:{},others:new Map(),conn:false,tab:rid(8),
@@ -425,12 +437,15 @@ const Net={mode:'init',room:null,bc:null,mine:{},others:new Map(),conn:false,tab
    r.onConnection(c=>{this.conn=c;onNet()},()=>{});
    if(Object.keys(this.mine).length)r.presence(this.mine).catch(()=>{});
    onNet();return}
-  const beat=()=>setInterval(()=>{this.send('p');const now=Date.now();let ch=false;for(const[k,v]of this.others)if(now-v.ts>7000){this.others.delete(k);ch=true}if(ch)onNet()},2000);
-  if(await this.initMqtt()){beat();addEventListener('pagehide',()=>this.send('bye'));onNet();return}
+  // Les téléphones ralentissent les onglets en arrière-plan : on garde un joueur silencieux 25 s avant de le retirer.
+  const beat=()=>setInterval(()=>{this.send('p');const now=Date.now();let ch=false;for(const[k,v]of this.others)if(now-v.ts>25000){this.others.delete(k);ch=true}if(ch)onNet()},2000);
+  const hooks=()=>{addEventListener('pagehide',e=>{if(!e.persisted)this.send('bye')});
+   addEventListener('pageshow',e=>{if(e.persisted)this.send('hello')});
+   document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(this.mode==='mqtt'&&this.mq&&!this.mq.connected){try{this.mq.reconnect()}catch(_){}}this.send('hello');onNet()}})};
+  if(await this.initMqtt()){beat();hooks();onNet();return}
   try{this.bc=new BroadcastChannel('entre-nous-v1');this.mode='local';this.conn=true;
    this.bc.onmessage=e=>this.onMsg(e.data);
-   this.send('hello');beat();
-   addEventListener('pagehide',()=>this.send('bye'));
+   this.send('hello');beat();hooks();
   }catch(e){this.mode='none'}
   onNet();
  },
@@ -439,7 +454,9 @@ const Net={mode:'init',room:null,bc:null,mine:{},others:new Map(),conn:false,tab
   onNet()},
  // ---- relais MQTT public (version hébergée hors claude.ai) ----
  mq:null,topic:null,
- initMqtt(){return new Promise(res=>{
+ async initMqtt(){
+  if(!window.mqtt&&window.MQTT_READY){await Promise.race([window.MQTT_READY,new Promise(r=>setTimeout(r,9000))])}
+  return new Promise(res=>{
   if(!window.mqtt||typeof window.mqtt.connect!=='function')return res(false);
   const brokers=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt','wss://test.mosquitto.org:8081/mqtt'];let i=0;
   const tryB=()=>{if(i>=brokers.length)return res(false);const url=brokers[i++];let done=false;
@@ -447,23 +464,24 @@ const Net={mode:'init',room:null,bc:null,mine:{},others:new Map(),conn:false,tab
    const fail=()=>{if(done)return;done=true;try{c.end(true)}catch(e){}tryB()};
    const to=setTimeout(fail,7000);
    c.on('message',(t,buf)=>{if(this.mq!==c)return;try{this.onMsg(JSON.parse(buf.toString()))}catch(e){}});
-   c.on('connect',()=>{if(!done){done=true;clearTimeout(to);this.mq=c;this.mode='mqtt';this.conn=true;this.topic=null;this.sync();res(true)}
-    else if(this.mq===c){this.conn=true;this.topic=null;this.sync();onNet()}});
+   c.on('connect',()=>{if(!done){done=true;clearTimeout(to);this.mq=c;this.mode='mqtt';this.conn=true;this.sync(true);res(true)}
+    else if(this.mq===c){this.conn=true;this.sync(true);onNet()}});
    c.on('close',()=>{if(this.mq===c){this.conn=false;onNet()}});
    c.on('offline',()=>{if(this.mq===c){this.conn=false;onNet()}});
    c.on('error',()=>{if(!this.mq)fail()});
   };tryB()})},
- sync(){if(this.mode!=='mqtt'||!this.mq)return;const want=this.mine.code?'entrenous-v1/'+this.mine.code:null;
-  if(want===this.topic)return;
-  if(this.topic){try{this.mq.publish(this.topic,JSON.stringify({t:'bye',tab:this.tab}));this.mq.unsubscribe(this.topic)}catch(e){}}
-  this.others.clear();this.topic=want;
+ // force = (re)connexion : on se réabonne sans oublier les joueurs déjà vus (évite le faux « hôte déconnecté »)
+ sync(force){if(this.mode!=='mqtt'||!this.mq)return;const want=this.mine.code?'entrenous-v1/'+this.mine.code:null;
+  if(want===this.topic&&!force)return;
+  if(this.topic&&this.topic!==want){try{this.mq.publish(this.topic,JSON.stringify({t:'bye',tab:this.tab}));this.mq.unsubscribe(this.topic)}catch(e){}this.others.clear()}
+  this.topic=want;
   if(want){this.mq.subscribe(want,{qos:0},()=>this.send('hello'))}
   onNet()},
  send(t){const msg={t,tab:this.tab,p:this.mine};
   if(this.mode==='mqtt'){if(this.mq&&this.topic&&this.mq.connected){try{this.mq.publish(this.topic,JSON.stringify(msg),{qos:0})}catch(e){}}return}
   try{this.bc&&this.bc.postMessage(msg)}catch(e){}},
  set(patch){for(const k in patch){if(patch[k]===null||patch[k]===undefined)delete this.mine[k];else this.mine[k]=patch[k]}
-  if(this.mode==='room'){const p={};for(const k in patch)p[k]=patch[k]===undefined?null:patch[k];this.room.presence(p).catch(e=>console.warn('presence',e))}
+  if(this.mode==='room'){const p={};for(const k in patch){if(k==='img')continue;p[k]=patch[k]===undefined?null:patch[k]}if(Object.keys(p).length)this.room.presence(p).catch(e=>console.warn('presence',e))}
   else if(this.mode==='mqtt'){const want=this.mine.code?'entrenous-v1/'+this.mine.code:null;if(want!==this.topic)this.sync();else this.send('p')}
   else if(this.mode==='local')this.send('p');
   onNet()},
@@ -472,7 +490,8 @@ const Net={mode:'init',room:null,bc:null,mine:{},others:new Map(),conn:false,tab
   else for(const v of this.others.values())out.push({self:false,p:v.p});
   return out}
 };
-let rafq=0;function onNet(){if(rafq)return;rafq=requestAnimationFrame(()=>{rafq=0;tick()})}
+// requestAnimationFrame ne tourne pas quand l'onglet est caché : on bascule sur un timer pour que l'hôte continue d'arbitrer.
+let rafq=0;function onNet(){if(rafq)return;const run=()=>{rafq=0;tick()};rafq=document.hidden?setTimeout(run,50):requestAnimationFrame(run)}
 
 // ---------- joueurs ----------
 function present(){if(!S.code)return[];const m=new Map();
@@ -480,12 +499,13 @@ function present(){if(!S.code)return[];const m=new Map();
  const g=G();const order=g?g.pl:[];
  return[...m.values()].sort((a,b)=>{const ia=order.indexOf(a.pid),ib=order.indexOf(b.pid);return(ia<0?999:ia)-(ib<0?999:ib)})}
 function hostPeer(){let best=null;for(const{self,p}of Net.list()){if(!p||p.app!==APP||p.code!==S.code||!p.h||!p.st)continue;if(!best||(p.st.ep||0)>(best.st.ep||0))best=p}return best}
-function G(){if(S.host)return S.st;const h=hostPeer();return h?h.st:null}
+function G(){if(S.host)return S.st;const h=hostPeer();if(h)return h.st;return S.lastSt&&Date.now()-S.hostSeen<15000?S.lastSt:null}
 function ans(p,g){g=g||G();return p&&p.a&&g&&p.a.k===g.r&&p.a.g===g.g?p.a.v:undefined}
 function myAns(){return ans(Object.assign({},Net.mine))}
 function pinfo(pid){const g=G();const ps=present();const p=ps.find(x=>x.pid===pid);
- const nm=p?[p.n,p.av]:(g&&g.nm&&g.nm[pid])||['?','❔'];const idx=g?g.pl.indexOf(pid):0;return{n:nm[0]||'?',av:nm[1]||'❔',c:COLORS[(idx<0?0:idx)%COLORS.length],here:!!p}}
-function chip(pid,extra=''){const i=pinfo(pid);return`<span class="chip" style="--pc:${i.c}"><span class="av">${esc(i.av)}</span>${esc(i.n)}${extra}</span>`}
+ const nm=p?[p.n,p.av]:(g&&g.nm&&g.nm[pid])||['?','❔'];const idx=g?g.pl.indexOf(pid):0;const av=nm[1]||'❔';const img=p&&validImg(p.img)?p.img:null;
+ return{n:nm[0]||'?',av,img,a:img?`<img class="avi" src="${img}" alt="">`:`<span class="ave">${esc(av)}</span>`,c:COLORS[(idx<0?0:idx)%COLORS.length],here:!!p}}
+function chip(pid,extra=''){const i=pinfo(pid);return`<span class="chip" style="--pc:${i.c}"><span class="av">${i.a}</span>${esc(i.n)}${extra}</span>`}
 function firstName(pid){return pinfo(pid).n}
 
 // ---------- hôte ----------
@@ -547,11 +567,11 @@ function doNext(st){
 function hostDo(fn){if(!S.host||!S.st)return;fn(S.st);pushSt();onNet()}
 
 // ---------- sessions ----------
-function saveSess(){ss.set('en_sess',S.code?{code:S.code,host:S.host}:null)}
+function saveSess(){const v=S.code?{code:S.code,host:S.host,t:Date.now()}:null;ss.set('en_sess',v);ls.set('en_sess',v)}
 function enter(code,asHost){
  S.code=code;S.host=asHost;S.joinedAt=Date.now();S.modal=null;
  if(asHost){S.st=ls.get("en_host_"+code,null)||newSt();if(!S.st.pl.includes(S.me.pid))S.st.pl.push(S.me.pid)}
- Net.set({app:APP,code,pid:S.me.pid,n:S.me.n,av:S.me.av,h:asHost?true:null,st:null,a:null,ok:null});
+ Net.set({app:APP,code,pid:S.me.pid,n:S.me.n,av:S.me.av,img:S.me.img||null,h:asHost?true:null,st:null,a:null,ok:null});
  S.lastPushed='';pushSt();saveSess();
  try{if(location.hash!=='#'+code)history.replaceState(null,'','#'+code)}catch(e){try{location.hash=code}catch(_){}}
 }
@@ -561,7 +581,7 @@ function answer(v){const g=G();if(!g)return;Net.set({a:{k:g.r,g:g.g,v}})}
 // ---------- rendu ----------
 function L(id,fn){S.lives.push({id,fn,last:null});return`<div id="${id}">${fn()}</div>`}
 function screen(){if(!S.code)return'home';const g=G();if(!g)return'wait';return g.g?'game':'lobby'}
-function sigOf(){const sc=screen();const g=G();const ps=present();const parts=[sc,Net.mode,S.modal&&JSON.stringify(S.modal),S.host,ps.map(p=>p.pid+p.n+p.av).join(',')];
+function sigOf(){const sc=screen();const g=G();const ps=present();const parts=[sc,Net.mode,S.modal&&JSON.stringify(S.modal),S.host,ps.map(p=>p.pid+p.n+p.av+(p.img?p.img.length:0)).join(',')];
  if(sc==='wait')parts.push(!!S.lastSt,Date.now()-S.joinedAt>6000);
  if(g&&g.g){parts.push(g.g,g.ph,g.r,JSON.stringify(myAns()),S.showWord);
   if(g.g==='roue'){const m=ps.find(p=>p.pid===g.med);parts.push(!!ans(m,g))}
@@ -571,7 +591,7 @@ function sigOf(){const sc=screen();const g=G();const ps=present();const parts=[s
  return parts.join('§')}
 function tick(){
  hostTick();
- if(!S.host){const h=hostPeer();if(h)S.lastSt=h.st}
+ if(!S.host){const h=hostPeer();if(h){S.lastSt=h.st;S.hostSeen=Date.now()}}
  const sig=sigOf();
  if(sig!==S.sig){S.sig=sig;render()}else updateLives();
  banner();
@@ -607,7 +627,10 @@ function vHome(){
  </div>
  <div class="card">
   <label class="lbl">Ton avatar</label>
-  <div class="avs">${AV.map(a=>`<button class="avb ${a===S.me.av?'on':''}" data-act="av" data-v="${a}">${a}</button>`).join('')}</div>
+  <div class="me-row"><div class="me-av">${S.me.img?`<img src="${S.me.img}" alt="">`:esc(S.me.av)}</div>
+   <div class="me-btns"><button class="btn ghost" data-act="photo">📷 ${S.me.img?'Changer de photo':'Mettre ma photo'}</button>${S.me.img?'<button class="btn ghost" data-act="nophoto">Retirer</button>':''}
+   <input type="file" id="photo" accept="image/*" hidden></div></div>
+  <div class="avs">${AV.map(a=>`<button class="avb ${a===S.me.av&&!S.me.img?'on':''}" data-act="av" data-v="${a}" aria-label="Avatar ${a}">${a}</button>`).join('')}</div>
   <label class="lbl" for="name">Ton prénom</label>
   <input id="name" class="txt" maxlength="18" placeholder="Ex. Léa" value="${esc(S.me.n)}" autocomplete="off">
  </div>
@@ -632,7 +655,7 @@ function vWait(){const late=Date.now()-S.joinedAt>6000;
   <p><button class="btn ghost" data-act="leave">Retour</button></p></div>`}
 
 function playersHTML(){const g=G();const ps=present();const hp=hostPeer();
- return`<div class="plist">${ps.map(p=>{const i=pinfo(p.pid);return`<div class="pl" style="--pc:${i.c}"><span class="av">${esc(i.av)}</span><span class="pn">${esc(i.n)}${p.self?' <i>(toi)</i>':''}</span>${p.h?'<span class="crown" title="Hôte">👑</span>':''}<span class="psc">${g&&g.sc[p.pid]||0}</span></div>`}).join('')}</div>`}
+ return`<div class="plist">${ps.map(p=>{const i=pinfo(p.pid);return`<div class="pl" style="--pc:${i.c}"><span class="av">${i.a}</span><span class="pn">${esc(i.n)}${p.self?' <i>(toi)</i>':''}</span>${p.h?'<span class="crown" title="Hôte">👑</span>':''}<span class="psc">${g&&g.sc[p.pid]||0}</span></div>`}).join('')}</div>`}
 
 function vLobby(){const g=G();const n=present().length;
  return`${topbar()}
@@ -649,10 +672,10 @@ function vLobby(){const g=G();const n=present().length;
 function topbar(inGame){const g=G();const x=inGame&&GAMES[g.g];
  return`<div class="top">${x?`<div class="tt"><span>${x.e}</span>${esc(x.n)}</div>`:`<div class="tt logo-s">Entre<span>Nous</span></div>`}
  <div class="tbtns">${x?`<button class="ib" data-act="rules" data-g="${g.g}" title="Règles">?</button>`:''}<button class="ib" data-act="scores" title="Scores">🏆</button>
- ${inGame&&S.host?`<button class="ib" data-act="tolobby" title="Changer de jeu">☰</button>`:''}${!inGame?`<button class="ib" data-act="leave" title="Quitter">✕</button>`:''}</div></div>`}
+ ${inGame&&S.host?`<button class="ib" data-act="tolobby" title="Changer de jeu">☰</button>`:`<button class="ib" data-act="leave" title="Quitter la partie">✕</button>`}</div></div>`}
 
 function statusHTML(list,label){const g=G();if(!list||!list.length)return'';
- return`<div class="status">${list.map(p=>{const d=ans(p,g)!==undefined;const i=pinfo(p.pid);return`<span class="st ${d?'ok':''}" style="--pc:${i.c}" title="${esc(i.n)}">${esc(i.av)}<b>${d?'✓':'…'}</b></span>`}).join('')}</div>`}
+ return`<div class="status">${list.map(p=>{const d=ans(p,g)!==undefined;const i=pinfo(p.pid);return`<span class="st ${d?'ok':''}" style="--pc:${i.c}" title="${esc(i.n)}">${i.a}<b>${d?'✓':'…'}</b></span>`}).join('')}</div>`}
 
 function hostCtl(){const g=G();if(!S.host)return`<div class="hctl mut">${g.ph==='reveal'?'L\'hôte lance la suite…':''}</div>`;
  if(g.g==='imp'&&g.ph==='words')return`<div class="hctl"><button class="btn pink block" data-act="tovote">Passer au vote 🗳️</button></div>`;
@@ -673,7 +696,7 @@ function wedge(a1,a2,r,fill){a1=Math.max(0,a1);a2=Math.min(180,a2);if(a2<=a1)ret
 function wheel(o){const sp=SPECTRES[o.sp];let z='';
  if(o.t!=null){const t=o.t;z+=wedge(t-18,t-11,R,'#ffd23f')+wedge(t-11,t-4,R,'#ff8a3d')+wedge(t-4,t+4,R,'#ff4d8d')+wedge(t+4,t+11,R,'#ff8a3d')+wedge(t+11,t+18,R,'#ffd23f');
   [[t-14.5,'2'],[t-7.5,'3'],[t,'4'],[t+7.5,'3'],[t+14.5,'2']].forEach(([a,l])=>{if(a<1||a>179)return;const[x,y]=pt(a,R-22);z+=`<text x="${x}" y="${y+6}" class="zl">${l}</text>`})}
- let nd='';(o.needles||[]).forEach(n=>{const[x,y]=pt(n.a,R-8);const[lx,ly]=pt(n.a,R-40);nd+=`<line x1="${CX}" y1="${CY}" x2="${x}" y2="${y}" stroke="${n.c}" stroke-width="5" stroke-linecap="round" opacity=".95"/><text x="${lx}" y="${ly+7}" class="nl">${esc(n.l)}</text>`});
+ let nd='';(o.needles||[]).forEach(n=>{const[x,y]=pt(n.a,R-8);const[lx,ly]=pt(n.a,R-40);nd+=`<line x1="${CX}" y1="${CY}" x2="${x}" y2="${y}" stroke="${n.c}" stroke-width="5" stroke-linecap="round" opacity=".95"/>${n.img?`<clipPath id="cp${Math.round(n.a*10)}"><circle cx="${lx}" cy="${ly}" r="13"/></clipPath><image href="${n.img}" x="${lx-13}" y="${ly-13}" width="26" height="26" clip-path="url(#cp${Math.round(n.a*10)})"/><circle cx="${lx}" cy="${ly}" r="13" fill="none" stroke="${n.c}" stroke-width="2.5"/>`:`<text x="${lx}" y="${ly+7}" class="nl">${esc(n.l)}</text>`}`});
  let it='';if(o.inter){const[x,y]=pt(S.needle,R-8);it=`<line id="needle" x1="${CX}" y1="${CY}" x2="${x}" y2="${y}" stroke="#fff" stroke-width="7" stroke-linecap="round"/><circle id="knob" cx="${x}" cy="${y}" r="13" fill="#fff" stroke="#1a0f33" stroke-width="3"/>`}
  return`<div class="wheelwrap"><svg id="${o.inter?'wheel':'wheelro'}" viewBox="0 0 400 215" class="wheel ${o.inter?'inter':''}">
   <defs><linearGradient id="wg" x1="0" x2="1"><stop offset="0" stop-color="#3d6bff"/><stop offset=".5" stop-color="#7a4bd1"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient></defs>
@@ -688,14 +711,14 @@ function bindWheel(){const svg=document.getElementById('wheel');if(!svg)return;l
 function vRoue(g){const ps=present();const isMed=S.me.pid===g.med;const medP=ps.find(p=>p.pid===g.med);const ma=ans(medP,g);const clue=ma&&ma.c;const mine=myAns();
  const guessers=()=>present().filter(p=>p.pid!==g.med);
  const head=`<div class="role">🔮 Médium : ${chip(g.med)}</div>`;
- if(g.ph==='reveal'){const needles=ps.filter(p=>p.pid!==g.med&&typeof ans(p,g)==='number').map(p=>{const i=pinfo(p.pid);return{a:ans(p,g),c:i.c,l:i.av}});
+ if(g.ph==='reveal'){const needles=ps.filter(p=>p.pid!==g.med&&typeof ans(p,g)==='number').map(p=>{const i=pinfo(p.pid);return{a:ans(p,g),c:i.c,l:i.av,img:i.img}});
   return`${head}<div class="clue">« ${esc(clue||'—')} »</div>${wheel({sp:g.sp,t:g.t,needles})}${lastPts()}`}
  if(isMed){if(!clue){S.after.push(()=>{const i=document.getElementById('clue');i&&i.focus()});
    return`${head}<div class="card hint">C'est toi le médium ! La cible est cachée ici. Donne <b>un indice</b> pour que les autres la trouvent.</div>${wheel({sp:g.sp,t:g.t})}
    <div class="row"><input id="clue" class="txt" maxlength="40" placeholder="Ton indice…" autocomplete="off"><button class="btn pink" data-act="sendclue">Envoyer</button></div>`}
   return`${head}<div class="clue">« ${esc(clue)} »</div>${wheel({sp:g.sp,t:g.t})}<p class="mut c">Les autres cherchent la cible…</p>${L('stat',()=>statusHTML(guessers()))}`}
  if(!clue)return`${head}${wheel({sp:g.sp})}<div class="card c pulse">🔮 ${esc(firstName(g.med))} réfléchit à un indice…</div>`;
- if(typeof mine==='number')return`${head}<div class="clue">« ${esc(clue)} »</div>${wheel({sp:g.sp,needles:[{a:mine,c:pinfo(S.me.pid).c,l:S.me.av}]})}<p class="mut c">Aiguille verrouillée ✓ En attente des autres…</p>${L('stat',()=>statusHTML(guessers()))}`;
+ if(typeof mine==='number')return`${head}<div class="clue">« ${esc(clue)} »</div>${wheel({sp:g.sp,needles:[{a:mine,c:pinfo(S.me.pid).c,l:S.me.av,img:pinfo(S.me.pid).img}]})}<p class="mut c">Aiguille verrouillée ✓ En attente des autres…</p>${L('stat',()=>statusHTML(guessers()))}`;
  S.after.push(bindWheel);
  return`${head}<div class="clue">« ${esc(clue)} »</div>${wheel({sp:g.sp,inter:true})}<p class="mut c">Fais glisser l'aiguille, puis valide.</p><button class="btn pink block" data-act="lockneedle">Valider ma réponse</button>${L('stat',()=>statusHTML(guessers()))}`}
 
@@ -708,27 +731,27 @@ function vQdn(g){const cp=g.cfg.cp||[];const inC=cp.includes(S.me.pid);const oth
   const who=(v,self)=>v?(v===self?'Moi !':esc(firstName(v))):'—';
   const bets=ps.filter(p=>!cp.includes(p.pid)&&ans(p,g));
   return`${score}${qcard}<div class="rev2">
-   <div class="rv" style="--pc:${pinfo(cp[0]).c}"><div class="rvn">${esc(pinfo(cp[0]).av)} ${esc(firstName(cp[0]))}</div><div class="rva">${who(va,cp[0])}</div><div class="rvs">désigne ${va?esc(pinfo(va).av)+' '+esc(firstName(va)):'—'}</div></div>
-   <div class="rv" style="--pc:${pinfo(cp[1]).c}"><div class="rvn">${esc(pinfo(cp[1]).av)} ${esc(firstName(cp[1]))}</div><div class="rva">${who(vb,cp[1])}</div><div class="rvs">désigne ${vb?esc(pinfo(vb).av)+' '+esc(firstName(vb)):'—'}</div></div></div>
+   <div class="rv" style="--pc:${pinfo(cp[0]).c}"><div class="rvn">${pinfo(cp[0]).a} ${esc(firstName(cp[0]))}</div><div class="rva">${who(va,cp[0])}</div><div class="rvs">désigne ${va?pinfo(va).a+' '+esc(firstName(va)):'—'}</div></div>
+   <div class="rv" style="--pc:${pinfo(cp[1]).c}"><div class="rvn">${pinfo(cp[1]).a} ${esc(firstName(cp[1]))}</div><div class="rva">${who(vb,cp[1])}</div><div class="rvs">désigne ${vb?pinfo(vb).a+' '+esc(firstName(vb)):'—'}</div></div></div>
    <div class="verdict ${same?'yes':'no'}">${same?`💚 Même réponse : ${esc(firstName(va))} !`:va&&vb?'💥 Pas d\'accord !':'Réponse manquante'}</div>
    ${bets.length?`<div class="bets"><span class="mut">Paris :</span> ${bets.map(p=>chip(p.pid,` → ${esc(firstName(ans(p,g)))}`)).join('')}</div>`:''}`}
  const stat=L('stat',()=>statusHTML(present().filter(p=>cp.includes(p.pid))));
  if(inC){return`${score}${qcard}<div class="choice2">
-   <button class="big2 ${mine===S.me.pid?'on':''}" data-act="ans" data-v="${S.me.pid}" style="--pc:${pinfo(S.me.pid).c}"><span>${esc(S.me.av)}</span>Moi</button>
-   <button class="big2 ${mine===other?'on':''}" data-act="ans" data-v="${other}" style="--pc:${pinfo(other).c}"><span>${esc(pinfo(other).av)}</span>${esc(firstName(other))}</button></div>
+   <button class="big2 ${mine===S.me.pid?'on':''}" data-act="ans" data-v="${S.me.pid}" style="--pc:${pinfo(S.me.pid).c}"><span>${pinfo(S.me.pid).a}</span>Moi</button>
+   <button class="big2 ${mine===other?'on':''}" data-act="ans" data-v="${other}" style="--pc:${pinfo(other).c}"><span>${pinfo(other).a}</span>${esc(firstName(other))}</button></div>
    ${mine?'<p class="mut c">Réponse enregistrée. On attend l\'autre…</p>':''}${stat}`}
- return`${score}${qcard}<p class="mut c">Tu es spectateur. Ton pari :</p><div class="choice2">${cp.map(pid=>`<button class="big2 ${mine===pid?'on':''}" data-act="ans" data-v="${pid}" style="--pc:${pinfo(pid).c}"><span>${esc(pinfo(pid).av)}</span>${esc(firstName(pid))}</button>`).join('')}</div>${stat}`}
+ return`${score}${qcard}<p class="mut c">Tu es spectateur. Ton pari :</p><div class="choice2">${cp.map(pid=>`<button class="big2 ${mine===pid?'on':''}" data-act="ans" data-v="${pid}" style="--pc:${pinfo(pid).c}"><span>${pinfo(pid).a}</span>${esc(firstName(pid))}</button>`).join('')}</div>${stat}`}
 
 // ----- même réponse -----
 function vDuo(g){const isSub=S.me.pid===g.sub;const q=DUO[g.q];const name=firstName(g.sub);const mine=myAns();const ps=present();
  const head=`<div class="role">🎯 Question sur : ${chip(g.sub)}</div>`;
  if(g.ph==='reveal'){const subP=ps.find(p=>p.pid===g.sub);const sa=ans(subP,g);
   return`${head}<div class="qcard" style="--gc:${GAMES.duo.c}"><div class="qtxt">${esc(q[1].replace('{N}',name))}</div></div>
-   <div class="truth"><div class="lbl">${esc(pinfo(g.sub).av)} ${esc(name)} a répondu</div><div class="tv">${esc(sa||'—')}</div></div>
+   <div class="truth"><div class="lbl">${pinfo(g.sub).a} ${esc(name)} a répondu</div><div class="tv">${esc(sa||'—')}</div></div>
    ${isSub?'<p class="mut c">Touche les réponses qui correspondent à la tienne ✓</p>':''}
    ${L('guesses',()=>{const sp=present().find(p=>p.pid===g.sub);const ok=sp&&sp.ok&&sp.ok.k===g.r?sp.ok.l:[];
      return`<div class="guesses">${present().filter(p=>p.pid!==g.sub).map(p=>{const v=ans(p,g);const on=ok.includes(p.pid);const i=pinfo(p.pid);
-      return`<${isSub?'button data-act="okt" data-v="'+p.pid+'"':'div'} class="gs ${on?'on':''}" style="--pc:${i.c}"><span class="gsn">${esc(i.av)} ${esc(i.n)}</span><span class="gsv">${esc(v||'—')}</span><span class="gsk">${on?'✓':isSub?'○':''}</span></${isSub?'button':'div'}>`}).join('')}</div>`})}`}
+      return`<${isSub?'button data-act="okt" data-v="'+p.pid+'"':'div'} class="gs ${on?'on':''}" style="--pc:${i.c}"><span class="gsn">${i.a} ${esc(i.n)}</span><span class="gsv">${esc(v||'—')}</span><span class="gsk">${on?'✓':isSub?'○':''}</span></${isSub?'button':'div'}>`}).join('')}</div>`})}`}
  const stat=L('stat',()=>statusHTML(present()));
  const qtxt=isSub?q[0]:q[1].replace('{N}',name);
  if(mine!==undefined)return`${head}<div class="qcard" style="--gc:${GAMES.duo.c}"><div class="qtxt">${esc(qtxt)}</div></div><div class="sent">Ta réponse : <b>${esc(mine)}</b></div><p class="mut c">En attente des autres…</p>${stat}`;
@@ -750,29 +773,30 @@ function vPlus(g){const q=PLUS[g.q];const mine=myAns();const ps=present();
  const qc=`<div class="qcard" style="--gc:${GAMES.plus.c}"><div class="qpre">Qui est le plus susceptible de…</div><div class="qtxt">${esc(q)} ?</div></div>`;
  if(g.ph==='reveal'){const t={};ps.forEach(p=>{const v=ans(p,g);if(v)t[v]=(t[v]||0)+1});const mx=Math.max(1,...Object.values(t));
   const rows=Object.keys(t).sort((a,b)=>t[b]-t[a]);
-  return`${qc}<div class="bars">${rows.map(pid=>{const i=pinfo(pid);const voters=ps.filter(p=>ans(p,g)===pid).map(p=>esc(pinfo(p.pid).av)).join(' ');return`<div class="bar" style="--pc:${i.c}"><div class="bn">${(g.win||[]).includes(pid)?'👑 ':''}${esc(i.av)} ${esc(i.n)}</div><div class="bt"><div class="bf" style="width:${100*t[pid]/mx}%"></div><span>${t[pid]} · ${voters}</span></div></div>`}).join('')}</div>${lastPts()}`}
- return`${qc}<div class="pgrid">${ps.map(p=>{const i=pinfo(p.pid);return`<button class="pbtn ${mine===p.pid?'on':''}" data-act="ans" data-v="${p.pid}" style="--pc:${i.c}"><span>${esc(i.av)}</span>${esc(i.n)}${p.self?' (moi)':''}</button>`}).join('')}</div>${L('stat',()=>statusHTML(present()))}`}
+  return`${qc}<div class="bars">${rows.map(pid=>{const i=pinfo(pid);const voters=ps.filter(p=>ans(p,g)===pid).map(p=>pinfo(p.pid).a).join(' ');return`<div class="bar" style="--pc:${i.c}"><div class="bn">${(g.win||[]).includes(pid)?'👑 ':''}${i.a} ${esc(i.n)}</div><div class="bt"><div class="bf" style="width:${100*t[pid]/mx}%"></div><span>${t[pid]} · ${voters}</span></div></div>`}).join('')}</div>${lastPts()}`}
+ return`${qc}<div class="pgrid">${ps.map(p=>{const i=pinfo(p.pid);return`<button class="pbtn ${mine===p.pid?'on':''}" data-act="ans" data-v="${p.pid}" style="--pc:${i.c}"><span>${i.a}</span>${esc(i.n)}${p.self?' (moi)':''}</button>`}).join('')}</div>${L('stat',()=>statusHTML(present()))}`}
 
 // ----- imposteur -----
 function vImp(g){const pair=IMP[g.q];const isImp=S.me.pid===g.imp;const blanc=g.cfg.mode==='blanc';const myWord=isImp?(blanc?null:pair[1-g.sw]):pair[g.sw];const mine=myAns();const ps=present();
  if(g.ph==='reveal'){const t={};ps.forEach(p=>{const v=ans(p,g);if(v)t[v]=(t[v]||0)+1});
   return`<div class="verdict ${g.caught?'yes':'no'}">${g.caught?'🎉 Imposteur démasqué !':g.out?`😈 Raté ! Vous avez éliminé ${esc(firstName(g.out))}…`:'😈 Égalité : l\'imposteur s\'en sort !'}</div>
-  <div class="truth"><div class="lbl">L'imposteur était</div><div class="tv">${esc(pinfo(g.imp).av)} ${esc(firstName(g.imp))}</div></div>
+  <div class="truth"><div class="lbl">L'imposteur était</div><div class="tv">${pinfo(g.imp).a} ${esc(firstName(g.imp))}</div></div>
   <div class="words"><div><span class="lbl">Mot des autres</span><b>${esc(pair[g.sw])}</b></div><div><span class="lbl">Mot de l'imposteur</span><b>${blanc?'(aucun — Mister White)':esc(pair[1-g.sw])}</b></div></div>
-  <div class="bars">${Object.keys(t).sort((a,b)=>t[b]-t[a]).map(pid=>{const i=pinfo(pid);return`<div class="bar" style="--pc:${i.c}"><div class="bn">${esc(i.av)} ${esc(i.n)}</div><div class="bt"><div class="bf" style="width:${100*t[pid]/Math.max(...Object.values(t))}%"></div><span>${t[pid]} vote${t[pid]>1?'s':''}</span></div></div>`}).join('')}</div>${lastPts()}`}
+  <div class="bars">${Object.keys(t).sort((a,b)=>t[b]-t[a]).map(pid=>{const i=pinfo(pid);return`<div class="bar" style="--pc:${i.c}"><div class="bn">${i.a} ${esc(i.n)}</div><div class="bt"><div class="bf" style="width:${100*t[pid]/Math.max(...Object.values(t))}%"></div><span>${t[pid]} vote${t[pid]>1?'s':''}</span></div></div>`}).join('')}</div>${lastPts()}`}
  if(g.ph==='words'){return`<div class="card c"><div class="lbl">Ton mot secret</div>
    ${S.showWord?`<div class="secret">${myWord?esc(myWord):'🤫 Tu n\'as pas de mot :<br>tu es Mister White !'}</div>${!myWord?'<p class="mut">Écoute les autres et bluffe.</p>':''}<button class="btn ghost" data-act="word">Cacher</button>`
    :`<button class="btn pink" data-act="word">👀 Afficher mon mot</button>`}</div>
    <div class="card"><p>🗣️ À tour de rôle, chacun dit <b>un mot</b> en rapport avec son mot secret, à voix haute ou en appel. Ne sois ni trop clair, ni trop vague !</p><p>Commence : ${chip(g.first)}</p></div>
    ${S.host?'':'<p class="mut c">L\'hôte lancera le vote quand tout le monde aura parlé.</p>'}`}
- return`<div class="qpre c">🗳️ Qui est l'imposteur ?</div><div class="pgrid">${ps.filter(p=>!p.self).map(p=>{const i=pinfo(p.pid);return`<button class="pbtn ${mine===p.pid?'on':''}" data-act="ans" data-v="${p.pid}" style="--pc:${i.c}"><span>${esc(i.av)}</span>${esc(i.n)}</button>`}).join('')}</div>
+ return`<div class="qpre c">🗳️ Qui est l'imposteur ?</div><div class="pgrid">${ps.filter(p=>!p.self).map(p=>{const i=pinfo(p.pid);return`<button class="pbtn ${mine===p.pid?'on':''}" data-act="ans" data-v="${p.pid}" style="--pc:${i.c}"><span>${i.a}</span>${esc(i.n)}</button>`}).join('')}</div>
   <p class="mut c">Rappel de ton mot : <b>${myWord?esc(myWord):'aucun'}</b></p>${L('stat',()=>statusHTML(present()))}`}
 
 // ----- modales -----
 function vModal(){const m=S.modal;let h='';
- if(m.t==='rules'){const x=GAMES[m.g];h=`<h2>${x.e} ${esc(x.n)}</h2><p>${x.r}</p><p class="mut">${x.min} joueurs minimum.</p><button class="btn block" data-act="close">Compris</button>`}
+ if(m.t==='invite'){h=`<h2>📨 Inviter des amis</h2><p>Envoie ce lien (le code est dedans) :</p><input class="txt" id="invurl" readonly value="${esc(m.url||S.code)}" onclick="this.select()"><p class="mut">Ou donne simplement le code : <b class="inl-code">${esc(S.code)}</b></p><button class="btn block" data-act="close">OK</button>`}
+ else if(m.t==='rules'){const x=GAMES[m.g];h=`<h2>${x.e} ${esc(x.n)}</h2><p>${x.r}</p><p class="mut">${x.min} joueurs minimum.</p><button class="btn block" data-act="close">Compris</button>`}
  else if(m.t==='scores'){const g=G();const ids=g?g.pl.filter(pid=>g.sc[pid]!=null):[];ids.sort((a,b)=>(g.sc[b]||0)-(g.sc[a]||0));
-  h=`<h2>🏆 Scores</h2><div class="sclist">${ids.map((pid,i)=>{const p=pinfo(pid);return`<div class="scr ${p.here?'':'gone'}" style="--pc:${p.c}"><span class="rk">${['🥇','🥈','🥉'][i]||i+1}</span><span class="av">${esc(p.av)}</span><span class="pn">${esc(p.n)}</span><b>${g.sc[pid]||0}</b></div>`}).join('')||'<p class="mut">Pas encore de points.</p>'}</div>
+  h=`<h2>🏆 Scores</h2><div class="sclist">${ids.map((pid,i)=>{const p=pinfo(pid);return`<div class="scr ${p.here?'':'gone'}" style="--pc:${p.c}"><span class="rk">${['🥇','🥈','🥉'][i]||i+1}</span><span class="av">${p.a}</span><span class="pn">${esc(p.n)}</span><b>${g.sc[pid]||0}</b></div>`}).join('')||'<p class="mut">Pas encore de points.</p>'}</div>
   ${S.host?'<button class="btn ghost block" data-act="resetsc">Remettre les scores à zéro</button>':''}<button class="btn block" data-act="close">Fermer</button>`}
  else if(m.t==='cfg'){const x=GAMES[m.g];const ps=present();const enough=ps.length>=x.min;let opts='';
   if(m.g==='qdn'){const opt=sel=>ps.map(p=>`<option value="${p.pid}" ${p.pid===sel?'selected':''}>${esc(p.av)} ${esc(p.n)}</option>`).join('');
@@ -785,13 +809,17 @@ function vModal(){const m=S.modal;let h='';
 
 // ---------- actions ----------
 const ACT={
- av(el){S.me.av=el.dataset.v;ls.set('en_me',{n:S.me.n,av:S.me.av});document.querySelectorAll('.avb').forEach(b=>b.classList.toggle('on',b.dataset.v===S.me.av))},
+ av(el){S.me.av=el.dataset.v;S.me.img=null;saveMe();S.sig='';onNet()},
+ photo(){const f=$('#photo');f&&f.click()},
+ nophoto(){S.me.img=null;saveMe();S.sig='';onNet()},
  create(){if(!readName())return;enter(rid(5),true)},
  join(){if(!readName())return;const c=($('#jcode').value||'').trim().toLowerCase();if(!/^[a-z0-9]{4,8}$/.test(c))return toast('Code invalide');enter(c,false)},
  leave(){leave()},
  takeover(){S.host=true;S.st=JSON.parse(JSON.stringify(S.lastSt));S.st.ep=Date.now();Net.set({h:true});S.lastPushed='';pushSt();saveSess();toast('Tu es maintenant l\'hôte')},
- copy(){const t=SHARE_URL?`Rejoins ma partie Entre Nous 🎉\n${SHARE_URL}#${S.code}\nCode : ${S.code}`:`Rejoins ma partie Entre Nous 🎉 Code : ${S.code}`;
-  try{navigator.clipboard.writeText(t).then(()=>toast('Invitation copiée !'),()=>toast('Code : '+S.code))}catch(e){toast('Code : '+S.code)}},
+ copy(){const url=SHARE_URL?`${SHARE_URL}#${S.code}`:'';const t=`Rejoins ma partie Entre Nous 🎉 Code : ${S.code}`;
+  const fallback=()=>{S.modal={t:'invite',url};onNet()};
+  if(navigator.share&&matchMedia('(pointer:coarse)').matches){navigator.share({title:'Entre Nous',text:t,url:url||undefined}).catch(e=>{if(e&&e.name!=='AbortError')fallback()});return}
+  try{navigator.clipboard.writeText(url?t+'\n'+url:t).then(()=>toast('Invitation copiée !'),fallback)}catch(e){fallback()}},
  rules(el){S.modal={t:'rules',g:el.dataset.g};onNet()},
  scores(){S.modal={t:'scores'};onNet()},
  cfg(el){S.modal={t:'cfg',g:el.dataset.g};onNet()},
@@ -813,7 +841,15 @@ const ACT={
  okt(el){const g=G();const cur=Net.mine.ok&&Net.mine.ok.k===g.r?Net.mine.ok.l.slice():[];const v=el.dataset.v;const i=cur.indexOf(v);if(i<0)cur.push(v);else cur.splice(i,1);Net.set({ok:{k:g.r,l:cur}})},
  word(){S.showWord=!S.showWord;onNet()}
 };
-function readName(){const n=($('#name').value||'').trim().slice(0,18);if(!n){toast('Entre ton prénom');$('#name').focus();return false}S.me.n=n;ls.set('en_me',{n,av:S.me.av});return true}
+function readName(){const n=($('#name').value||'').trim().slice(0,18);if(!n){toast('Entre ton prénom');$('#name').focus();return false}S.me.n=n;saveMe();return true}
+function saveMe(){ls.set('en_me',{n:S.me.n,av:S.me.av,img:S.me.img||null})}
+// photo de profil : recadrée en carré 80 px et compressée (~3 Ko) pour passer dans les messages temps réel
+function loadPhoto(file){if(!file||!/^image\//.test(file.type))return toast('Choisis une image');const url=URL.createObjectURL(file);const im=new Image();
+ im.onload=()=>{URL.revokeObjectURL(url);const c=document.createElement('canvas');c.width=c.height=80;const x=c.getContext('2d');const s=Math.min(im.width,im.height);
+  x.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,80,80);let q=.8,d=c.toDataURL('image/jpeg',q);while(d.length>7000&&q>.3){q-=.15;d=c.toDataURL('image/jpeg',q)}
+  if(!validImg(d))return toast('Image impossible à utiliser');const n=$('#name');if(n)S.me.n=(n.value||'').trim().slice(0,18);S.me.img=d;saveMe();S.sig='';onNet()};
+ im.onerror=()=>{URL.revokeObjectURL(url);toast('Image illisible')};im.src=url}
+document.addEventListener('change',e=>{if(e.target&&e.target.id==='photo'){loadPhoto(e.target.files&&e.target.files[0]);e.target.value=''}});
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const f=ACT[el.dataset.act];if(f)f(el,e)});
 document.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const id=e.target&&e.target.id;
  const map={clue:'sendclue',dans:'sendtxt',jcode:'join',name:null};if(id in map&&map[id])ACT[map[id]]()});
@@ -823,8 +859,9 @@ let lastR=null;setInterval(()=>{const g=G();if(g&&g.r!==lastR){lastR=g.r;if(S.sh
 // ---------- démarrage ----------
 (function boot(){
  render();banner();
- const sess=ss.get('en_sess',null);
- if(sess&&sess.code&&S.me.n)enter(sess.code,!!sess.host);
+ let sess=ss.get('en_sess',null)||ls.get('en_sess',null);if(sess&&Date.now()-(sess.t||0)>6*3600e3)sess=null;
+ const hc=(location.hash||'').slice(1).toLowerCase();
+ if(sess&&sess.code&&S.me.n&&(!/^[a-z0-9]{4,8}$/.test(hc)||hc===sess.code))enter(sess.code,!!sess.host);
  Net.init();
  setInterval(onNet,1500);
 })();
