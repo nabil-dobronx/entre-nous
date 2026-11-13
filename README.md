@@ -9,6 +9,11 @@ Site de mini-jeux à jouer entre amis, chacun sur son téléphone. L'hôte crée
 - ⚖️ **Tu préfères ?**
 - 👑 **Qui est le plus susceptible de… ?**
 - 🕵️ **L'Imposteur** (Undercover / Mister White)
+- 🧩 **Quiz** — QCM chronométré, bonus au plus rapide
+- ✅ **Vrai ou Faux** — avec l'explication à chaque réponse
+- 🔍 **Qui suis-je ?** — indices progressifs, moins d'indices = plus de points
+
+Chaque jeu propose des catégories au choix : 🎲 Général, 🚂 Honkai: Star Rail, ⚔️ Genshin Impact, 🍙 Manga / Animé, 🎵 Musique (plus de 1 200 questions au total).
 
 ## Avatars
 Chaque joueur choisit son avatar parmi 12 images intégrées à la page.
