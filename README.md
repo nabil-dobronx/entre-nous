@@ -15,6 +15,9 @@ Site de mini-jeux à jouer entre amis, chacun sur son téléphone. L'hôte crée
 
 Chaque jeu propose des catégories au choix : 🎲 Général, 🚂 Honkai: Star Rail, ⚔️ Genshin Impact, 🍙 Manga / Animé, 🎵 Musique (plus de 1 200 questions au total).
 
+## Parties
+L'hôte choisit le nombre de manches (5, 10, 15, 20, 30 ou illimité) et les catégories. À la fin : podium, classement de la partie et total de la soirée, puis « Rejouer » ou « Changer de jeu ». Le menu ☰ permet de terminer une partie à tout moment.
+
 ## Avatars
 Chaque joueur choisit son avatar parmi 12 images intégrées à la page.
 

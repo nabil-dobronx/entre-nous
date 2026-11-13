@@ -180,6 +180,18 @@ button.gs{cursor:pointer}
 .clue-i span{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--pink);color:#fff;font-family:Fredoka,Nunito,system-ui,sans-serif}
 .clue-i.hid{opacity:.4;font-style:italic;animation:pl 1.6s ease-in-out infinite}.clue-i.hid span{background:rgba(255,255,255,.15)}
 .potp{font-size:17px}.potp b{color:var(--yel)}
+.rnd{display:flex;align-items:center;gap:10px}.prog{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;max-width:180px}.prog i{display:block;height:100%;background:var(--pink);border-radius:99px}
+.endb{margin-top:10px;padding:10px;font-size:14px}
+.lens{display:flex;gap:8px;flex-wrap:wrap}.len input{display:none}.len span{display:grid;place-items:center;min-width:48px;height:44px;padding:0 12px;border-radius:14px;background:rgba(255,255,255,.06);border:2px solid var(--line);font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:18px;cursor:pointer}
+.len input:checked+span{background:var(--pink);border-color:var(--pink);color:#fff}
+.endh{text-align:center;margin:6px 0 4px}.endh h2{font-size:32px;margin:0}.confetti{font-size:48px;animation:pop .6s ease both}.winner{font-size:18px}.winner b{color:var(--yel)}
+.podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:end;margin:18px 0 6px;min-height:230px}
+.pod{display:flex;flex-direction:column;align-items:center;gap:6px;animation:pop .6s ease both}.pod.p1{animation-delay:.25s}.pod.p0{animation-delay:.5s}.pod.p2{animation-delay:.1s}
+.pav{font-size:46px;line-height:1}.pav .avi{width:64px;height:64px;border:3px solid var(--pc)}.pod.p1 .pav .avi{width:78px;height:78px}
+.pnm{font-weight:800;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pbar{width:100%;border-radius:16px 16px 6px 6px;background:linear-gradient(180deg,var(--pc),color-mix(in srgb,var(--pc) 40%,#1a0f33));display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:8px;color:#1a0f33}
+.pbar span{font-size:26px}.pbar b{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:24px}
+.scr .tot{min-width:36px;text-align:right;color:var(--mut);font-size:14px}
 .center{text-align:center;margin-top:40px}.big{font-size:54px}
 #banner{position:fixed;left:50%;bottom:12px;transform:translateX(-50%) translateY(150%);max-width:calc(100% - 24px);width:560px;background:#3a2672;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:13px;font-weight:700;transition:transform .3s;z-index:40;text-align:center}
 #banner.show{transform:translateX(-50%)}#banner.err{background:#6b1838}#banner.info{background:#22305e}
@@ -820,7 +832,7 @@ const QTIME=20000,QSJ_STEP=10000,QSJ_MAX=42000;
 // ---------- state ----------
 const S={
  me:Object.assign({n:'',av:AV[Math.floor(Math.random()*AV.length)],img:null},ls.get('en_me',{}),{pid:ss.get('en_pid',null)||ls.get('en_pid',null)||rid(10)}),
- code:null,host:false,lastCats:{},st:null,lastSt:null,hostSeen:0,joinedAt:0,modal:null,sig:'',lives:[],after:[],needle:90,showWord:false,lastPushed:''
+ code:null,host:false,lastCats:{},lastLen:{},st:null,lastSt:null,hostSeen:0,joinedAt:0,modal:null,sig:'',lives:[],after:[],needle:90,showWord:false,lastPushed:''
 };
 ss.set('en_pid',S.me.pid);ls.set('en_pid',S.me.pid);
 if(!AVIMG[S.me.av])S.me.av=AV[Math.floor(Math.random()*AV.length)];S.me.img=null;
@@ -916,7 +928,7 @@ function hostTick(){
  for(const{self,p}of Net.list()){if(self||!p||p.app!==APP||p.code!==S.code||!p.h||!p.st)continue;if((p.st.ep||0)>(S.st.ep||0)){S.host=false;S.st=null;Net.set({h:null,st:null});saveSess();return}}
  const st=S.st,ps=present();
  for(const p of ps){if(!st.pl.includes(p.pid))st.pl.push(p.pid);st.nm[p.pid]=[String(p.n||'').slice(0,18),p.av];if(st.sc[p.pid]==null)st.sc[p.pid]=0}
- if(st.g&&st.ph!=='reveal'){
+ if(st.g&&st.ph!=='reveal'&&st.ph!=='end'){
   if(st.ord){for(const p of ps)if(ans(p,st)!==undefined&&!st.ord.includes(p.pid))st.ord.push(p.pid)}
   const el=Date.now()-(st.t0||Date.now());
   if(st.g==='qsj'){const cl=Math.min(2,Math.floor(el/QSJ_STEP));if(cl!==st.cl)st.cl=cl}
@@ -948,7 +960,7 @@ function setupRound(st){
   case'imp':st.ph='words';st.imp=order[Math.floor(Math.random()*order.length)];st.q=pick(st,pool);st.sw=Math.random()<.5?0:1;st.first=order[Math.floor(Math.random()*order.length)];break;
  }
 }
-function addPts(st,last){st.last=last;for(const k in last)st.sc[k]=(st.sc[k]||0)+last[k]}
+function addPts(st,last){st.last=last;st.gs=st.gs||{};for(const k in last){st.sc[k]=(st.sc[k]||0)+last[k];st.gs[k]=(st.gs[k]||0)+last[k]}}
 function zonePts(d){d=Math.abs(d);return d<=4?4:d<=11?3:d<=18?2:0}
 function doReveal(st,ps){
  ps=ps||present();const last={};
@@ -971,10 +983,12 @@ function doReveal(st,ps){
  if(st.g!=='duo')addPts(st,last);
  st.ph='reveal';
 }
-function doNext(st){
- if(st.g==='duo'&&st.ph==='reveal'){const subP=present().find(p=>p.pid===st.sub);const ok=subP&&subP.ok&&subP.ok.k===st.r?subP.ok.l:[];const last={};
-  ok.forEach(pid=>{last[pid]=(last[pid]||0)+1;last[st.sub]=(last[st.sub]||0)+1});addPts(st,last);st.ddone=st.r}
- setupRound(st)}
+// « Même réponse » : les points sont validés par la cible, on les compte en quittant la manche
+function settleDuo(st){if(st.g==='duo'&&st.ph==='reveal'&&st.ddone!==st.r){const subP=present().find(p=>p.pid===st.sub);const ok=subP&&subP.ok&&subP.ok.k===st.r?subP.ok.l:[];const last={};
+  ok.forEach(pid=>{last[pid]=(last[pid]||0)+1;last[st.sub]=(last[st.sub]||0)+1});addPts(st,last);st.ddone=st.r}}
+function doNext(st){settleDuo(st);if(st.cfg.len&&st.n>=st.cfg.len)return doFinish(st);setupRound(st)}
+function doFinish(st){settleDuo(st);st.ph='end';st.last=null}
+function startGame(st,k,cfg){st.g=k;st.cfg=cfg;st.seed=Math.floor(Math.random()*1e9);st.i=-1;st.n=0;st.m=0;st.qn=0;st.mi=-1;st.gs={};st.ddone=null;setupRound(st)}
 function hostDo(fn){if(!S.host||!S.st)return;fn(S.st);pushSt();onNet()}
 
 // ---------- sessions ----------
@@ -1081,19 +1095,21 @@ function vLobby(){const g=G();const n=present().length;
 function topbar(inGame){const g=G();const x=inGame&&GAMES[g.g];
  return`<div class="top">${x?`<div class="tt"><span>${x.e}</span>${esc(x.n)}</div>`:`<div class="tt logo-s">Entre<span>Nous</span></div>`}
  <div class="tbtns">${x?`<button class="ib" data-act="rules" data-g="${g.g}" title="Règles">?</button>`:''}<button class="ib" data-act="scores" title="Scores">🏆</button>
- ${inGame&&S.host?`<button class="ib" data-act="tolobby" title="Changer de jeu">☰</button>`:`<button class="ib" data-act="leave" title="Quitter la partie">✕</button>`}</div></div>`}
+ ${inGame&&S.host?`<button class="ib" data-act="hmenu" title="Menu de la partie">☰</button>`:`<button class="ib" data-act="leave" title="Quitter la partie">✕</button>`}</div></div>`}
 
 function statusHTML(list,label){const g=G();if(!list||!list.length)return'';
  return`<div class="status">${list.map(p=>{const d=ans(p,g)!==undefined;const i=pinfo(p.pid);return`<span class="st ${d?'ok':''}" style="--pc:${i.c}" title="${esc(i.n)}">${i.a}<b>${d?'✓':'…'}</b></span>`}).join('')}</div>`}
 
-function hostCtl(){const g=G();if(!S.host)return`<div class="hctl mut">${g.ph==='reveal'?'L\'hôte lance la suite…':''}</div>`;
+function hostCtl(){const g=G();if(g.ph==='end')return'';if(!S.host)return`<div class="hctl mut">${g.ph==='reveal'?'L\'hôte lance la suite…':''}</div>`;
  if(g.g==='imp'&&g.ph==='words')return`<div class="hctl"><button class="btn pink block" data-act="tovote">Passer au vote 🗳️</button></div>`;
- if(g.ph==='reveal')return`<div class="hctl"><button class="btn pink block" data-act="next">Manche suivante ➜</button></div>`;
+ if(g.ph==='reveal'){const last=g.cfg.len&&g.n>=g.cfg.len;
+  return`<div class="hctl">${last?'<button class="btn pink block" data-act="finish">🏁 Voir les résultats</button>':'<button class="btn pink block" data-act="next">Manche suivante ➜</button><button class="btn ghost block endb" data-act="finish">Terminer la partie</button>'}</div>`}
  return`<div class="hctl"><button class="btn ghost block" data-act="reveal">Révéler maintenant</button></div>`}
 
 function vGame(){const g=G();let body='';
  try{body=({roue:vRoue,qdn:vQdn,duo:vDuo,tp:vTp,plus:vPlus,imp:vImp,quiz:vQuiz,vf:vVf,qsj:vQsj})[g.g](g)}catch(e){console.error(e);body=`<div class="card">Oups, petite erreur d'affichage.</div>`}
- return`${topbar(true)}<div class="rnd">Manche ${g.n}</div>${body}${L('hctl',hostCtl)}`}
+ if(g.ph==='end')return`${topbar(true)}${vEnd(g)}`;
+ return`${topbar(true)}<div class="rnd">Manche ${g.n}${g.cfg.len?` / ${g.cfg.len}`:''}${g.cfg.len?`<span class="prog"><i style="width:${100*g.n/g.cfg.len}%"></i></span>`:''}</div>${body}${L('hctl',hostCtl)}`}
 
 function lastPts(){const g=G();if(!g.last)return'';const ks=Object.keys(g.last).filter(k=>g.last[k]>0);if(!ks.length)return'<p class="mut c">Personne ne marque cette manche.</p>';
  return`<div class="pts">${ks.sort((a,b)=>g.last[b]-g.last[a]).map(k=>chip(k,` <b>+${g.last[k]}</b>`)).join('')}</div>`}
@@ -1237,11 +1253,30 @@ function vQsj(g){const F=flat('qsj');const it=item(g);const q=it.v;const mine=my
   <div class="opts">${(g.op||[]).map((o,i)=>`<button class="opt ${mine&&mine.o===o?'on':''} ${mine&&mine.o!==o?'dim':''}" style="--oc:${OPC[i]}" data-act="ansq" data-v="${o}" ${mine!==undefined?'disabled':''}><span class="sh">${SHAPES[i]}</span><span class="ot">${esc(F[o].v[0])}</span></button>`).join('')}</div>
   ${L('stat',()=>statusHTML(present()))}`}
 
+// ----- fin de partie -----
+function vEnd(g){const x=GAMES[g.g];const gs=g.gs||{};
+ const ids=g.pl.filter(pid=>gs[pid]!=null||present().some(p=>p.pid===pid));ids.sort((a,b)=>(gs[b]||0)-(gs[a]||0));
+ const top=ids.slice(0,3);const order=[top[1],top[0],top[2]];const H=[118,150,96],MED=['🥇','🥈','🥉'];
+ const rank=pid=>{const v=gs[pid]||0;return ids.filter(o=>(gs[o]||0)>v).length};
+ const podium=`<div class="podium">${order.map((pid,i)=>pid?`<div class="pod p${i}" style="--pc:${pinfo(pid).c}"><div class="pav">${pinfo(pid).a}</div><div class="pnm">${esc(pinfo(pid).n)}</div><div class="pbar" style="height:${H[i]}px"><span>${gs[pid]?(MED[rank(pid)]||''):''}</span><b>${gs[pid]||0}</b></div></div>`:'<div class="pod"></div>').join('')}</div>`;
+ const extra=g.g==='qdn'?`<div class="truth"><div class="lbl">Taux d'accord du couple</div><div class="tv">${g.qn?Math.round(100*(g.m||0)/g.qn):0}%</div><p class="mut">${g.m||0} accord${(g.m||0)>1?'s':''} sur ${g.qn||0} question${(g.qn||0)>1?'s':''}</p></div>`:'';
+ const win=ids[0]&&(gs[ids[0]]||0)>0?ids.filter(pid=>(gs[pid]||0)===(gs[ids[0]]||0)):[];
+ return`<div class="endh"><div class="confetti">🎉</div><h2>Fin de la partie !</h2><p class="mut">${x.e} ${esc(x.n)} · ${g.n} manche${g.n>1?'s':''}</p>
+  ${win.length?`<p class="winner">${win.length>1?'Égalité entre ':'Victoire de '}${win.map(pid=>`<b>${esc(firstName(pid))}</b>`).join(' et ')} !</p>`:''}</div>
+  ${extra}${g.g!=='qdn'&&ids.some(pid=>gs[pid])?podium:''}
+  <div class="card"><div class="hrow"><h3>Classement</h3><span class="mut">partie · soirée</span></div><div class="sclist">${ids.map(pid=>{const p=pinfo(pid);const r=rank(pid);
+   return`<div class="scr ${p.here?'':'gone'}" style="--pc:${p.c}"><span class="rk">${gs[pid]?(MED[r]||r+1):'–'}</span><span class="av">${p.a}</span><span class="pn">${esc(p.n)}</span><b>${gs[pid]||0}</b><span class="tot">${g.sc[pid]||0}</span></div>`}).join('')}</div></div>
+  ${S.host?`<div class="row"><button class="btn ghost grow" data-act="tolobby">Changer de jeu</button><button class="btn pink grow" data-act="replay">Rejouer 🔁</button></div>`:'<p class="mut c">L\'hôte choisit la suite…</p>'}`}
+
 // ----- modales -----
+const LENS=[5,10,15,20,30,0];
+function lenPicker(g){const cur=S.lastLen[g]!=null?S.lastLen[g]:10;
+ return`<div class="lbl">Nombre de manches</div><div class="lens">${LENS.map(n=>`<label class="len"><input type="radio" name="len" id="len-${n}" value="${n}" ${n===cur?'checked':''}><span>${n||'∞'}</span></label>`).join('')}</div>`}
 function catPicker(g){const F=flat(g);const prev=S.lastCats[g];
  return`<div class="lbl">Catégories</div><div class="cats">${catsOf(g).map(c=>{const n=F.filter(x=>x.c===c).length;return`<label class="cat"><input type="checkbox" id="cat-${c}" ${!prev||prev.includes(c)?'checked':''}> ${catLabel(g,c)} <span class="mut">(${n})</span></label>`}).join('')}</div>`}
 function vModal(){const m=S.modal;let h='';
- if(m.t==='invite'){h=`<h2>📨 Inviter des amis</h2><p>Envoie ce lien (le code est dedans) :</p><input class="txt" id="invurl" readonly value="${esc(m.url||S.code)}" onclick="this.select()"><p class="mut">Ou donne simplement le code : <b class="inl-code">${esc(S.code)}</b></p><button class="btn block" data-act="close">OK</button>`}
+ if(m.t==='hmenu'){const g=G();h=`<h2>☰ Menu de la partie</h2><p class="mut">Manche ${g.n}${g.cfg.len?` sur ${g.cfg.len}`:''}</p><button class="btn pink block" data-act="finish">🏁 Terminer et voir les résultats</button><button class="btn ghost block" data-act="tolobby">Changer de jeu sans récap</button><button class="btn block" data-act="close">Continuer à jouer</button>`}
+ else if(m.t==='invite'){h=`<h2>📨 Inviter des amis</h2><p>Envoie ce lien (le code est dedans) :</p><input class="txt" id="invurl" readonly value="${esc(m.url||S.code)}" onclick="this.select()"><p class="mut">Ou donne simplement le code : <b class="inl-code">${esc(S.code)}</b></p><button class="btn block" data-act="close">OK</button>`}
  else if(m.t==='rules'){const x=GAMES[m.g];h=`<h2>${x.e} ${esc(x.n)}</h2><p>${x.r}</p><p class="mut">${x.min} joueurs minimum.</p><button class="btn block" data-act="close">Compris</button>`}
  else if(m.t==='scores'){const g=G();const ids=g?g.pl.filter(pid=>g.sc[pid]!=null):[];ids.sort((a,b)=>(g.sc[b]||0)-(g.sc[a]||0));
   h=`<h2>🏆 Scores</h2><div class="sclist">${ids.map((pid,i)=>{const p=pinfo(pid);return`<div class="scr ${p.here?'':'gone'}" style="--pc:${p.c}"><span class="rk">${['🥇','🥈','🥉'][i]||i+1}</span><span class="av">${p.a}</span><span class="pn">${esc(p.n)}</span><b>${g.sc[pid]||0}</b></div>`}).join('')||'<p class="mut">Pas encore de points.</p>'}</div>
@@ -1250,7 +1285,7 @@ function vModal(){const m=S.modal;let h='';
   if(m.g==='qdn'){const opt=sel=>ps.map(p=>`<option value="${p.pid}" ${p.pid===sel?'selected':''}>${esc(p.n)}</option>`).join('');
    opts=`<div class="lbl">Le couple</div><div class="row"><select id="c1" class="txt">${opt(ps[0]&&ps[0].pid)}</select><span>💞</span><select id="c2" class="txt">${opt(ps[1]&&ps[1].pid)}</select></div>
    `}
-  opts+=catPicker(m.g);
+  opts+=lenPicker(m.g)+catPicker(m.g);
   if(m.g==='imp')opts+=`<div class="lbl">Mode</div><select id="impmode" class="txt"><option value="mot">Undercover : l'imposteur a un mot proche (et ne sait pas qu'il l'est)</option><option value="blanc">Mister White : l'imposteur n'a aucun mot</option></select>`;
   h=`<h2>${x.e} ${esc(x.n)}</h2><p>${x.r}</p>${opts}${enough?'':`<p class="warn">Il faut au moins ${x.min} joueurs connectés (${ps.length} actuellement).</p>`}
   <div class="row"><button class="btn ghost" data-act="close">Annuler</button><button class="btn pink grow" data-act="start" data-g="${m.g}" ${enough?'':'disabled'}>Lancer le jeu</button></div>`}
@@ -1278,8 +1313,12 @@ const ACT={
   if(k==='qdn'){const a=$('#c1').value,b=$('#c2').value;if(!a||!b||a===b)return toast('Choisis deux joueurs différents');cfg.cp=[a,b];}
   cfg.cats=catsOf(k).filter(c=>{const el=$('#cat-'+c);return el&&el.checked});if(!cfg.cats.length)return toast('Choisis au moins une catégorie');S.lastCats[k]=cfg.cats;
   if(k==='imp')cfg.mode=$('#impmode').value;
-  S.modal=null;hostDo(st=>{st.g=k;st.cfg=cfg;st.seed=Math.floor(Math.random()*1e9);st.i=-1;st.n=0;st.m=0;st.qn=0;st.mi=-1;setupRound(st)})},
- tolobby(){hostDo(st=>{st.g=null;st.ph=null})},
+  const lr=document.querySelector('input[name=len]:checked');cfg.len=lr?+lr.value:10;S.lastLen[k]=cfg.len;
+  S.modal=null;hostDo(st=>startGame(st,k,cfg))},
+ finish(){S.modal=null;hostDo(doFinish)},
+ replay(){hostDo(st=>startGame(st,st.g,st.cfg))},
+ hmenu(){S.modal={t:'hmenu'};onNet()},
+ tolobby(){S.modal=null;hostDo(st=>{settleDuo(st);st.g=null;st.ph=null})},
  next(){hostDo(doNext)},
  reveal(){hostDo(st=>doReveal(st))},
  tovote(){hostDo(st=>{st.ph='vote'})},
