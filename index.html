@@ -1065,40 +1065,6 @@ add(QSJ,'mus',[["Shakira","Je danse très bien","Je suis colombienne","J'ai chan
  ["Coldplay","Notre chanteur s'appelle Chris Martin","Nous sommes britanniques","Nous avons chanté « Viva la Vida »"],["Bruno Mars","J'ai fait un duo avec Anderson .Paak (Silk Sonic)","Je suis né à Hawaï","J'ai chanté « Uptown Funk » avec Mark Ronson"],
  ["Lady Gaga","Je porte des tenues spectaculaires","J'ai joué dans « A Star Is Born »","J'ai chanté « Bad Romance »"],["Dua Lipa","Je suis britannique d'origine albanaise","J'ai chanté pour le film Barbie","J'ai chanté « Levitating »"]]);
 
-// ====== DEVINE L'ANIME : [noms acceptés (le 1er est affiché), [perso difficile, perso moyen, perso facile]] ======
-const ANIME={ani:[
-[["One Piece"],["Jinbe","Nami","Monkey D. Luffy"]],[["Naruto","Naruto Shippuden"],["Rock Lee","Kakashi Hatake","Naruto Uzumaki"]],
-[["Dragon Ball","Dragon Ball Z","DBZ","Dragon Ball Super","DBS"],["Krilin","Vegeta","Son Goku"]],[["L'Attaque des Titans","Attaque des Titans","Attack on Titan","Shingeki no Kyojin","SNK","AOT"],["Hansi Zoë","Livaï Ackerman","Eren Jäger"]],
-[["Haikyuu","Haikyu"],["Kei Tsukishima","Tobio Kageyama","Shoyo Hinata"]],[["Nana"],["Nobuo Terashima","Ren Honjo","Nana Osaki"]],
-[["Fate/stay night","Fate","Fate Stay Night","Fate UBW","Unlimited Blade Works"],["Illyasviel von Einzbern","Rin Tohsaka","Saber"]],[["Demon Slayer","Kimetsu no Yaiba"],["Giyu Tomioka","Zenitsu Agatsuma","Tanjiro Kamado"]],
-[["Jujutsu Kaisen","JJK"],["Nobara Kugisaki","Megumi Fushiguro","Satoru Gojo"]],[["My Hero Academia","Boku no Hero Academia","MHA","BNHA"],["Ochaco Uraraka","Katsuki Bakugo","All Might"]],
-[["Death Note"],["Misa Amane","L","Light Yagami"]],[["Fullmetal Alchemist","FMA","Fullmetal Alchemist Brotherhood","FMAB"],["Roy Mustang","Alphonse Elric","Edward Elric"]],
-[["Hunter x Hunter","HxH","Hunter Hunter"],["Kurapika","Killua Zoldyck","Gon Freecss"]],[["Bleach"],["Byakuya Kuchiki","Rukia Kuchiki","Ichigo Kurosaki"]],
-[["Chainsaw Man","CSM"],["Aki Hayakawa","Power","Denji"]],[["Spy x Family","Spy Family"],["Yuri Briar","Yor Forger","Anya Forger"]],
-[["Tokyo Ghoul"],["Juzo Suzuya","Touka Kirishima","Ken Kaneki"]],[["One Punch Man","OPM"],["Tatsumaki","Genos","Saitama"]],
-[["Code Geass"],["Suzaku Kururugi","C.C.","Lelouch Lamperouge"]],[["Neon Genesis Evangelion","Evangelion","Eva","NGE"],["Misato Katsuragi","Asuka Langley","Shinji Ikari"]],
-[["Cowboy Bebop"],["Jet Black","Faye Valentine","Spike Spiegel"]],[["Sailor Moon"],["Ami Mizuno","Mamoru Chiba","Usagi Tsukino"]],
-[["Pokémon","Pokemon"],["Pierre","Ondine","Sacha"]],[["Frieren","Sousou no Frieren","Frieren Beyond Journey's End"],["Stark","Fern","Himmel"]],
-[["Solo Leveling"],["Yoo Jinho","Cha Hae-In","Sung Jinwoo"]],[["Blue Lock"],["Rin Itoshi","Meguru Bachira","Yoichi Isagi"]],
-[["Oshi no Ko"],["Kana Arima","Aqua Hoshino","Ai Hoshino"]],[["Kaguya-sama","Kaguya-sama Love is War","Kaguya sama"],["Yu Ishigami","Miyuki Shirogane","Chika Fujiwara"]],
-[["Steins;Gate","Steins Gate"],["Itaru Hashida","Kurisu Makise","Rintaro Okabe"]],[["Re:Zero","Re Zero","ReZero"],["Beatrice","Subaru Natsuki","Rem"]],
-[["Sword Art Online","SAO"],["Klein","Asuna","Kirito"]],[["Tokyo Revengers"],["Chifuyu Matsuno","Takemichi Hanagaki","Mikey"]],
-[["JoJo's Bizarre Adventure","JoJo","Jojo Bizarre Adventure","JJBA"],["Joseph Joestar","Dio Brando","Jotaro Kujo"]],[["Mob Psycho 100","Mob Psycho"],["Dimple","Arataka Reigen","Shigeo Kageyama"]],
-[["Vinland Saga"],["Canute","Askeladd","Thorfinn"]],[["Dr. Stone","Dr Stone"],["Chrome","Tsukasa Shishio","Senku Ishigami"]],
-[["Black Clover"],["Noelle Silva","Yuno","Asta"]],[["Fairy Tail"],["Grey Fullbuster","Lucy Heartfilia","Natsu Dragneel"]],
-[["Assassination Classroom","Ansatsu Kyoshitsu"],["Karma Akabane","Nagisa Shiota","Koro-sensei"]],[["The Promised Neverland","Promised Neverland","Yakusoku no Neverland"],["Ray","Norman","Emma"]],
-[["Dandadan","Dan Da Dan"],["Seiko Ayase","Momo Ayase","Okarun"]],[["Toradora"],["Minori Kushieda","Ryuji Takasu","Taiga Aisaka"]],
-[["Détective Conan","Detective Conan","Conan","Case Closed"],["Heiji Hattori","Ran Mouri","Shinichi Kudo"]],[["Olive et Tom","Captain Tsubasa"],["Mark Landers","Benji Price","Olivier Atton"]],
-[["Les Chevaliers du Zodiaque","Saint Seiya","Chevaliers du Zodiaque"],["Shun","Ikki","Seiya"]],[["Le Voyage de Chihiro","Voyage de Chihiro","Spirited Away","Sen to Chihiro"],["Kamaji","Haku","Sans-Visage"]],
-[["Mon voisin Totoro","Totoro"],["Kanta","Satsuki","Chat-bus"]],[["Princesse Mononoké","Princesse Mononoke","Mononoke"],["Dame Eboshi","Ashitaka","San"]],
-[["Your Name","Kimi no Na wa"],["Katsuhiko Teshigawara","Taki Tachibana","Mitsuha Miyamizu"]],[["Bocchi the Rock","Bocchi"],["Ryo Yamada","Nijika Ijichi","Hitori Gotoh"]],
-[["Kuroko's Basket","Kuroko no Basket","Kuroko"],["Shintaro Midorima","Ryota Kise","Taiga Kagami"]],[["Slam Dunk"],["Ryota Miyagi","Kaede Rukawa","Hanamichi Sakuragi"]],
-[["Gintama"],["Shinpachi Shimura","Kagura","Gintoki Sakata"]],[["Inuyasha"],["Miroku","Sesshomaru","Kagome Higurashi"]],
-[["Yu-Gi-Oh!","Yu-Gi-Oh","Yugioh"],["Joey Wheeler","Seto Kaiba","Yugi Muto"]],[["Bungo Stray Dogs","BSD"],["Chuya Nakahara","Atsushi Nakajima","Osamu Dazai"]],
-[["Mushoku Tensei"],["Roxy Migurdia","Eris Boreas Greyrat","Rudeus Greyrat"]],[["KonoSuba","Kono Subarashii"],["Darkness","Kazuma Sato","Megumin"]],
-[["Kill la Kill"],["Satsuki Kiryuin","Mako Mankanshoku","Ryuko Matoi"]],[["Made in Abyss"],["Ozen","Nanachi","Riko"]],
-[["Fruits Basket"],["Shigure Soma","Kyo Soma","Tohru Honda"]],[["Horimiya"],["Toru Ishikawa","Izumi Miyamura","Kyoko Hori"]]
-]};
 
 // ====== ENTRE NOUS — moteur multijoueur ======
 const APP='en1';
@@ -1122,8 +1088,6 @@ const GAMES={
   r:"Une question, quatre réponses, <b>20 secondes</b>. Bonne réponse : <b>+2</b>. Le plus rapide à trouver gagne <b>+1</b> en bonus. Tout le monde joue en même temps."},
  vf:{e:'✅',n:'Vrai ou Faux',d:'Une affirmation, deux boutons. Qui connaît vraiment son sujet ?',min:2,c:'#a6ff4d',
   r:"Une affirmation s'affiche : <b>vrai ou faux ?</b> Vous avez 20 secondes. Bonne réponse : <b>+2</b>, et <b>+1</b> pour le plus rapide. L'explication apparaît à la révélation."},
- anim:{e:'🎴',n:"Devine l'anime",d:'Les personnages se dévoilent un par un : trouve l\'anime le plus vite possible.',min:2,c:'#c08bff',
-  r:"Trois personnages d'un même anime se dévoilent un par un, <b>du moins connu au plus connu</b> (un nouveau toutes les 15 secondes, ou quand l'hôte clique « Indice suivant »). Tape le nom de l'anime : les fautes légères et les titres alternatifs (VO, anglais, abréviations) sont acceptés. Tu peux réessayer autant que tu veux. Trouvé au 1er perso = <b>3 pts</b>, au 2e = 2 pts, au 3e = 1 pt."},
  qsj:{e:'🔍',n:'Qui suis-je ?',d:'Des indices qui se dévoilent un à un : trouve le perso ou l\'artiste au plus vite.',min:2,c:'#ff6bd6',
   r:"Un mystérieux personnage (ou artiste) se décrit en <b>3 indices</b>, du plus dur au plus facile, un toutes les 10 secondes. Tu n'as <b>qu'une seule réponse</b> : trouvé au 1er indice = <b>3 pts</b>, au 2e = 2 pts, au 3e = 1 pt."}
 };
@@ -1138,8 +1102,8 @@ function validImg(u){return typeof u==='string'&&u.length<9000&&/^data:image\/(j
 const range=n=>Array.from({length:n},(_,i)=>i);
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const ss={get(k,d){try{const v=sessionStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{sessionStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-const BANKS={roue:SPECTRES,duo:DUO,tp:TP,plus:PLUS,imp:IMP,quiz:QUIZ,vf:VF,qsj:QSJ,anim:ANIME};
-const VERSION='13 nov · v7';
+const BANKS={roue:SPECTRES,duo:DUO,tp:TP,plus:PLUS,imp:IMP,quiz:QUIZ,vf:VF,qsj:QSJ};
+const VERSION='13 nov · v8';
 const FL={};
 // liste à plat {c: catégorie, v: élément} — mêmes index chez tous les joueurs
 function flat(g){if(FL[g])return FL[g];const out=[];

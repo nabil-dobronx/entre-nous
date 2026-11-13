@@ -12,7 +12,6 @@ Site de mini-jeux à jouer entre amis, chacun sur son téléphone. L'hôte crée
 - 🧩 **Quiz** — QCM chronométré, bonus au plus rapide
 - ✅ **Vrai ou Faux** — avec l'explication à chaque réponse
 - 🔍 **Qui suis-je ?** — indices progressifs, moins d'indices = plus de points
-- 🎴 **Devine l'anime** — trois personnages dévoilés un par un, réponse libre tolérante aux fautes
 
 Chaque jeu propose des catégories au choix : 🎲 Général, 🚂 Honkai: Star Rail, ⚔️ Genshin Impact, 🍙 Manga / Animé, 🎵 Musique, ⚽ Sport, 🎤 Rap FR (plus de 2 300 questions au total).
 
