@@ -192,6 +192,29 @@ button.gs{cursor:pointer}
 .pbar{width:100%;border-radius:16px 16px 6px 6px;background:linear-gradient(180deg,var(--pc),color-mix(in srgb,var(--pc) 40%,#1a0f33));display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:8px;color:#1a0f33}
 .pbar span{font-size:26px}.pbar b{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:24px}
 .scr .tot{min-width:36px;text-align:right;color:var(--mut);font-size:14px}
+.acards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 0 16px}
+.acard{display:flex;flex-direction:column;align-items:center;gap:8px;animation:pop .45s ease both}
+.acard .ain{width:100%;box-sizing:border-box;aspect-ratio:3/4;border-radius:18px;padding:8px;background:linear-gradient(150deg,hsl(var(--h) 70% 72%),hsl(calc(var(--h) + 40) 50% 32%));box-shadow:0 8px 24px -10px hsl(var(--h) 80% 50%);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.acard .ain::before{content:"";position:absolute;inset:6px;border-radius:13px;background:linear-gradient(180deg,rgba(15,8,30,.15),rgba(15,8,30,.85));border:1px solid rgba(255,255,255,.25)}
+.amono{position:absolute;inset:0;display:grid;place-items:center;font:700 clamp(34px,10vw,64px) Fredoka,Nunito,system-ui,sans-serif;color:rgba(255,255,255,.9);text-shadow:0 4px 18px rgba(0,0,0,.35);padding-bottom:34%}
+.aname{position:relative;font:800 clamp(12px,3.4vw,18px)/1.1 Nunito,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.02em;padding:0 8px 10px;color:#fff;border-bottom:none}
+.aname::after{content:"";display:block;width:36%;height:2px;background:#fff;margin-top:6px;border-radius:2px}
+.acard{min-width:0}.acard.hid{animation:none}
+.acard.hid .ain{background:none;box-shadow:none;border:2px dashed rgba(255,255,255,.22);display:grid;place-items:center;justify-content:center;align-content:center;padding:0}
+.acard.hid .ain::before{display:none}
+.acard.hid .aq{font:700 48px Fredoka,Nunito,system-ui,sans-serif;color:var(--vio);opacity:.8}
+.alab{font:600 12px ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.aform{margin-top:20px}
+.arow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:8px 0}
+.aqlab{font:600 15px ui-monospace,Menlo,monospace;color:var(--mut)}
+.anext,.alink{background:none;border:0;color:var(--tx);font:800 13px ui-monospace,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;padding:6px 0}
+.alink{color:var(--mut);text-transform:none;letter-spacing:0;font-family:Nunito,system-ui,sans-serif;text-decoration:underline}
+.ainput{display:flex;gap:10px}.ainput .txt{flex:1}
+.abtn{border:0;padding:0 22px;font:900 16px Nunito,system-ui,sans-serif;text-transform:uppercase;background:var(--tx);color:#1a0f33;cursor:pointer;clip-path:polygon(0 0,100% 0,92% 100%,0 100%);padding-right:30px}
+.shake{animation:shake .4s}@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.aok{padding:14px;border-radius:14px;background:color-mix(in srgb,var(--teal) 18%,var(--card));border:1px solid var(--teal);text-align:center;font-size:16px}.aok.pass{background:var(--card);border-color:var(--line)}
+.found{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:8px 0}.found b{color:var(--yel)}
+.yel{color:var(--yel)}.ver{text-align:center;font-size:12px;color:var(--mut);opacity:.6;margin:16px 0 0}
 .center{text-align:center;margin-top:40px}.big{font-size:54px}
 #banner{position:fixed;left:50%;bottom:12px;transform:translateX(-50%) translateY(150%);max-width:calc(100% - 24px);width:560px;background:#3a2672;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:13px;font-weight:700;transition:transform .3s;z-index:40;text-align:center}
 #banner.show{transform:translateX(-50%)}#banner.err{background:#6b1838}#banner.info{background:#22305e}
@@ -782,6 +805,300 @@ mus:[["Michael Jackson","J'ai commencé avec mes frères","Je suis célèbre pou
  ["YOASOBI","Nous sommes un duo japonais","Nos chansons s'inspirent de nouvelles","Nous avons chanté « Idol » pour Oshi no Ko"],["Hatsune Miku","Je suis une voix de synthèse","J'ai de longues couettes turquoise","Je suis la Vocaloid la plus célèbre"],
  ["Mozart","Je composais dès l'âge de 5 ans","Je suis né à Salzbourg","J'ai composé « La Flûte enchantée »"],["Beethoven","Je suis né à Bonn","Je suis devenu sourd","J'ai composé la « Neuvième Symphonie »"]]
 };
+// ====== NOUVELLES CATÉGORIES : SPORT & RAP FR + AJOUTS PARTOUT ======
+CATS.sport='⚽ Sport';CATS.rap='🎤 Rap FR';
+const add=(o,k,arr)=>{o[k]=(o[k]||[]).concat(arr)};
+
+// ---------- Demi-roue ----------
+add(SPECTRES,'sport',[["Sport facile","Sport extrême"],["Sportif nul","Légende du sport"],["Match ennuyeux","Match de légende"],["Sport de canapé","Sport épuisant"],["Petit club","Club mythique"],
+ ["Arbitrage juste","Arbitrage scandaleux"],["Sport de gentleman","Sport de bagarreurs"],["Transfert raté","Transfert du siècle"],["Célébration gênante","Célébration culte"],["Sport individuel","Sport d'équipe"],
+ ["Tenue moche","Tenue stylée"],["Joueur discret","Joueur flambeur"],["Sport sans danger","Sport risqué"],["Remontada impossible","Remontada historique"],["Pour regarder","Pour pratiquer"],["Sport oublié","Sport à la mode"]]);
+add(SPECTRES,'rap',[["Rappeur oublié","Légende du rap"],["Clash gentil","Clash violent"],["Son calme","Son qui fait bouger"],["Rap conscient","Rap festif"],["Underground","Disque de diamant"],
+ ["Flow lent","Flow ultra rapide"],["Clip low cost","Clip blockbuster"],["Feat raté","Feat légendaire"],["Album moyen","Classique du rap"],["Texte simple","Texte complexe"],
+ ["Rappeur discret","Rappeur showman"],["Vieille école","Nouvelle école"],["Pour la salle de sport","Pour pleurer"],["Freestyle raté","Freestyle mythique"],["Pas du tout drill","Pure drill"],["Rappeur surcoté","Rappeur sous-coté"]]);
+add(SPECTRES,'gen',[["Vacances au camping","Vacances 5 étoiles"],["Métier ennuyeux","Métier de rêve"],["Animal moche","Animal adorable"],["Nourriture saine","Junk food"],["Invention inutile","Invention géniale"],
+ ["Ville calme","Ville qui ne dort jamais"],["Facile à cuisiner","Recette de chef"],["Cadeau de dernière minute","Cadeau réfléchi"],["Gros mot léger","Gros mot interdit"],["Bon dans un film","Bon dans la vraie vie"]]);
+add(SPECTRES,'hsr',[["Combat facile","Combat légendaire"],["Perso pauvre","Perso riche"],["Équipe free-to-play","Équipe de baleine"],["Événement oubliable","Événement culte"],["Méchant sympa","Méchant terrifiant"],["Perso jeune","Perso ancien"],["Idée de Herta nulle","Idée de génie"],["Pom-Pom calme","Pom-Pom furieux"]]);
+add(SPECTRES,'gi',[["Coffre commun","Coffre luxueux"],["Ennemi mignon","Ennemi effrayant"],["Plat de Mondstadt","Plat de Liyue"],["Perso jeune","Perso millénaire"],["Événement oubliable","Événement culte"],["Équipe free-to-play","Équipe de baleine"],["Boss de monde","Boss hebdo"],["Archon sérieux","Archon farfelu"]]);
+add(SPECTRES,'ani',[["Héros naïf","Héros calculateur"],["Transformation ratée","Transformation épique"],["Studio inconnu","Studio légendaire"],["Anime de sport","Anime d'action"],["Fin heureuse","Fin tragique"],["Ending à skip","Ending à écouter"],["Ami fidèle","Traître"],["Isekai banal","Isekai original"]]);
+add(SPECTRES,'mus',[["Chanson à l'ancienne","Son du futur"],["Instrument facile","Instrument impossible"],["Tube de l'été","Chanson d'hiver"],["Voix grave","Voix aiguë"],["Paroles débiles","Paroles profondes"],["Chanson courte","Chanson interminable"],["Remix raté","Remix meilleur que l'original"],["Festival nul","Festival de rêve"]]);
+
+// ---------- Qui de nous deux ----------
+QDN_CATS.sport={label:CATS.sport,q:["est le plus sportif ?","abandonnerait en premier un footing ?","regarde le plus de matchs ?","ferait le meilleur arbitre ?","crierait le plus devant un match ?",
+ "tricherait au Uno… pardon, au ping-pong ?","gagnerait un 100 mètres ?","s'inscrit à la salle sans jamais y aller ?","connaît le plus de joueurs de foot ?","ferait le meilleur coach ?",
+ "survivrait à un marathon ?","perd le plus mal au foot sur console ?","oserait faire du saut en parachute ?","a le meilleur équilibre ?","serait le meilleur gardien de but ?",
+ "porte le plus de maillots de foot ?","se blesse le plus souvent ?","pourrait faire des pompes devant tout le monde ?","danserait après un but ?","nagerait le plus vite ?",
+ "ferait un meilleur volleyeur ?","dormirait pendant un match ?"]};
+QDN_CATS.rap={label:CATS.rap,q:["connaît le plus de sons de rap FR ?","rappe le mieux ?","ferait le meilleur freestyle ?","écoute le plus de drill ?","pourrait devenir rappeur ?",
+ "connaît le plus de paroles de Jul ?","ferait le pire clip de rap ?","mettrait du rap à fond en voiture ?","défendrait la vieille école jusqu'au bout ?","découvre les nouveaux rappeurs en premier ?",
+ "ferait le meilleur beatmaker ?","choisirait le meilleur nom de rappeur ?","porterait une cagoule comme Kalash Criminel ?","irait au plus de concerts de rap ?","clasherait l'autre dans un son ?",
+ "imite le mieux un rappeur ?","pleurerait sur un son de PNL ?","ferait le meilleur ad-lib ?","connaît le mieux les clashs de rappeurs ?","signerait chez un gros label ?"]};
+for(const k of ['quotidien','caractere','romance','fun'])QDN_CATS[k].q.push(...({
+ quotidien:["oublie le plus souvent de charger son téléphone ?","parle le plus à ses animaux ?","prend le plus de temps pour choisir une série ?","fait le plus de listes ?","se lève en premier le matin ?","lit le plus ?"],
+ caractere:["est le plus têtu dans une dispute ?","se fait le plus facilement des amis ?","est le plus compétitif ?","pleure le plus facilement ?","garde le plus de rancune ?","est le plus généreux ?"],
+ romance:["pense le plus à l'autre dans la journée ?","propose le plus de sorties ?","a le plus peur de perdre l'autre ?","écrit les plus longs messages ?","se souvient du premier film vu ensemble ?","organiserait la demande parfaite ?"],
+ fun:["survivrait le plus longtemps dans Koh-Lanta ?","deviendrait milliardaire ?","se ferait enlever par des extraterrestres ?","ferait le meilleur espion ?","gagnerait un concours de mangeurs de piments ?","adopterait un animal exotique ?"]}[k]));
+QDN_CATS.hsr.q.push("craquerait pour un perso juste pour son design ?","finit les événements en premier ?","connaît le mieux les Paths ?","garderait le plus de secrets, façon Kafka ?","serait le meilleur conducteur de l'Express ?","ferait la meilleure Herta (génie un peu insupportable) ?");
+QDN_CATS.gi.q.push("craquerait pour un perso juste pour son design ?","finit les événements en premier ?","connaît le mieux les réactions élémentaires ?","ferait le meilleur Chevalier de Favonius ?","adorerait vivre à Fontaine ?","serait le plus fan de Paimon ?");
+QDN_CATS.ani.q.push("crierait le nom de son attaque en se battant ?","connaît le mieux les studios d'animation ?","a le plus de goodies d'anime ?","ferait le meilleur Hashira ?","suit le plus d'animes de la saison ?","serait le plus dramatique, comme dans un shōjo ?");
+QDN_CATS.mus.q.push("connaît le plus de chansons de Disney ?","chante le mieux sous la douche ?","met des chansons tristes quand ça va bien ?","a le plus de chansons dans sa playlist ?","ferait le meilleur chef d'orchestre ?","oserait chanter devant 1 000 personnes ?");
+
+// ---------- Même réponse ----------
+add(DUO,'sport',[["Quel est ton sport préféré ?","Quel est le sport préféré de {N} ?"],["Quel est ton club de foot préféré ?","Quel est le club de foot préféré de {N} ?"],["Quel est ton sportif préféré ?","Quel est le sportif préféré de {N} ?"],
+ ["Quel sport détestes-tu ?","Quel sport {N} déteste ?"],["Quel sport rêverais-tu de pratiquer ?","Quel sport {N} rêverait de pratiquer ?"],["Quel est ton meilleur souvenir de match ?","Quel est le meilleur souvenir de match de {N} ?"],
+ ["Quel sport faisais-tu enfant ?","Quel sport {N} faisait enfant ?"],["À quel poste jouerais-tu au foot ?","À quel poste {N} jouerait au foot ?"],["Quel événement sportif aimerais-tu voir en vrai ?","Quel événement sportif {N} aimerait voir en vrai ?"],
+ ["Quelle équipe nationale soutiens-tu ?","Quelle équipe nationale {N} soutient ?"],["Quel est ton jeu de sport préféré (vidéo) ?","Quel est le jeu vidéo de sport préféré de {N} ?"],["Combien de fois fais-tu du sport par semaine ?","Combien de fois {N} fait du sport par semaine ?"],
+ ["Quel sportif te ressemble le plus ?","Quel sportif ressemble le plus à {N} ?"],["Plutôt foot ou basket ?","Plutôt foot ou basket, pour {N} ?"],["Quel est ton meilleur score ou record perso ?","Quel est le record perso de {N} ?"],
+ ["Quel sport olympique trouves-tu le plus bizarre ?","Quel sport olympique {N} trouve le plus bizarre ?"],["Quel maillot voudrais-tu porter ?","Quel maillot {N} voudrait porter ?"],["Quel sport d'hiver préfères-tu ?","Quel sport d'hiver {N} préfère ?"],
+ ["Quel est l'anime de sport que tu préfères ?","Quel est l'anime de sport préféré de {N} ?"],["Quel est ton plus grand exploit sportif ?","Quel est le plus grand exploit sportif de {N} ?"]]);
+add(DUO,'rap',[["Quel est ton rappeur FR préféré ?","Quel est le rappeur FR préféré de {N} ?"],["Quel est ton son de rap FR préféré ?","Quel est le son de rap FR préféré de {N} ?"],["Quel est ton album de rap FR préféré ?","Quel est l'album de rap FR préféré de {N} ?"],
+ ["Quel rappeur trouves-tu surcoté ?","Quel rappeur {N} trouve surcoté ?"],["Quel rappeur voudrais-tu voir en concert ?","Quel rappeur {N} voudrait voir en concert ?"],["Quel serait ton nom de rappeur ?","Quel serait le nom de rappeur de {N} ?"],
+ ["Quel est le premier rappeur que tu as écouté ?","Quel est le premier rappeur que {N} a écouté ?"],["Quel est ton feat préféré ?","Quel est le feat préféré de {N} ?"],["Vieille école ou nouvelle école ?","Vieille école ou nouvelle école, pour {N} ?"],
+ ["Quel rappeur marseillais préfères-tu ?","Quel rappeur marseillais {N} préfère ?"],["Quel son de rap mets-tu en soirée ?","Quel son de rap {N} met en soirée ?"],["Quel son de rap écoutes-tu pour te motiver ?","Quel son de rap {N} écoute pour se motiver ?"],
+ ["Quel clash de rappeurs t'a le plus marqué ?","Quel clash de rappeurs a le plus marqué {N} ?"],["Quel rappeur belge préfères-tu ?","Quel rappeur belge {N} préfère ?"],["Quel est ton clip de rap préféré ?","Quel est le clip de rap préféré de {N} ?"],
+ ["Quel rappeur pourrait être ton pote ?","Quel rappeur pourrait être le pote de {N} ?"],["Quel rappeur a la meilleure plume ?","Quel rappeur a la meilleure plume selon {N} ?"],["Drill ou trap ?","Drill ou trap, pour {N} ?"],
+ ["Quel est le son de rap que tu connais par cœur ?","Quel son de rap {N} connaît par cœur ?"],["Quel rappeur attends-tu le plus en album ?","De quel rappeur {N} attend le plus l'album ?"]]);
+add(DUO,'gen',[["Quel est ton parc d'attractions préféré ?","Quel est le parc d'attractions préféré de {N} ?"],["Quelle est ta plus grande fierté ?","Quelle est la plus grande fierté de {N} ?"],["Quel est ton film de Noël préféré ?","Quel est le film de Noël préféré de {N} ?"],
+ ["Quel est ton jeu de société préféré ?","Quel est le jeu de société préféré de {N} ?"],["Quelle est ta boisson chaude préférée ?","Quelle est la boisson chaude préférée de {N} ?"],["Quel est le meilleur conseil qu'on t'ait donné ?","Quel est le meilleur conseil qu'on ait donné à {N} ?"],
+ ["Quelle est ta ville préférée ?","Quelle est la ville préférée de {N} ?"],["Quel métier ne ferais-tu jamais ?","Quel métier {N} ne ferait jamais ?"]]);
+add(DUO,'hsr',[["Quel perso HSR voudrais-tu comme coloc ?","Quel perso HSR {N} voudrait comme coloc ?"],["Quel perso HSR trouves-tu le plus drôle ?","Quel perso HSR {N} trouve le plus drôle ?"],["Quel est ton pire pull ?","Quel est le pire pull de {N} ?"],
+ ["Quel perso HSR as-tu le plus monté ?","Quel perso HSR {N} a le plus monté ?"],["Quelle zone de HSR préfères-tu explorer ?","Quelle zone de HSR {N} préfère explorer ?"],["Quel perso HSR emmènerais-tu en vacances ?","Quel perso HSR {N} emmènerait en vacances ?"]]);
+add(DUO,'gi',[["Quel perso Genshin voudrais-tu comme coloc ?","Quel perso Genshin {N} voudrait comme coloc ?"],["Quel perso Genshin trouves-tu le plus drôle ?","Quel perso Genshin {N} trouve le plus drôle ?"],["Quel est ton pire pull ?","Quel est le pire pull de {N} ?"],
+ ["Quel perso Genshin as-tu le plus monté ?","Quel perso Genshin {N} a le plus monté ?"],["Quel boss as-tu le plus farmé ?","Quel boss {N} a le plus farmé ?"],["Quel perso Genshin emmènerais-tu en vacances ?","Quel perso Genshin {N} emmènerait en vacances ?"]]);
+add(DUO,'ani',[["Quel anime regardes-tu en ce moment ?","Quel anime {N} regarde en ce moment ?"],["Quel perso d'anime voudrais-tu comme prof ?","Quel perso d'anime {N} voudrait comme prof ?"],["Quel anime as-tu abandonné ?","Quel anime {N} a abandonné ?"],
+ ["Quel perso d'anime détestes-tu ?","Quel perso d'anime {N} déteste ?"],["Quel est ton combat d'anime préféré ?","Quel est le combat d'anime préféré de {N} ?"],["Quel manga lis-tu en ce moment ?","Quel manga {N} lit en ce moment ?"]]);
+add(DUO,'mus',[["Quel est ton concert de rêve ?","Quel est le concert de rêve de {N} ?"],["Quelle chanson voudrais-tu à ton mariage ?","Quelle chanson {N} voudrait à son mariage ?"],["Quelle chanson te donne des frissons ?","Quelle chanson donne des frissons à {N} ?"],
+ ["Quel est ton dernier coup de cœur musical ?","Quel est le dernier coup de cœur musical de {N} ?"],["Quelle chanson chantes-tu sous la douche ?","Quelle chanson {N} chante sous la douche ?"],["Quel artiste écoutais-tu à 12 ans ?","Quel artiste {N} écoutait à 12 ans ?"]]);
+
+// ---------- Tu préfères ----------
+add(TP,'sport',[["Gagner la Coupe du monde","Gagner le Ballon d'Or"],["Jouer au PSG","Jouer au Real Madrid"],["Être champion de foot","Être champion de basket"],["Courir un marathon","Nager 5 km"],
+ ["Une saison sans perdre","Un seul titre mais légendaire"],["Être gardien de but","Être buteur"],["Voir la finale de la Ligue des champions","Voir les JO en vrai"],["Être arbitre","Être commentateur"],
+ ["Jouer avec Mbappé","Jouer avec Messi"],["Faire du ski","Faire du surf"],["Boxe","Judo"],["Tennis","Badminton"],["Jouer en NBA","Jouer en Premier League"],["Un sport en salle","Un sport en plein air"],
+ ["Être Teddy Riner une journée","Être Usain Bolt une journée"],["Perdre en finale","Ne pas se qualifier"],["Un coup franc parfait","Un dunk parfait"],["Les JO d'été","Les JO d'hiver"],["Escalade","Parachute"],["Volley comme dans Haikyuu","Basket comme dans Kuroko"]]);
+add(TP,'rap',[["Ne plus écouter que Jul","Ne plus écouter que Booba"],["Un feat avec Nekfeu","Un feat avec Ninho"],["Être rappeur","Être beatmaker"],["La vieille école","La nouvelle école"],["Drill","Trap"],
+ ["Rapper comme Orelsan","Rapper comme Damso"],["Un concert de PNL","Un concert de SCH"],["Être disque de diamant","Être respecté par tous les rappeurs"],["Écrire tes textes","Faire des freestyles"],["Rap marseillais","Rap parisien"],
+ ["Clip à Dubaï","Clip dans ton quartier"],["Être Booba","Être Kaaris"],["Un album culte","Dix tubes oubliables"],["Rap belge","Rap français"],["Un son avec Gims","Un son avec Soprano"],
+ ["Gagner un clash","Faire la paix"],["Être Bigflo","Être Oli"],["Un concert au Stade de France","Une tournée en petites salles"],["Ton nom dans un son de Jul","Ton visage sur une pochette de PNL"],["Écouter que du Vald","Écouter que de l'Orelsan"]]);
+add(TP,'gen',[["Avoir un jet privé","Avoir une île privée"],["Être drôle","Être beau"],["Pizza froide","Pâtes trop cuites"],["Vivre sans téléphone","Vivre sans ordinateur"],["Lire les pensées de ton crush","Voir ton futur"],
+ ["Voyager dans l'espace","Explorer les fonds marins"],["Gagner 1 000 € tout de suite","Gagner 10 € par jour à vie"],["Parler à ton toi de 10 ans","Parler à ton toi de 60 ans"]]);
+add(TP,'hsr',[["Avoir un Stellaron en toi","Être un Aeon mineur"],["Visiter le Luofu","Visiter Penacony"],["Herta comme prof","Ruan Mei comme prof"],["Les pouvoirs du Pionnier","Les pouvoirs de March 7th"],["Jouer aux cartes avec Aventurine","Jouer aux échecs avec Dr. Ratio"],["Un bon pull 4★","Un mauvais pull 5★"]]);
+add(TP,'gi',[["Visiter Natlan","Visiter Snezhnaya"],["Albedo comme prof","Lisa comme prof"],["Planer partout","Nager partout"],["Être un Hilichurl","Être un Slime"],["Un repas de Xiangling","Un thé avec Wriothesley"],["Un bon pull 4★","Un mauvais pull 5★"]]);
+add(TP,'ani',[["Un Death Note","Un Titan"],["Être Saitama","Être Goku"],["Vivre à Konoha","Vivre sur le Thousand Sunny"],["Un anime de 12 épisodes parfait","Un anime de 500 épisodes correct"],["Être dans un shōnen","Être dans un shōjo"],["Avoir un dragon de Fairy Tail","Avoir un Pokémon"]]);
+add(TP,'mus',[["Ne plus jamais écouter de musique triste","Ne plus jamais écouter de musique joyeuse"],["Chanter juste","Danser parfaitement"],["Écouter un album en entier","Écouter des playlists aléatoires"],["Être dans un groupe","Être artiste solo"],["Vinyle","Streaming"],["Concert assis","Concert dans la fosse"]]);
+
+// ---------- Qui est le plus susceptible de… ----------
+add(PLUS,'sport',["devenir sportif professionnel","se blesser à l'échauffement","pleurer devant une finale","crier sur l'arbitre devant la télé","abandonner la salle de sport en une semaine",
+ "connaître tous les joueurs de l'équipe de France","courir un marathon","tricher au foot entre amis","acheter un maillot à 100 €","dormir pendant un match",
+ "devenir coach","faire une célébration ridicule","gagner les JO","se battre pour le dernier ballon","regarder trois matchs d'affilée",
+ "parier sur un match et perdre","faire du parachute","rater un penalty décisif","se mettre au padel","devenir arbitre"]);
+add(PLUS,'rap',["devenir rappeur","connaître tous les sons de Jul","faire un freestyle en soirée","se lancer dans un clash","clipper un son dans son salon",
+ "porter une cagoule comme Kalash Criminel","écouter que de la drill","pleurer sur un son de PNL","défendre la vieille école","découvrir le prochain gros rappeur",
+ "faire des ad-libs dans la vraie vie","signer en maison de disques","écouter du rap à fond à 7 h du matin","connaître tous les clashs de Booba","se faire tatouer une punchline",
+ "monter un label","imiter Jul à la perfection","aller à tous les concerts de rap","écrire un texte de rap pour un anniversaire","faire un beat sur son téléphone"]);
+add(PLUS,'gen',["devenir célèbre sur YouTube","oublier son téléphone au restaurant","rater son train","rire au mauvais moment","se lever à 5 h pour le plaisir","parler tout seul","finir la soirée en premier","se perdre avec un GPS"]);
+add(PLUS,'hsr',["acheter une figurine de Pom-Pom","faire le plus de dégâts en un tour","refaire tout l'Univers simulé pour un succès","connaître le lore par cœur","garder ses jades pour un seul perso","faire des captures d'écran de tout"]);
+add(PLUS,'gi',["ouvrir 1 000 coffres en un week-end","finir le Gouffre en premier","faire un cosplay de Paimon","connaître toutes les recettes de Teyvat","garder ses primogems pour un seul perso","faire des captures d'écran de tout"]);
+add(PLUS,'ani',["regarder un anime en entier en une journée","pleurer devant un film Ghibli","acheter un sabre en convention","apprendre une chorégraphie d'opening","débattre deux heures sur le meilleur anime","faire un fan-art"]);
+add(PLUS,'mus',["chanter devant un public","se faire tatouer des paroles","apprendre la guitare en un mois","casser sa voix au karaoké","écouter la même playlist depuis 5 ans","créer une playlist pour chaque humeur"]);
+
+// ---------- Imposteur ----------
+add(IMP,'sport',[["Football","Rugby"],["Tennis","Badminton"],["Basket","Handball"],["Ski","Snowboard"],["Boxe","MMA"],["Judo","Karaté"],["Natation","Water-polo"],["Vélo","Moto"],["Golf","Mini-golf"],
+ ["Gardien","Défenseur"],["Penalty","Coup franc"],["Médaille d'or","Trophée"],["Arbitre","Entraîneur"],["Stade","Gymnase"],["Marathon","Sprint"],["Volley","Beach-volley"],["Mbappé","Griezmann"],["Messi","Ronaldo"],
+ ["Roland-Garros","Wimbledon"],["Tour de France","Paris-Roubaix"],["JO","Coupe du monde"]]);
+add(IMP,'rap',[["Booba","Kaaris"],["Jul","Naps"],["PNL","Bigflo & Oli"],["Nekfeu","Alpha Wann"],["Orelsan","Vald"],["Ninho","Gazo"],["SCH","Soprano"],["Damso","Hamza"],["Gims","Black M"],
+ ["Freestyle","Feat"],["Drill","Trap"],["Clip","Concert"],["Disque d'or","Disque de platine"],["Punchline","Refrain"],["Beatmaker","Ingé son"],["Label","Maison de disques"],["IAM","NTM"],
+ ["Mixtape","Album"],["Rap marseillais","Rap belge"],["Clash","Diss track"]]);
+add(IMP,'gen',[["Piscine","Mer"],["Cinéma","Netflix"],["Boulangerie","Pâtisserie"],["Lune","Étoile"],["Taxi","Uber"],["Anniversaire","Nouvel An"],["Chocolat chaud","Café"],["Montagne","Colline"]]);
+add(IMP,'hsr',[["Welt","Gepard"],["Serval","Asta"],["Sampo","Sushang"],["Luocha","Huohuo"],["Penacony","Jarilo-VI"],["Herta","Screwllum"]]);
+add(IMP,'gi',[["Noelle","Jean"],["Amber","Lisa"],["Yoimiya","Thoma"],["Navia","Clorinde"],["Mondstadt","Fontaine"],["Hilichurl","Fatui"]]);
+add(IMP,'ani',[["Kakashi","Itachi"],["Sanji","Nami"],["Armin","Mikasa"],["Kenma","Kuroo"],["Rin Tohsaka","Sakura Matou"],["Zenitsu","Inosuke"]]);
+add(IMP,'mus',[["Guitare électrique","Guitare acoustique"],["Rock","Punk"],["Saxophone","Trompette"],["Opéra","Comédie musicale"],["Playlist","Album"],["Studio","Scène"]]);
+// ====== QUIZ / VRAI OU FAUX / QUI SUIS-JE : SPORT, RAP FR + AJOUTS ======
+add(QUIZ,'sport',[["Combien de fois la France a-t-elle gagné la Coupe du monde de foot ?","2","1","3","4"],["Contre qui la France a-t-elle gagné la finale 2018 ?","La Croatie","Le Brésil","L'Argentine","La Belgique"],
+ ["Contre qui la France a-t-elle gagné la finale 1998 ?","Le Brésil","L'Italie","L'Allemagne","La Croatie"],["Qui a gagné la Coupe du monde 2022 ?","L'Argentine","La France","Le Brésil","Le Maroc"],
+ ["Dans quelle ville est né Kylian Mbappé ?","Paris","Bondy","Marseille","Lyon"],["Dans quel club Mbappé a-t-il signé en 2024 ?","Le Real Madrid","Liverpool","Le Barça","Manchester City"],
+ ["Combien de Ballons d'Or Lionel Messi a-t-il gagnés ?","8","5","6","7"],["Quel club a remporté la Ligue des champions 2025 ?","Le PSG","L'Inter Milan","Le Real Madrid","Arsenal"],
+ ["Quel club a remporté le plus de Ligues des champions ?","Le Real Madrid","Le Milan AC","Le Bayern Munich","Liverpool"],["Qui a gagné l'Euro 2024 ?","L'Espagne","L'Angleterre","La France","L'Allemagne"],
+ ["Combien de joueurs par équipe sur un terrain de rugby à XV ?","15","13","11","7"],["Combien de joueurs par équipe sur un terrain de basket ?","5","6","7","4"],["Combien de joueurs par équipe au handball ?","7","6","5","11"],
+ ["Quelle est la distance d'un marathon ?","42,195 km","40 km","21,1 km","50 km"],["Quel est le record du monde du 100 m d'Usain Bolt ?","9,58 s","9,69 s","9,81 s","9,49 s"],
+ ["Combien de Roland-Garros Rafael Nadal a-t-il gagnés ?","14","10","12","17"],["Sur quelle surface se joue Roland-Garros ?","La terre battue","Le gazon","Le dur","La moquette"],["Sur quelle surface se joue Wimbledon ?","Le gazon","La terre battue","Le dur","Le synthétique"],
+ ["Quel joueur a gagné le plus de Grands Chelems en simple (hommes) ?","Novak Djokovic","Roger Federer","Rafael Nadal","Pete Sampras"],["Combien de titres de champion du monde de F1 Lewis Hamilton a-t-il ?","7","5","6","8"],
+ ["Pour quelle écurie Hamilton court-il depuis 2025 ?","Ferrari","Mercedes","Red Bull","McLaren"],["Quelle couleur porte le leader du Tour de France ?","Le jaune","Le vert","Le blanc","Le rouge à pois"],
+ ["Que récompense le maillot à pois du Tour de France ?","Le meilleur grimpeur","Le meilleur sprinteur","Le meilleur jeune","La meilleure équipe"],["Combien d'anneaux compte le drapeau olympique ?","5","4","6","7"],
+ ["Où se sont déroulés les JO d'été 2024 ?","Paris","Los Angeles","Tokyo","Londres"],["Combien de médailles d'or individuelles Léon Marchand a-t-il gagnées aux JO 2024 ?","4","2","3","5"],
+ ["Dans quel sport Teddy Riner est-il une légende ?","Le judo","La lutte","La boxe","Le karaté"],["Dans quelle franchise NBA joue Victor Wembanyama ?","Les San Antonio Spurs","Les Lakers","Les Celtics","Les Bulls"],
+ ["Avec quelle équipe Michael Jordan a-t-il gagné 6 titres NBA ?","Les Chicago Bulls","Les Lakers","Les Knicks","Les Celtics"],["Quel pays a gagné la Coupe du monde de rugby 2023 ?","L'Afrique du Sud","La Nouvelle-Zélande","La France","L'Irlande"],
+ ["Comment s'appelle la danse des All Blacks ?","Le haka","Le siva","Le kapa","Le tamure"],["Combien de médailles d'or olympiques Michael Phelps a-t-il gagnées ?","23","18","20","28"],
+ ["Quel boxeur disait « Vole comme le papillon, pique comme l'abeille » ?","Muhammad Ali","Mike Tyson","Floyd Mayweather","Rocky Marciano"],["Qui a mis un coup de tête en finale de la Coupe du monde 2006 ?","Zinédine Zidane","Thierry Henry","Patrick Vieira","Franck Ribéry"],
+ ["Dans quels pays aura lieu la Coupe du monde de foot 2026 ?","États-Unis, Canada, Mexique","Qatar","Brésil","Espagne, Portugal, Maroc"],["À quelle hauteur est le filet de volley masculin ?","2,43 m","2,24 m","2,50 m","2,10 m"],
+ ["Quel sport pratique Antoine Dupont ?","Le rugby","Le foot","Le handball","Le basket"],["Combien de points vaut un essai au rugby à XV ?","5","3","4","7"],["En tennis, comment dit-on 0 point ?","Zéro (love en anglais)","Nul","Rien","Blanc"],
+ ["Dans quel pays est né le judo ?","Le Japon","La Chine","La Corée","La Thaïlande"]]);
+add(QUIZ,'rap',[["De quelle ville vient Booba ?","Boulogne-Billancourt","Sevran","Marseille","Évry"],["Avec qui Booba formait-il le duo Lunatic ?","Ali","Kaaris","Rohff","La Fouine"],["Quel label Booba a-t-il fondé ?","92i","QLF","Don Dada","Rec. 118"],
+ ["Comment s'appelle le premier album de Kaaris ?","Or Noir","Okou Gnakouri","Dozo","Le Bruit de mon âme"],["Où a eu lieu la bagarre entre Booba et Kaaris en 2018 ?","À l'aéroport d'Orly","Au Stade de France","À Marseille","À Bruxelles"],
+ ["Comment s'appelle le premier album de Nekfeu ?","Feu","Cyborg","Les étoiles vagabondes","Flip"],["De quel groupe Nekfeu et Alpha Wann faisaient-ils partie ?","1995","Sexion d'Assaut","Psy 4 de la Rime","Mafia K'1 Fry"],
+ ["De quelle ville vient Orelsan ?","Caen","Rouen","Le Havre","Rennes"],["Avec qui Orelsan forme-t-il les Casseurs Flowters ?","Gringe","Nekfeu","Vald","Lomepal"],["Quel album Orelsan a-t-il sorti en 2021 ?","Civilisation","La fête est finie","Le chant des sirènes","Perdu d'avance"],
+ ["Quel lien unit Ademo et N.O.S de PNL ?","Ils sont frères","Ils sont cousins","Père et fils","Amis d'enfance"],["Où PNL a-t-il tourné le clip « Au DD » ?","En haut de la tour Eiffel","À Dubaï","Sur un bateau","Dans le désert"],
+ ["De quel quartier vient PNL ?","Les Tarterêts (Corbeil-Essonnes)","Les Minguettes","La Castellane","Le Mirail"],["Quel est le label de PNL ?","QLF","92i","Rec. 118","D'or et de platine"],
+ ["De quelle ville vient Jul ?","Marseille","Toulouse","Nice","Lyon"],["Comment s'appelle le projet collectif de rappeurs marseillais lancé par Jul ?","13'Organisé","Marseille Unie","Planète Mars","La Team Marseille"],
+ ["Comment s'appelle la trilogie d'albums de SCH ?","JVLIVS","A7","Anarchie","Deo Favente"],["Comment s'appellent les mixtapes de Ninho ?","M.I.L.S","Destin","Jefe","Comme prévu"],
+ ["Dans quelle ville est né Damso ?","Kinshasa","Bruxelles","Paris","Abidjan"],["Quel label a signé Damso à ses débuts ?","92i","QLF","Def Jam","Rec. 118"],["Comment s'appelle le frère de Gims ?","Dadju","Black M","Lefa","Tayc"],
+ ["De quel groupe Soprano faisait-il partie ?","Psy 4 de la Rime","IAM","Fonky Family","Sexion d'Assaut"],["De quelle ville vient Vald ?","Aulnay-sous-Bois","Sevran","Montreuil","Évry"],
+ ["Comment s'appelle l'album d'Alpha Wann sorti en 2018 ?","UMLA","Don Dada","Alph Lauren","Phobia"],["Quel sport pratique aussi Lomepal ?","Le skate","Le surf","La boxe","Le foot"],
+ ["Quel style a popularisé Gazo en France ?","La drill","La trap","Le boom-bap","L'afro"],["De quel pays vient Hamza ?","Belgique","Suisse","France","Maroc"],["De quelle ville vient Laylow ?","Toulouse","Bordeaux","Lille","Lyon"],
+ ["De quel groupe faisait partie Rohff ?","Mafia K'1 Fry","113","Lunatic","Ärsenik"],["Qui est le leader d'IAM ?","Akhenaton","Shurik'n","Soprano","Kery James"],
+ ["Quel est l'album culte d'IAM sorti en 1997 ?","L'École du micro d'argent","Ombre est lumière","Revoir un printemps","Saison 5"],["Qui formait le Suprême NTM ?","Joey Starr et Kool Shen","Booba et Ali","Ademo et N.O.S","Bigflo et Oli"],
+ ["Quelle chanson de Diam's est devenue culte ?","La Boulette","Caroline","Bella","Jeannine"],["Quel est le vrai prénom de MC Solaar ?","Claude","Jean","Michel","Patrick"],
+ ["De quelle ville viennent Bigflo & Oli ?","Toulouse","Montpellier","Bordeaux","Nantes"],["Quel rappeur porte toujours une cagoule ?","Kalash Criminel","Ninho","Gazo","Niska"],
+ ["De quel groupe faisait partie Tiakola ?","4Keus","Sexion d'Assaut","1995","L'Entourage"],["Quel rappeur vient du Havre ?","Médine","Orelsan","Vald","Lomepal"],
+ ["De quel groupe faisait partie Black M ?","Sexion d'Assaut","Psy 4 de la Rime","IAM","113"],["Quel titre de Kery James a donné son nom à un film ?","Banlieusards","Dernier MC","Réel","À l'ombre du show business"]]);
+add(QUIZ,'gen',[["Quelle est la capitale de l'Espagne ?","Madrid","Barcelone","Séville","Valence"],["Combien de pattes a une araignée ?","8","6","10","12"],["Quel est l'organe qui pompe le sang ?","Le cœur","Les poumons","Le foie","Les reins"],
+ ["Combien y a-t-il de jours dans une année bissextile ?","366","365","364","367"],["Quelle planète est surnommée la planète rouge ?","Mars","Vénus","Jupiter","Mercure"],["Qui a écrit Le Petit Prince ?","Antoine de Saint-Exupéry","Jules Verne","Victor Hugo","Albert Camus"],
+ ["Quelle est la capitale du Japon ?","Tokyo","Kyoto","Osaka","Séoul"],["Quel est le plus long fleuve de France ?","La Loire","La Seine","Le Rhône","La Garonne"],["Combien de couleurs dans un arc-en-ciel ?","7","6","5","8"],
+ ["Quel est le symbole chimique de l'eau ?","H2O","O2","CO2","HO"],["En quelle année a eu lieu la Révolution française ?","1789","1815","1492","1914"],["Quel animal est le symbole de la France ?","Le coq","L'aigle","Le lion","L'ours"],
+ ["Combien de secondes dans une heure ?","3 600","1 000","6 000","360"],["Quelle langue parle-t-on au Brésil ?","Le portugais","L'espagnol","Le brésilien","L'anglais"],["Quel est le plus grand pays du monde ?","La Russie","Le Canada","La Chine","Les États-Unis"]]);
+add(QUIZ,'hsr',[["Quel Aeon est associé à l'Abondance ?","Yaoshi","Lan","Nanook","Aha"],["Quel Aeon est associé à la Préservation ?","Qlipoth","Nous","IX","Xipe"],["Quel Aeon est associé à l'Érudition ?","Nous","Aha","Lan","Qlipoth"],
+ ["Quel Aeon est associé à l'Harmonie ?","Xipe","IX","Yaoshi","Nanook"],["Quel Aeon est associé à la Nihilité ?","IX","Nous","Akivili","Lan"],["Comment s'appelle le mode de jeu à vagues d'ennemis avec bonus de dégâts de zone ?","La Fiction pure","L'Univers simulé","La Mémoire du Chaos","Le Divertissement divin"],
+ ["Quel est l'élément de Jing Yuan ?","Foudre","Glace","Vent","Imaginaire"],["Quel est l'élément de Seele ?","Quantique","Imaginaire","Glace","Physique"],["Quel est l'élément de Bronya ?","Vent","Glace","Feu","Physique"],
+ ["Quel est l'élément de Himeko ?","Feu","Foudre","Physique","Quantique"],["Quel est le Path de Bailu ?","L'Abondance","L'Harmonie","La Préservation","L'Érudition"],["Quel est le Path de Gepard ?","La Préservation","La Destruction","La Chasse","L'Harmonie"],
+ ["Quel perso se bat accompagné d'une queue maléfique nommée Tail ?","Huohuo","Bailu","Lynx","Tingyun"],["Quel perso est un membre des Galaxy Rangers avec un bras de cow-boy ?","Boothill","Blade","Argenti","Gallagher"],["Quel chevalier est dévoué à la déesse Idrila ?","Argenti","Gepard","Welt","Boothill"]]);
+add(QUIZ,'gi',[["Quel est l'élément de Hu Tao ?","Pyro","Cryo","Électro","Geo"],["Quel est l'élément de Ganyu ?","Cryo","Hydro","Anemo","Dendro"],["Quel est l'élément de Kazuha ?","Anemo","Électro","Hydro","Geo"],
+ ["Quel est l'élément de Neuvillette ?","Hydro","Cryo","Électro","Anemo"],["Quelle réaction donne Pyro + Hydro ?","Vaporisation","Fonte","Surcharge","Électrocution"],["Quelle réaction donne Pyro + Électro ?","Surcharge","Vaporisation","Supraconduction","Gel"],
+ ["Quelle réaction donne Hydro + Cryo ?","Gel","Fonte","Électrocution","Brûlure"],["Quelle réaction donne Cryo + Pyro ?","Fonte","Gel","Surcharge","Floraison"],["Quelle réaction donne Dendro + Hydro ?","Floraison","Brûlure","Catalyse","Gel"],
+ ["Comment s'appelle l'idole de Mondstadt, sœur de Jean ?","Barbara","Amber","Lisa","Noelle"],["Quelle femme de chambre rêve de devenir Chevalier de Favonius ?","Noelle","Amber","Diona","Rosaria"],["Quel perso est barmaid au Chat à la queue et déteste l'alcool ?","Diona","Barbara","Mona","Sucrose"],
+ ["Quel perso est astrologue et toujours fauchée ?","Mona","Lisa","Fischl","Sucrose"],["Qui est la Grande Maîtresse par intérim des Chevaliers de Favonius ?","Jean","Eula","Rosaria","Amber"],["Quelle nation a pour Archon un dieu de la guerre ?","Natlan","Snezhnaya","Inazuma","Sumeru"]]);
+add(QUIZ,'ani',[["Quel est le nom du navire actuel des Chapeaux de paille ?","Le Thousand Sunny","Le Vogue Merry","Le Moby Dick","Le Red Force"],["Qui est le médecin des Chapeaux de paille ?","Chopper","Brook","Franky","Usopp"],
+ ["Qui est l'archéologue des Chapeaux de paille ?","Nico Robin","Nami","Vivi","Boa Hancock"],["Comment s'appelle le maître de Naruto qui écrit des livres ?","Jiraiya","Kakashi","Iruka","Minato"],
+ ["Quelle organisation traque les démons à queues dans Naruto ?","L'Akatsuki","L'ANBU","La Racine","Les Sannin"],["Qui est le passeur d'Aoba Johsai ?","Oikawa","Iwaizumi","Kunimi","Kindaichi"],
+ ["Quel est le surnom de Hinata dans Haikyuu ?","Le leurre ultime","Le Roi du terrain","Le Gardien Divin","L'as"],["Quel groupe a été formé par Nana Osaki ?","Black Stones","Trapnest","Blast Off","Cyberpunk"],
+ ["Qui est la chanteuse de Trapnest ?","Reira","Nana Osaki","Hachi","Misato"],["Dans Fate/Zero, qui est le Master de Saber ?","Kiritsugu Emiya","Kirei Kotomine","Tokiomi Tohsaka","Waver Velvet"],
+ ["Quel est le Noble Phantasm de Saber ?","Excalibur","Gáe Bolg","Gate of Babylon","Rho Aias"],["Dans Demon Slayer, quel est le rang le plus élevé des pourfendeurs ?","Les Hashira","Les Lunes supérieures","Les Kakushi","Les Mizunoto"],
+ ["Qui est le roi des démons dans Demon Slayer ?","Muzan Kibutsuji","Akaza","Douma","Kokushibo"],["Quel Titan possède Reiner Braun ?","Le Titan Cuirassé","Le Titan Colossal","Le Titan Bestial","Le Titan Mâchoire"],
+ ["Quel Titan possède Zeke ?","Le Titan Bestial","Le Titan Charrette","Le Titan Marteau d'armes","Le Titan Féminin"]]);
+add(QUIZ,'mus',[["Combien de membres compte le groupe Queen à sa grande époque ?","4","3","5","6"],["De quel pays vient Shakira ?","Colombie","Espagne","Mexique","Argentine"],["De quel pays vient Ed Sheeran ?","Angleterre","Irlande","Écosse","Australie"],
+ ["Quel instrument joue un batteur ?","La batterie","La basse","Le clavier","Le violon"],["Combien de notes y a-t-il dans la gamme do-ré-mi ?","7","8","6","12"],["Qui a composé Les Quatre Saisons ?","Vivaldi","Mozart","Bach","Chopin"],
+ ["Quel groupe a sorti l'album « Random Access Memories » ?","Daft Punk","Justice","Air","Phoenix"],["Quel artiste est surnommé « Queen B » ?","Beyoncé","Britney Spears","Billie Eilish","Bebe Rexha"],["De quel pays vient le groupe Coldplay ?","Royaume-Uni","États-Unis","Irlande","Canada"],
+ ["Quel chanteur français s'appelait Jean-Philippe Smet ?","Johnny Hallyday","Eddy Mitchell","Michel Sardou","Claude François"],["Qui a chanté « Billie Jean » ?","Michael Jackson","Prince","Lionel Richie","Stevie Wonder"],
+ ["Quel groupe coréen a sorti « Gangnam Style » ?","Aucun : c'est le chanteur PSY","BTS","BIGBANG","EXO"],["Quel instrument est associé à Jimi Hendrix ?","La guitare électrique","Le piano","La batterie","Le saxophone"],
+ ["Quelle chanteuse a sorti l'album « 21 » ?","Adele","Amy Winehouse","Duffy","Lana Del Rey"],["Qui chante « Formidable » et « Papaoutai » ?","Stromae","Angèle","Gims","Christine and the Queens"]]);
+
+// ---------- Vrai ou Faux ----------
+add(VF,'sport',[["La France a gagné la Coupe du monde en 1998 et en 2018.",true,"Deux étoiles sur le maillot !"],["L'Argentine a battu la France en finale de la Coupe du monde 2022.",true,"Aux tirs au but, malgré un triplé de Mbappé."],
+ ["Mbappé a signé au FC Barcelone en 2024.",false,"Il a signé au Real Madrid."],["Le PSG a gagné la Ligue des champions 2025.",true,"5-0 en finale contre l'Inter."],["Un marathon fait exactement 40 km.",false,"Il fait 42,195 km."],
+ ["Usain Bolt détient le record du monde du 100 m.",true,"9,58 secondes en 2009."],["Roland-Garros se joue sur gazon.",false,"Sur terre battue ; le gazon, c'est Wimbledon."],["Rafael Nadal a gagné Roland-Garros 14 fois.",true,"Un record absolu."],
+ ["Lewis Hamilton a 7 titres de champion du monde de F1.",true,"À égalité avec Michael Schumacher."],["Au Tour de France, le maillot vert récompense le meilleur grimpeur.",false,"Le vert est pour les points (sprinteurs) ; le grimpeur porte le maillot à pois."],
+ ["Il y a 5 anneaux sur le drapeau olympique.",true,"Bleu, jaune, noir, vert et rouge."],["Les JO 2024 se sont déroulés à Paris.",true,"100 ans après ceux de 1924."],["Teddy Riner est un champion de boxe.",false,"C'est une légende du judo."],
+ ["Léon Marchand a gagné 4 médailles d'or individuelles aux JO 2024.",true,"En natation."],["Victor Wembanyama joue aux Lakers.",false,"Il joue aux San Antonio Spurs."],["Michael Jordan a gagné 6 titres NBA avec les Chicago Bulls.",true,"En deux « three-peat »."],
+ ["La France a gagné la Coupe du monde de rugby 2023.",false,"C'est l'Afrique du Sud ; la France a été éliminée en quarts."],["Le haka est la danse des All Blacks.",true,"Une tradition maorie."],["Une équipe de basket aligne 6 joueurs sur le terrain.",false,"5 joueurs par équipe."],
+ ["Michael Phelps a gagné 23 médailles d'or olympiques.",true,"Un record."],["Zidane a reçu un carton rouge en finale de la Coupe du monde 2006.",true,"Après un coup de tête sur Materazzi."],["L'Espagne a gagné l'Euro 2024.",true,"Contre l'Angleterre en finale."],
+ ["Le judo vient de Chine.",false,"Il vient du Japon."],["Au rugby, un essai vaut 5 points.",true,"Plus 2 points pour la transformation."],["Le filet de volley masculin mesure 2,43 m.",true,"2,24 m chez les femmes."],
+ ["Novak Djokovic a remporté plus de Grands Chelems que Roger Federer.",true,"24 contre 20."],["Muhammad Ali était un joueur de basket.",false,"C'était un boxeur légendaire."],["Antoine Dupont a été champion olympique de rugby à 7 en 2024.",true,"Avec l'équipe de France."],
+ ["La Coupe du monde 2026 se déroule au Qatar.",false,"Aux États-Unis, au Canada et au Mexique ; le Qatar, c'était 2022."],["Une équipe de handball compte 7 joueurs sur le terrain.",true,"Gardien compris."]]);
+add(VF,'rap',[["Booba vient de Boulogne-Billancourt.",true,"D'où le 92 de son label 92i."],["Kaaris et Booba se sont battus à l'aéroport d'Orly.",true,"En 2018."],["Le premier album de Nekfeu s'appelle « Feu ».",true,"Sorti en 2015."],
+ ["Orelsan vient de Marseille.",false,"Il vient de Caen."],["PNL est un duo de deux frères.",true,"Ademo et N.O.S."],["PNL a tourné un clip en haut de la tour Eiffel.",true,"Le clip de « Au DD »."],["Jul vient de Lyon.",false,"Il vient de Marseille."],
+ ["SCH a sorti une trilogie appelée « JVLIVS ».",true,"Un univers inspiré de la mafia."],["Damso est né en France.",false,"Il est né à Kinshasa et a grandi en Belgique."],["Gims est le frère de Dadju.",true,"Deux stars de la musique."],
+ ["Soprano faisait partie des Psy 4 de la Rime.",true,"Un groupe marseillais."],["Vald vient d'Aulnay-sous-Bois.",true,"En Seine-Saint-Denis."],["Lomepal est aussi skateur.",true,"Le skate est très présent dans son univers."],
+ ["Hamza est un rappeur suisse.",false,"Il est belge."],["Laylow vient de Toulouse.",true,"Comme Bigflo & Oli."],["Akhenaton est le leader d'IAM.",true,"Groupe culte de Marseille."],["NTM était formé par Joey Starr et Kool Shen.",true,"Le Suprême NTM."],
+ ["Diam's a chanté « La Boulette ».",true,"Un énorme tube des années 2000."],["Bigflo & Oli sont deux frères.",true,"Ils viennent de Toulouse."],["Kalash Criminel rappe toujours à visage découvert.",false,"Il porte une cagoule."],
+ ["Gazo est un pionnier de la drill française.",true,"Avec notamment « Drill FR »."],["Alpha Wann et Nekfeu ont fait partie du groupe 1995.",true,"Un groupe phare de la scène parisienne."],["Médine vient du Havre.",true,"En Normandie."],
+ ["IAM vient de Paris.",false,"IAM vient de Marseille."],["Le label de PNL s'appelle 92i.",false,"Leur label, c'est QLF ; 92i est celui de Booba."],["Rohff faisait partie de la Mafia K'1 Fry.",true,"Un collectif du Val-de-Marne."],
+ ["Black M faisait partie de la Sexion d'Assaut.",true,"Comme Gims."],["MC Solaar a chanté « Caroline ».",true,"Un classique des années 90."],["Tiakola faisait partie du groupe 4Keus.",true,"Avant sa carrière solo."],["Ninho a sorti des mixtapes appelées « M.I.L.S ».",true,"Une série culte."]]);
+add(VF,'gen',[["La Terre tourne autour du Soleil en environ 365 jours.",true,"Un peu plus de 365 jours, d'où les années bissextiles."],["Le Mont-Saint-Michel se trouve en Bretagne.",false,"Il est en Normandie (de justesse !)."],
+ ["Les girafes ont le même nombre de vertèbres cervicales que les humains.",true,"Sept, mais beaucoup plus grandes."],["Le verre est un liquide qui coule très lentement.",false,"C'est un mythe : le verre est un solide amorphe."],
+ ["L'Antarctique est un désert.",true,"Il y tombe très peu de précipitations."],["Le citron contient plus de sucre que la fraise.",true,"Étonnant mais vrai."],["Le français est la langue officielle du Brésil.",false,"C'est le portugais."],
+ ["Un éclair est plus chaud que la surface du Soleil.",true,"Il peut atteindre environ 30 000 °C."],["Les dauphins dorment avec un œil ouvert.",true,"Une moitié de leur cerveau reste éveillée."],["Le cœur humain a 3 cavités.",false,"Il en a 4 : 2 oreillettes et 2 ventricules."]]);
+add(VF,'hsr',[["Huohuo est accompagnée d'une queue maléfique nommée Tail.",true,"Et elle a très peur des fantômes."],["Argenti est un chevalier de la Beauté.",true,"Il vénère Idrila."],["Seele est de l'élément Feu.",false,"Elle est Quantique."],
+ ["Bronya suit le Path de l'Harmonie.",true,"Une soutien très populaire."],["Boothill est un Galaxy Ranger.",true,"Un cow-boy cyborg."],["Yaoshi est l'Aeon de la Destruction.",false,"Yaoshi est l'Aeon de l'Abondance."],
+ ["Gepard est un capitaine de la Garde Silvermane.",true,"Le grand frère de Serval."],["Le Pionnier est un personnage muet sans dialogues.",false,"Le Pionnier a des choix de dialogue, souvent absurdes."],["Sampo est un marchand un peu escroc de Belobog.",true,"Avec ses combines douteuses."],
+ ["Luocha est un marchand guérisseur suivant l'Abondance.",true,"Et il transporte un cercueil."]]);
+add(VF,'gi',[["Pyro + Hydro donne la réaction Vaporisation.",true,"Une réaction très puissante."],["Hydro + Cryo donne la réaction Fonte.",false,"Ça donne Gel ; la Fonte, c'est Cryo + Pyro."],["Barbara est la sœur de Jean.",true,"L'idole de Mondstadt."],
+ ["Noelle est une femme de chambre.",true,"Elle rêve de rejoindre les Chevaliers."],["Diona adore l'alcool.",false,"Elle le déteste… même si ses cocktails sont délicieux."],["Mona est astrologue.",true,"Et toujours sans le sou."],
+ ["Natlan est la nation de la sagesse.",false,"Natlan est la nation de la guerre."],["Ganyu est de l'élément Cryo.",true,"Elle manie l'arc."],["Kazuha est de l'élément Électro.",false,"Il est Anemo."],["Jean est la Grande Maîtresse par intérim.",true,"Des Chevaliers de Favonius."]]);
+add(VF,'ani',[["Chopper est le médecin des Chapeaux de paille.",true,"Un renne qui a mangé le fruit Humain-Humain."],["Jiraiya était le maître de Naruto.",true,"L'un des trois Sannin."],["Oikawa joue à Shiratorizawa.",false,"Il joue à Aoba Johsai ; Shiratorizawa, c'est Ushijima."],
+ ["Reira est la chanteuse de Trapnest.",true,"Dans Nana."],["Kiritsugu Emiya est le Master de Saber dans Fate/Zero.",true,"Le père adoptif de Shirou."],["Muzan est le roi des démons dans Demon Slayer.",true,"Le grand antagoniste."],
+ ["Reiner possède le Titan Colossal.",false,"Il possède le Titan Cuirassé ; le Colossal était à Bertholdt."],["Excalibur est le Noble Phantasm de Saber.",true,"L'épée de la promesse de victoire."],["Le Thousand Sunny est le premier navire de Luffy.",false,"Le premier était le Vogue Merry."],
+ ["Gojo et Sukuna apparaissent dans Jujutsu Kaisen.",true,"Deux des persos les plus forts."]]);
+add(VF,'mus',[["Shakira est colombienne.",true,"Née à Barranquilla."],["« Gangnam Style » a été chanté par BTS.",false,"C'est PSY."],["Vivaldi a composé Les Quatre Saisons.",true,"Au XVIIIe siècle."],
+ ["Ed Sheeran est américain.",false,"Il est anglais."],["Il y a 7 notes dans la gamme do-ré-mi.",true,"Do, ré, mi, fa, sol, la, si."],["Jimi Hendrix était pianiste.",false,"C'était un guitariste légendaire."],
+ ["Coldplay est un groupe britannique.",true,"Mené par Chris Martin."],["Johnny Hallyday s'appelait Jean-Philippe Smet.",true,"Son vrai nom."],["Adele a sorti un album intitulé « 21 ».",true,"Avec « Rolling in the Deep »."],["Michael Jackson a chanté « Billie Jean ».",true,"Sur l'album Thriller."]]);
+
+// ---------- Qui suis-je ----------
+add(QSJ,'sport',[["Kylian Mbappé","Je suis né en 1998","J'ai grandi à Bondy","J'ai rejoint le Real Madrid en 2024"],["Lionel Messi","J'ai joué très longtemps dans un seul club","J'ai gagné 8 Ballons d'Or","J'ai gagné la Coupe du monde 2022 avec l'Argentine"],
+ ["Cristiano Ronaldo","Je suis né à Madère","Je célèbre mes buts avec un « Siuuu »","Je suis le meilleur buteur de l'histoire en sélection nationale"],["Zinédine Zidane","J'ai grandi à Marseille","J'ai entraîné le Real Madrid","J'ai marqué deux têtes en finale de la Coupe du monde 1998"],
+ ["Neymar","J'adore les dribbles","Je suis passé par le Barça et le PSG","Je suis une star brésilienne"],["Karim Benzema","Je viens de Lyon","J'ai gagné le Ballon d'Or 2022","J'ai été le buteur du Real Madrid pendant des années"],
+ ["Antoine Griezmann","J'adore Fortnite et les célébrations","J'ai joué à l'Atlético de Madrid","J'ai été un pilier des Bleus champions en 2018"],["Erling Haaland","Je suis norvégien","Je marque énormément de buts","Je joue à Manchester City"],
+ ["Victor Wembanyama","Je suis immense","J'ai été Rookie de l'année en NBA","Je joue aux San Antonio Spurs"],["LeBron James","On m'appelle King James","J'ai joué à Miami et Cleveland","Je suis devenu le meilleur marqueur de l'histoire de la NBA"],
+ ["Michael Jordan","J'ai une marque de baskets à mon nom","J'ai joué au baseball un moment","J'ai gagné 6 titres avec les Chicago Bulls"],["Tony Parker","J'ai joué très jeune en NBA","J'ai gagné 4 titres avec les Spurs","Je suis une légende du basket français"],
+ ["Usain Bolt","Je fais souvent une pose d'éclair","Je suis jamaïcain","Je détiens le record du monde du 100 m"],["Teddy Riner","Je suis très grand","J'ai gagné de nombreux titres mondiaux","Je suis une légende du judo français"],
+ ["Léon Marchand","Je suis toulousain","Je suis nageur","J'ai gagné 4 médailles d'or individuelles aux JO de Paris"],["Antoine Dupont","Je suis demi de mêlée","Je joue au Stade Toulousain","Je suis capitaine du XV de France"],
+ ["Serena Williams","J'ai une sœur aussi championne","J'ai gagné 23 Grands Chelems","Je suis une légende du tennis américain"],["Rafael Nadal","Je suis gaucher","Je viens de Majorque","J'ai gagné 14 fois Roland-Garros"],
+ ["Roger Federer","Je suis suisse","J'ai gagné 8 fois Wimbledon","Je suis réputé pour mon élégance au tennis"],["Novak Djokovic","Je suis serbe","J'ai gagné 24 Grands Chelems","On me dit le meilleur joueur de tennis de l'histoire"],
+ ["Lewis Hamilton","Je suis anglais","J'ai 7 titres de champion du monde","J'ai quitté Mercedes pour Ferrari"],["Max Verstappen","Je suis néerlandais","Mon père était aussi pilote","J'ai gagné plusieurs titres avec Red Bull"],
+ ["Muhammad Ali","J'ai changé de nom","Je suis devenu champion olympique en 1960","Je volais comme le papillon et piquais comme l'abeille"],["Michael Phelps","J'ai une envergure impressionnante","Je suis américain","J'ai gagné 23 médailles d'or olympiques"],
+ ["Simone Biles","Plusieurs figures portent mon nom","Je suis américaine","Je suis la gymnaste la plus titrée de l'histoire"],["Thierry Henry","Je suis devenu consultant","J'ai joué à Arsenal","J'ai été champion du monde 1998 avec les Bleus"],
+ ["Pelé","On m'appelait le Roi","J'ai joué à Santos","J'ai gagné 3 Coupes du monde avec le Brésil"],["Diego Maradona","J'ai joué à Naples","J'ai marqué « la main de Dieu »","Je suis une légende argentine"],
+ ["Tiger Woods","Mon surnom vient d'un animal","Je porte du rouge le dimanche","Je suis une légende du golf"],["Francis Ngannou","Je suis né au Cameroun","Je frappe extrêmement fort","J'ai été champion poids lourd de l'UFC"]]);
+add(QSJ,'rap',[["Booba","J'ai commencé dans le duo Lunatic","J'ai fondé le label 92i","On me surnomme le Duc de Boulogne"],["Kaaris","Mon premier album s'appelle « Or Noir »","Je viens de Sevran","Je me suis battu avec Booba à Orly"],
+ ["Nekfeu","J'ai fait partie de 1995 et de L'Entourage","J'ai sorti l'album « Cyborg »","Mon premier album s'appelle « Feu »"],["Orelsan","J'ai réalisé le film « Comment c'est loin »","Je forme les Casseurs Flowters avec Gringe","Je viens de Caen"],
+ ["PNL","Nous avons fondé notre label, QLF","Nous venons des Tarterêts","Nous sommes deux frères : Ademo et N.O.S"],["Jul","J'ai lancé le projet « 13'Organisé »","Je fais un signe célèbre avec les mains","Je suis le rappeur star de Marseille"],
+ ["SCH","Ma trilogie s'appelle « JVLIVS »","J'ai sorti l'album « A7 »","Je viens d'Aubagne, près de Marseille"],["Ninho","Ma série de mixtapes s'appelle « M.I.L.S »","J'ai sorti l'album « Jefe »","Je collectionne les singles certifiés"],
+ ["Damso","Je suis né à Kinshasa","J'ai été signé chez 92i","J'ai sorti l'album « Ipséité »"],["Gims","Mon frère s'appelle Dadju","J'ai fait partie de la Sexion d'Assaut","J'ai chanté « Bella »"],
+ ["Soprano","J'ai fait partie des Psy 4 de la Rime","Je suis coach dans The Voice Kids","J'ai chanté « Cosmo »"],["Vald","Je viens d'Aulnay-sous-Bois","J'ai sorti l'album « Agartha »","Mon album « Xeu » a cartonné"],
+ ["Alpha Wann","J'ai fait partie du groupe 1995","J'ai fondé le label Don Dada","Mon album s'appelle « UMLA »"],["Lomepal","Je suis aussi skateur","Mon premier album s'appelle « Flip »","J'ai sorti l'album « Jeannine »"],
+ ["Gazo","Je suis un pionnier de la drill française","J'ai sorti « KMT »","Mon album s'appelle « Drill FR »"],["Hamza","Je suis belge","On m'appelle le SauceGod","Mon album s'appelle « Paradise »"],
+ ["Laylow","Je viens de Toulouse","Mon univers est très futuriste","Mon album s'appelle « Trinity »"],["Niska","Je viens d'Évry","J'ai sorti « Réseaux »","Mon album s'appelle « Commando »"],
+ ["Rohff","Je viens de Vitry-sur-Seine","J'ai fait partie de la Mafia K'1 Fry","Mon album « La fierté des nôtres » est culte"],["Kery James","J'ai fait partie d'Idéal J","Je viens d'Orly","J'ai coréalisé le film « Banlieusards »"],
+ ["Diam's","J'ai arrêté ma carrière au sommet","Mon album s'appelle « Dans ma bulle »","J'ai chanté « La Boulette »"],["Bigflo & Oli","Nous sommes deux frères","Nous venons de Toulouse","Notre premier album s'appelle « La cour des grands »"],
+ ["MC Solaar","Mon vrai prénom est Claude","J'ai commencé au début des années 90","J'ai chanté « Caroline »"],["IAM","Notre leader s'appelle Akhenaton","Nous venons de Marseille","Notre album culte : « L'École du micro d'argent »"],
+ ["Joey Starr","Je suis aussi acteur","J'ai formé un duo avec Kool Shen","J'étais dans le Suprême NTM"],["Tiakola","J'ai fait partie du groupe 4Keus","Mon album s'appelle « Mélo »","J'ai chanté « Meuda »"],
+ ["Black M","J'ai fait partie de la Sexion d'Assaut","J'ai sorti « Sur ma route »","Mon album s'appelle « Les yeux plus gros que le monde »"],["Médine","Je viens du Havre","Je rappe sur des thèmes engagés","J'ai sorti l'album « Grand Médine »"],
+ ["Kalash Criminel","Je viens de Sevran","Je rappe avec une voix très grave","Je porte toujours une cagoule"],["Naps","Je viens de Marseille","J'ai chanté « La kiffance »","Mon album s'appelle « Les mains faites pour l'or »"]]);
+add(QSJ,'hsr',[["Huohuo","J'ai peur de presque tout","Je travaille pour la Commission des Dix-Rois","Une queue maléfique nommée Tail m'accompagne"],["Argenti","J'offre des roses","Je suis un chevalier errant","Je vénère Idrila, l'Aeon de la Beauté"],
+ ["Boothill","Mon langage est très… filtré","J'ai un corps de cyborg","Je suis un Galaxy Ranger cow-boy"],["Gepard","Je suis le grand frère de Serval","Je protège Belobog","Je suis capitaine de la Garde Silvermane"],
+ ["Sampo","Je suis toujours dans les combines","On ne sait jamais si je mens","Je suis un marchand louche de Belobog"],["Sunday","J'ai une auréole","Je veille sur la Famille","Je suis le frère de Robin"]]);
+add(QSJ,'gi',[["Barbara","Je suis diaconesse","Ma sœur dirige les Chevaliers","Je suis l'idole de Mondstadt"],["Noelle","Je porte une armure","Je n'arrive pas à entrer chez les Chevaliers","Je suis la femme de chambre des Chevaliers de Favonius"],
+ ["Diona","J'ai des oreilles de chat","Je déteste l'alcool","Je suis barmaid au Chat à la queue"],["Mona","Je suis toujours fauchée","Je lis les étoiles","Je suis l'astrologue de Mondstadt"],
+ ["Jean","Je travaille sans m'arrêter","Ma sœur est une idole","Je suis la Grande Maîtresse par intérim des Chevaliers"],["Alhaitham","J'écoute toujours de la musique avec mon casque","Je vis avec Kaveh","Je suis le Scribe de l'Akademiya"]]);
+add(QSJ,'ani',[["Saitama","Je suis chauve","Je bats tout le monde en un coup","Je suis One Punch Man"],["Lelouch","Je porte un masque","Je possède le Geass","Je suis le héros de Code Geass"],
+ ["Spike Spiegel","Je fume et j'adore les arts martiaux","Je suis chasseur de primes","Je voyage à bord du Bebop"],["Shinji Ikari","Mon père est très distant","On me demande de monter dans l'EVA","Je pilote l'EVA-01"],
+ ["Kurapika","Mon clan a été massacré","J'ai des yeux qui deviennent écarlates","Je suis un ami de Gon et Killua"],["Frieren","J'ai plus de mille ans","J'ai vaincu le Roi des démons avec Himmel","Je suis une mage elfe"]]);
+add(QSJ,'mus',[["Shakira","Je danse très bien","Je suis colombienne","J'ai chanté « Waka Waka » pour la Coupe du monde 2010"],["Ed Sheeran","Je suis roux","Je joue avec une pédale de boucles","J'ai chanté « Shape of You »"],
+ ["Coldplay","Notre chanteur s'appelle Chris Martin","Nous sommes britanniques","Nous avons chanté « Viva la Vida »"],["Bruno Mars","J'ai fait un duo avec Anderson .Paak (Silk Sonic)","Je suis né à Hawaï","J'ai chanté « Uptown Funk » avec Mark Ronson"],
+ ["Lady Gaga","Je porte des tenues spectaculaires","J'ai joué dans « A Star Is Born »","J'ai chanté « Bad Romance »"],["Dua Lipa","Je suis britannique d'origine albanaise","J'ai chanté pour le film Barbie","J'ai chanté « Levitating »"]]);
+
+// ====== DEVINE L'ANIME : [noms acceptés (le 1er est affiché), [perso difficile, perso moyen, perso facile]] ======
+const ANIME={ani:[
+[["One Piece"],["Jinbe","Nami","Monkey D. Luffy"]],[["Naruto","Naruto Shippuden"],["Rock Lee","Kakashi Hatake","Naruto Uzumaki"]],
+[["Dragon Ball","Dragon Ball Z","DBZ","Dragon Ball Super","DBS"],["Krilin","Vegeta","Son Goku"]],[["L'Attaque des Titans","Attaque des Titans","Attack on Titan","Shingeki no Kyojin","SNK","AOT"],["Hansi Zoë","Livaï Ackerman","Eren Jäger"]],
+[["Haikyuu","Haikyu"],["Kei Tsukishima","Tobio Kageyama","Shoyo Hinata"]],[["Nana"],["Nobuo Terashima","Ren Honjo","Nana Osaki"]],
+[["Fate/stay night","Fate","Fate Stay Night","Fate UBW","Unlimited Blade Works"],["Illyasviel von Einzbern","Rin Tohsaka","Saber"]],[["Demon Slayer","Kimetsu no Yaiba"],["Giyu Tomioka","Zenitsu Agatsuma","Tanjiro Kamado"]],
+[["Jujutsu Kaisen","JJK"],["Nobara Kugisaki","Megumi Fushiguro","Satoru Gojo"]],[["My Hero Academia","Boku no Hero Academia","MHA","BNHA"],["Ochaco Uraraka","Katsuki Bakugo","All Might"]],
+[["Death Note"],["Misa Amane","L","Light Yagami"]],[["Fullmetal Alchemist","FMA","Fullmetal Alchemist Brotherhood","FMAB"],["Roy Mustang","Alphonse Elric","Edward Elric"]],
+[["Hunter x Hunter","HxH","Hunter Hunter"],["Kurapika","Killua Zoldyck","Gon Freecss"]],[["Bleach"],["Byakuya Kuchiki","Rukia Kuchiki","Ichigo Kurosaki"]],
+[["Chainsaw Man","CSM"],["Aki Hayakawa","Power","Denji"]],[["Spy x Family","Spy Family"],["Yuri Briar","Yor Forger","Anya Forger"]],
+[["Tokyo Ghoul"],["Juzo Suzuya","Touka Kirishima","Ken Kaneki"]],[["One Punch Man","OPM"],["Tatsumaki","Genos","Saitama"]],
+[["Code Geass"],["Suzaku Kururugi","C.C.","Lelouch Lamperouge"]],[["Neon Genesis Evangelion","Evangelion","Eva","NGE"],["Misato Katsuragi","Asuka Langley","Shinji Ikari"]],
+[["Cowboy Bebop"],["Jet Black","Faye Valentine","Spike Spiegel"]],[["Sailor Moon"],["Ami Mizuno","Mamoru Chiba","Usagi Tsukino"]],
+[["Pokémon","Pokemon"],["Pierre","Ondine","Sacha"]],[["Frieren","Sousou no Frieren","Frieren Beyond Journey's End"],["Stark","Fern","Himmel"]],
+[["Solo Leveling"],["Yoo Jinho","Cha Hae-In","Sung Jinwoo"]],[["Blue Lock"],["Rin Itoshi","Meguru Bachira","Yoichi Isagi"]],
+[["Oshi no Ko"],["Kana Arima","Aqua Hoshino","Ai Hoshino"]],[["Kaguya-sama","Kaguya-sama Love is War","Kaguya sama"],["Yu Ishigami","Miyuki Shirogane","Chika Fujiwara"]],
+[["Steins;Gate","Steins Gate"],["Itaru Hashida","Kurisu Makise","Rintaro Okabe"]],[["Re:Zero","Re Zero","ReZero"],["Beatrice","Subaru Natsuki","Rem"]],
+[["Sword Art Online","SAO"],["Klein","Asuna","Kirito"]],[["Tokyo Revengers"],["Chifuyu Matsuno","Takemichi Hanagaki","Mikey"]],
+[["JoJo's Bizarre Adventure","JoJo","Jojo Bizarre Adventure","JJBA"],["Joseph Joestar","Dio Brando","Jotaro Kujo"]],[["Mob Psycho 100","Mob Psycho"],["Dimple","Arataka Reigen","Shigeo Kageyama"]],
+[["Vinland Saga"],["Canute","Askeladd","Thorfinn"]],[["Dr. Stone","Dr Stone"],["Chrome","Tsukasa Shishio","Senku Ishigami"]],
+[["Black Clover"],["Noelle Silva","Yuno","Asta"]],[["Fairy Tail"],["Grey Fullbuster","Lucy Heartfilia","Natsu Dragneel"]],
+[["Assassination Classroom","Ansatsu Kyoshitsu"],["Karma Akabane","Nagisa Shiota","Koro-sensei"]],[["The Promised Neverland","Promised Neverland","Yakusoku no Neverland"],["Ray","Norman","Emma"]],
+[["Dandadan","Dan Da Dan"],["Seiko Ayase","Momo Ayase","Okarun"]],[["Toradora"],["Minori Kushieda","Ryuji Takasu","Taiga Aisaka"]],
+[["Détective Conan","Detective Conan","Conan","Case Closed"],["Heiji Hattori","Ran Mouri","Shinichi Kudo"]],[["Olive et Tom","Captain Tsubasa"],["Mark Landers","Benji Price","Olivier Atton"]],
+[["Les Chevaliers du Zodiaque","Saint Seiya","Chevaliers du Zodiaque"],["Shun","Ikki","Seiya"]],[["Le Voyage de Chihiro","Voyage de Chihiro","Spirited Away","Sen to Chihiro"],["Kamaji","Haku","Sans-Visage"]],
+[["Mon voisin Totoro","Totoro"],["Kanta","Satsuki","Chat-bus"]],[["Princesse Mononoké","Princesse Mononoke","Mononoke"],["Dame Eboshi","Ashitaka","San"]],
+[["Your Name","Kimi no Na wa"],["Katsuhiko Teshigawara","Taki Tachibana","Mitsuha Miyamizu"]],[["Bocchi the Rock","Bocchi"],["Ryo Yamada","Nijika Ijichi","Hitori Gotoh"]],
+[["Kuroko's Basket","Kuroko no Basket","Kuroko"],["Shintaro Midorima","Ryota Kise","Taiga Kagami"]],[["Slam Dunk"],["Ryota Miyagi","Kaede Rukawa","Hanamichi Sakuragi"]],
+[["Gintama"],["Shinpachi Shimura","Kagura","Gintoki Sakata"]],[["Inuyasha"],["Miroku","Sesshomaru","Kagome Higurashi"]],
+[["Yu-Gi-Oh!","Yu-Gi-Oh","Yugioh"],["Joey Wheeler","Seto Kaiba","Yugi Muto"]],[["Bungo Stray Dogs","BSD"],["Chuya Nakahara","Atsushi Nakajima","Osamu Dazai"]],
+[["Mushoku Tensei"],["Roxy Migurdia","Eris Boreas Greyrat","Rudeus Greyrat"]],[["KonoSuba","Kono Subarashii"],["Darkness","Kazuma Sato","Megumin"]],
+[["Kill la Kill"],["Satsuki Kiryuin","Mako Mankanshoku","Ryuko Matoi"]],[["Made in Abyss"],["Ozen","Nanachi","Riko"]],
+[["Fruits Basket"],["Shigure Soma","Kyo Soma","Tohru Honda"]],[["Horimiya"],["Toru Ishikawa","Izumi Miyamura","Kyoko Hori"]]
+]};
 
 // ====== ENTRE NOUS — moteur multijoueur ======
 const APP='en1';
@@ -805,6 +1122,8 @@ const GAMES={
   r:"Une question, quatre réponses, <b>20 secondes</b>. Bonne réponse : <b>+2</b>. Le plus rapide à trouver gagne <b>+1</b> en bonus. Tout le monde joue en même temps."},
  vf:{e:'✅',n:'Vrai ou Faux',d:'Une affirmation, deux boutons. Qui connaît vraiment son sujet ?',min:2,c:'#a6ff4d',
   r:"Une affirmation s'affiche : <b>vrai ou faux ?</b> Vous avez 20 secondes. Bonne réponse : <b>+2</b>, et <b>+1</b> pour le plus rapide. L'explication apparaît à la révélation."},
+ anim:{e:'🎴',n:"Devine l'anime",d:'Les personnages se dévoilent un par un : trouve l\'anime le plus vite possible.',min:2,c:'#c08bff',
+  r:"Trois personnages d'un même anime se dévoilent un par un, <b>du moins connu au plus connu</b> (un nouveau toutes les 15 secondes, ou quand l'hôte clique « Indice suivant »). Tape le nom de l'anime : les fautes légères et les titres alternatifs (VO, anglais, abréviations) sont acceptés. Tu peux réessayer autant que tu veux. Trouvé au 1er perso = <b>3 pts</b>, au 2e = 2 pts, au 3e = 1 pt."},
  qsj:{e:'🔍',n:'Qui suis-je ?',d:'Des indices qui se dévoilent un à un : trouve le perso ou l\'artiste au plus vite.',min:2,c:'#ff6bd6',
   r:"Un mystérieux personnage (ou artiste) se décrit en <b>3 indices</b>, du plus dur au plus facile, un toutes les 10 secondes. Tu n'as <b>qu'une seule réponse</b> : trouvé au 1er indice = <b>3 pts</b>, au 2e = 2 pts, au 3e = 1 pt."}
 };
@@ -819,7 +1138,8 @@ function validImg(u){return typeof u==='string'&&u.length<9000&&/^data:image\/(j
 const range=n=>Array.from({length:n},(_,i)=>i);
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const ss={get(k,d){try{const v=sessionStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{sessionStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-const BANKS={roue:SPECTRES,duo:DUO,tp:TP,plus:PLUS,imp:IMP,quiz:QUIZ,vf:VF,qsj:QSJ};
+const BANKS={roue:SPECTRES,duo:DUO,tp:TP,plus:PLUS,imp:IMP,quiz:QUIZ,vf:VF,qsj:QSJ,anim:ANIME};
+const VERSION='13 nov · v7';
 const FL={};
 // liste à plat {c: catégorie, v: élément} — mêmes index chez tous les joueurs
 function flat(g){if(FL[g])return FL[g];const out=[];
@@ -827,7 +1147,11 @@ function flat(g){if(FL[g])return FL[g];const out=[];
 const catsOf=g=>g==='qdn'?Object.keys(QDN_CATS):Object.keys(BANKS[g]||{});
 const catLabel=(g,c)=>g==='qdn'?QDN_CATS[c].label:CATS[c];
 const item=g=>flat(g.g)[g.q]||{c:'gen',v:null};
-const QTIME=20000,QSJ_STEP=10000,QSJ_MAX=42000;
+const QTIME=20000,QSJ_STEP=10000,QSJ_MAX=42000,AN_STEP=15000,AN_MAX=58000;
+// comparaison tolérante : accents, majuscules, articles, ponctuation et petites fautes
+function normT(x){return String(x||'').replace(/[’`]/g,"'").normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/&/g,'and').replace(/^(l'|le |la |les |the )/,'').replace(/[^a-z0-9]/g,'')}
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=Array.from({length:n+1},(_,j)=>j);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[n]}
+function matchTitle(guess,aliases){const g=normT(guess);if(g.length<2)return false;return aliases.some(a=>{const n=normT(a);if(n===g)return true;const tol=n.length>=10?2:n.length>=5?1:0;return tol>0&&lev(g,n)<=tol})}
 
 // ---------- state ----------
 const S={
@@ -932,8 +1256,9 @@ function hostTick(){
   if(st.ord){for(const p of ps)if(ans(p,st)!==undefined&&!st.ord.includes(p.pid))st.ord.push(p.pid)}
   const el=Date.now()-(st.t0||Date.now());
   if(st.g==='qsj'){const cl=Math.min(2,Math.floor(el/QSJ_STEP));if(cl!==st.cl)st.cl=cl}
+  if(st.g==='anim'){const cl=Math.min(2,Math.floor(el/AN_STEP));if(cl>(st.cl|0))st.cl=cl}
   const ex=expected(st,ps);
-  if((ex&&ex.length&&ex.every(p=>ans(p,st)!==undefined))||((st.g==='quiz'||st.g==='vf')&&el>QTIME+1500)||(st.g==='qsj'&&el>QSJ_MAX))doReveal(st,ps)}
+  if((ex&&ex.length&&ex.every(p=>ans(p,st)!==undefined))||((st.g==='quiz'||st.g==='vf')&&el>QTIME+1500)||(st.g==='qsj'&&el>QSJ_MAX)||(st.g==='anim'&&el>AN_MAX))doReveal(st,ps)}
  pushSt();
 }
 function expected(g,ps){
@@ -941,7 +1266,7 @@ function expected(g,ps){
   case'roue':{const med=ps.find(p=>p.pid===g.med);if(!med||!ans(med,g))return null;return ps.filter(p=>p.pid!==g.med)}
   case'qdn':return ps.filter(p=>g.cfg.cp.includes(p.pid)).length===2?ps.filter(p=>g.cfg.cp.includes(p.pid)):null;
   case'duo':return ps.some(p=>p.pid===g.sub)&&ps.length>1?ps:null;
-  case'tp':case'plus':case'quiz':case'vf':case'qsj':return ps;
+  case'tp':case'plus':case'quiz':case'vf':case'qsj':case'anim':return ps;
   case'imp':return g.ph==='vote'?ps:null;
  }return null}
 function pick(st,list){const d=shuffled(list,st.seed);return d[st.i%d.length]}
@@ -955,6 +1280,7 @@ function setupRound(st){
   case'duo':st.mi=(st.mi+1)%Math.max(1,order.length);st.sub=order[st.mi];st.q=pick(st,pool);break;
   case'quiz':st.q=pick(st,pool);st.op=shuffled([0,1,2,3],Math.floor(Math.random()*1e9));st.ord=[];st.t0=Date.now();break;
   case'vf':st.q=pick(st,pool);st.ord=[];st.t0=Date.now();break;
+  case'anim':st.q=pick(st,pool);st.cl=0;st.t0=Date.now();break;
   case'qsj':{st.q=pick(st,pool);const F=flat('qsj'),c=F[st.q].c;const others=shuffled(range(F.length).filter(i=>i!==st.q&&F[i].c===c),Math.floor(Math.random()*1e9)).slice(0,3);
    st.op=shuffled([st.q,...others],Math.floor(Math.random()*1e9));st.cl=0;st.t0=Date.now();break}
   case'imp':st.ph='words';st.imp=order[Math.floor(Math.random()*order.length)];st.q=pick(st,pool);st.sw=Math.random()<.5?0:1;st.first=order[Math.floor(Math.random()*order.length)];break;
@@ -976,6 +1302,7 @@ function doReveal(st,ps){
    for(const pid of (st.ord||[])){const p=ps.find(x=>x.pid===pid);if(p&&ok(ans(p,st))){first=pid;break}}
    ps.forEach(p=>{if(ok(ans(p,st)))last[p.pid]=2+(p.pid===first?1:0)});st.first=first;break}
   case'qsj':ps.forEach(p=>{const v=ans(p,st);if(v&&v.o===st.q)last[p.pid]=Math.max(1,3-(v.l|0))});break;
+  case'anim':ps.forEach(p=>{const v=ans(p,st);if(v&&v.ok)last[p.pid]=Math.max(1,3-(v.l|0))});break;
   case'imp':{const t={};ps.forEach(p=>{const v=ans(p,st);if(v)t[v]=(t[v]||0)+1});const mx=Math.max(0,...Object.values(t));const top=Object.keys(t).filter(k=>t[k]===mx);
    st.out=top.length===1?top[0]:null;st.caught=st.out===st.imp;
    if(st.caught)ps.forEach(p=>{if(p.pid!==st.imp)last[p.pid]=1});else last[st.imp]=2;break}
@@ -1010,7 +1337,7 @@ function sigOf(){const sc=screen();const g=G();const ps=present();const parts=[s
  if(sc==='wait')parts.push(!!S.lastSt,Date.now()-S.joinedAt>6000);
  if(g&&g.g){parts.push(g.g,g.ph,g.r,JSON.stringify(myAns()),S.showWord);
   if(g.g==='roue'){const m=ps.find(p=>p.pid===g.med);parts.push(!!ans(m,g))}
-  if(g.g==='qsj')parts.push(g.cl);
+  if(g.g==='qsj'||g.g==='anim')parts.push(g.cl);
   if(g.ph==='reveal')parts.push(ps.map(p=>JSON.stringify(ans(p,g))).join('|'));
  }
  if(sc==='lobby')parts.push(JSON.stringify(g.cfg));
@@ -1067,6 +1394,7 @@ function vHome(){
    <div class="row"><input id="jcode" class="txt code" maxlength="8" placeholder="code" value="${esc(pre)}" autocomplete="off" autocapitalize="off"><button class="btn teal" data-act="join">Go</button></div>
   </div>
  </div>
+ <p class="ver">Version ${VERSION}</p>
  <div class="gl">${Object.entries(GAMES).map(([k,g])=>`<div class="gmini" style="--gc:${g.c}"><span>${g.e}</span>${esc(g.n)}</div>`).join('')}</div>`}
 
 function vWait(){const late=Date.now()-S.joinedAt>6000;
@@ -1107,7 +1435,7 @@ function hostCtl(){const g=G();if(g.ph==='end')return'';if(!S.host)return`<div c
  return`<div class="hctl"><button class="btn ghost block" data-act="reveal">Révéler maintenant</button></div>`}
 
 function vGame(){const g=G();let body='';
- try{body=({roue:vRoue,qdn:vQdn,duo:vDuo,tp:vTp,plus:vPlus,imp:vImp,quiz:vQuiz,vf:vVf,qsj:vQsj})[g.g](g)}catch(e){console.error(e);body=`<div class="card">Oups, petite erreur d'affichage.</div>`}
+ try{body=({roue:vRoue,qdn:vQdn,duo:vDuo,tp:vTp,plus:vPlus,imp:vImp,quiz:vQuiz,vf:vVf,qsj:vQsj,anim:vAnim})[g.g](g)}catch(e){console.error(e);body=`<div class="card">Oups, petite erreur d'affichage.</div>`}
  if(g.ph==='end')return`${topbar(true)}${vEnd(g)}`;
  return`${topbar(true)}<div class="rnd">Manche ${g.n}${g.cfg.len?` / ${g.cfg.len}`:''}${g.cfg.len?`<span class="prog"><i style="width:${100*g.n/g.cfg.len}%"></i></span>`:''}</div>${body}${L('hctl',hostCtl)}`}
 
@@ -1268,6 +1596,25 @@ function vEnd(g){const x=GAMES[g.g];const gs=g.gs||{};
    return`<div class="scr ${p.here?'':'gone'}" style="--pc:${p.c}"><span class="rk">${gs[pid]?(MED[r]||r+1):'–'}</span><span class="av">${p.a}</span><span class="pn">${esc(p.n)}</span><b>${gs[pid]||0}</b><span class="tot">${g.sc[pid]||0}</span></div>`}).join('')}</div></div>
   ${S.host?`<div class="row"><button class="btn ghost grow" data-act="tolobby">Changer de jeu</button><button class="btn pink grow" data-act="replay">Rejouer 🔁</button></div>`:'<p class="mut c">L\'hôte choisit la suite…</p>'}`}
 
+// ----- devine l'anime -----
+function initials(n){return n.replace(/[^\p{L}\p{N} .-]/gu,'').split(/[\s.-]+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()}
+function hueOf(n){let h=0;for(const ch of n)h=(h*31+ch.charCodeAt(0))%360;return h}
+function charCard(name,i,shown){if(!shown)return`<div class="acard hid"><div class="ain"><div class="aq">?</div></div><div class="alab">Indice ${i+1}</div></div>`;
+ const h=hueOf(name);return`<div class="acard" style="--h:${h}"><div class="ain"><div class="amono">${esc(initials(name))}</div><div class="aname">${esc(name)}</div></div><div class="alab">Indice ${i+1}</div></div>`}
+function vAnim(g){const it=item(g);const [names,chars]=it.v;const mine=myAns();const ps=present();const cl=g.ph==='reveal'?2:(g.cl|0);
+ const cards=`<div class="acards">${chars.map((c,i)=>charCard(c,i,i<=cl)).join('')}</div>`;
+ if(g.ph==='reveal'){const found=ps.filter(p=>{const v=ans(p,g);return v&&v.ok}).sort((a,b)=>(ans(a,g).l|0)-(ans(b,g).l|0));
+  return`${cards}<div class="truth"><div class="lbl">C'était</div><div class="tv">${esc(names[0])}</div></div>
+  ${found.length?`<div class="found">${found.map(p=>chip(p.pid,` <b>perso ${(ans(p,g).l|0)+1}</b>`)).join('')}</div>`:'<p class="mut c">Personne n\'a trouvé !</p>'}${lastPts()}`}
+ const pts=3-cl;const done=mine!==undefined;
+ S.after.push(()=>{const i=document.getElementById('aguess');if(i&&!done)i.focus()});
+ return`${cards}<div class="aform">
+  <div class="arow"><span class="aqlab">Quel anime ?</span>${S.host&&cl<2?'<button class="anext" data-act="nextclue">Indice suivant ⟶</button>':''}</div>
+  ${done?(mine.ok?`<div class="aok">✅ Trouvé : <b>${esc(names[0])}</b> — ${3-(mine.l|0)} pt${3-(mine.l|0)>1?'s':''}</div>`:'<div class="aok pass">Tu as passé ton tour.</div>')
+   :`<div class="ainput"><input id="aguess" class="txt" placeholder="Nom de l'anime…" autocomplete="off" maxlength="60"><button class="abtn" data-act="guessanim">Répondre</button></div>
+   <div class="arow"><span class="mut">Trouve maintenant : <b class="yel">${pts} pt${pts>1?'s':''}</b></span><button class="alink" data-act="passanim">Je passe</button></div>`}
+ </div>${L('stat',()=>statusHTML(present()))}`}
+
 // ----- modales -----
 const LENS=[5,10,15,20,30,0];
 function lenPicker(g){const cur=S.lastLen[g]!=null?S.lastLen[g]:10;
@@ -1324,6 +1671,10 @@ const ACT={
  tovote(){hostDo(st=>{st.ph='vote'})},
  resetsc(){hostDo(st=>{for(const k in st.sc)st.sc[k]=0;st.m=0;st.qn=0})},
  ans(el){answer(el.dataset.v)},
+ guessanim(){const g=G();if(!g||myAns()!==undefined)return;const i=$('#aguess');const v=(i&&i.value||'').trim();if(!v)return toast("Écris le nom d'un anime");
+  if(matchTitle(v,item(g).v[0])){answer({ok:1,l:g.cl|0});toast('🎉 Bien joué !')}else{toast('❌ Raté, essaie encore');i.value='';const f=document.querySelector('.ainput');if(f){f.classList.remove('shake');void f.offsetWidth;f.classList.add('shake')}i.focus()}},
+ passanim(){if(myAns()===undefined)answer({ok:0})},
+ nextclue(){hostDo(st=>{if(st.g!=='anim')return;st.cl=Math.min(2,(st.cl|0)+1);st.t0=Date.now()-st.cl*AN_STEP})},
  ansn(el){if(myAns()===undefined)answer(+el.dataset.v)},
  ansq(el){const g=G();if(myAns()===undefined)answer({o:+el.dataset.v,l:g.cl|0})},
  sendclue(){const v=($('#clue').value||'').trim();if(!v)return toast('Écris un indice');answer({c:v.slice(0,40)})},
@@ -1343,7 +1694,7 @@ function loadPhoto(file){if(!file||!/^image\//.test(file.type))return toast('Cho
 document.addEventListener('change',e=>{if(e.target&&e.target.id==='photo'){loadPhoto(e.target.files&&e.target.files[0]);e.target.value=''}});
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const f=ACT[el.dataset.act];if(f)f(el,e)});
 document.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const id=e.target&&e.target.id;
- const map={clue:'sendclue',dans:'sendtxt',jcode:'join',name:null};if(id in map&&map[id])ACT[map[id]]()});
+ const map={clue:'sendclue',dans:'sendtxt',jcode:'join',aguess:'guessanim',name:null};if(id in map&&map[id])ACT[map[id]]()});
 // reset showWord à chaque manche
 let lastR=null;setInterval(()=>{const g=G();if(g&&g.r!==lastR){lastR=g.r;if(S.showWord){S.showWord=false;onNet()}}},400);
 
