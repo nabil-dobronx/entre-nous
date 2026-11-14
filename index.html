@@ -229,6 +229,17 @@ button.gs{cursor:pointer}
 .dixrow .av{font-size:22px}.dixrow .pn{width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dixrow b{font:700 20px Fredoka,Nunito,system-ui,sans-serif;width:28px;text-align:right}
 .dixbar{flex:1;height:10px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}.dixbar i{display:block;height:100%;background:var(--pc);border-radius:99px;animation:grow .7s ease both;transform-origin:left}
 .dixex{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0}.dixex>span{display:flex;align-items:center;gap:4px}.dixex b{color:var(--yel)}
+.msecret{text-align:center;margin:8px 0 12px;padding:18px;border-radius:22px;background:linear-gradient(150deg,#5ad1ff44,#2a1a55 80%);border:1px solid #5ad1ff88}
+.mpw{font:700 40px Fredoka,Nunito,system-ui,sans-serif;color:var(--yel);letter-spacing:.04em;margin:4px 0;text-transform:uppercase}
+.mclues{display:grid;gap:8px;margin:10px 0 14px}
+.mclue{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:var(--card);border:1px solid var(--line);min-height:52px;animation:pop .35s ease both}
+.mclue.empty{opacity:.45;animation:none}.mclue.next{opacity:.8;border-style:dashed}
+.mpts{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--yel);color:#1a0f33;font:700 16px Fredoka,Nunito,system-ui,sans-serif}
+.mclue.empty .mpts{background:rgba(255,255,255,.12);color:var(--mut)}
+.mword{font:700 20px Fredoka,Nunito,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.03em;min-width:90px}.mclue.next .mword,.mclue.empty .mword{font-size:15px;text-transform:none;color:var(--mut);letter-spacing:0}
+.mtries{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;flex:1}
+.mtry{display:inline-flex;align-items:center;gap:4px;padding:2px 8px 2px 3px;border-radius:999px;background:color-mix(in srgb,var(--pc) 18%,transparent);border:1px solid color-mix(in srgb,var(--pc) 50%,transparent);font-size:13px;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.4)}
+.mtry .avi{width:20px;height:20px}.mtry.ok{background:var(--teal);color:#10213a;text-decoration:none;font-weight:900}
 .center{text-align:center;margin-top:40px}.big{font-size:54px}
 #banner{position:fixed;left:50%;bottom:12px;transform:translateX(-50%) translateY(150%);max-width:calc(100% - 24px);width:560px;background:#3a2672;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:13px;font-weight:700;transition:transform .3s;z-index:40;text-align:center}
 #banner.show{transform:translateX(-50%)}#banner.err{background:#6b1838}#banner.info{background:#22305e}
@@ -1130,6 +1141,26 @@ rap:["mais {P} n'écoute que Jul, en boucle, depuis 2014","mais {P} fait des ad-
  "mais {P} met de la drill à fond chez ta grand-mère","mais {P} parle uniquement en verlan","mais {P} se fait appeler « Le Boss » par tout le monde","mais {P} tourne des clips dans ton salon",
  "mais {P} pense qu'Orelsan est un fromage","mais {P} a un tatouage « 13 » alors qu'{P} vient de Lille","mais {P} commence chaque phrase par « yeah »","mais {P} veut absolument faire un feat avec toi"]
 };
+// ====== MOT DE PASSE : mots à faire deviner ======
+const MDP={
+gen:["Piscine","Vacances","Chocolat","Pompier","Montagne","Anniversaire","Télévision","Fromage","Voiture","Hiver","Plage","Médecin","Jardin","Pirate","Fusée","Château","Licorne","Dentiste",
+ "Cinéma","Parapluie","Bibliothèque","Volcan","Requin","Boulangerie","Mariage","Fantôme","Neige","Avion","École","Cuisine","Train","Soleil","Lune","Forêt","Chameau","Escargot","Sorcière",
+ "Hôpital","Musée","Cirque","Pizza","Glace","Café","Valise","Miroir","Téléphone","Ordinateur","Lunettes","Bougie","Clé","Pyjama","Cadeau","Noël","Halloween","Dinosaure","Robot","Trésor",
+ "Île","Désert","Prison","Police","Banane","Crocodile","Abeille","Papillon","Orage","Arc-en-ciel","Moustache","Chaussette","Oreiller","Réveil","Sapin","Carotte","Baleine","Pingouin","Tortue",
+ "Guitare","Danse","Magicien","Princesse","Dragon","Vampire","Cowboy","Football","Camping","Frites","Sushi","Météo","Ascenseur","Bébé","Selfie","Wifi"],
+hsr:["Train","Poubelle","Stellaron","Aeon","Kafka","Belobog","Penacony","Herta","Galaxie","Rêve","Destruction","Pionnier","Photo","Glace","Conducteur","Jade","Mahjong","Général","Station","Univers",
+ "Chasseur","Épée","Lance","Dragon","Hackeuse","Chapeau","Café","Robot","Masque","Marionnette"],
+gi:["Paimon","Archon","Primogem","Vision","Mondstadt","Liyue","Inazuma","Fontaine","Slime","Hilichurl","Coffre","Résine","Vent","Pêche","Tofu","Lyre","Tribunal","Magicien","Corbeau","Renard",
+ "Épée","Arc","Planeur","Statue","Voyageur","Abîme","Fleur","Contrat","Chevalier","Taverne"],
+ani:["Ninja","Pirate","Titan","Démon","Ramen","Chakra","Volley","Shinigami","Dragon","Saiyan","Alchimiste","Exorciste","Mangaka","Opening","Cosplay","Chapeau","Sabre","Pokémon","Hokage","Bambou",
+ "Pomme","Cahier","Tronçonneuse","Espion","Elfe","Mur","Lycée","Chanteuse","Graal","Héros"],
+mus:["Guitare","Piano","Concert","Micro","Refrain","Batterie","Violon","Karaoké","Vinyle","Chorale","Festival","Orchestre","Playlist","Casque","Rock","Opéra","Clip","Disque","Partition","Danse",
+ "Chanteur","Enceinte","Tube","Album","Trompette","Rythme","Saxophone","Tournée","Scène","Applaudissement"],
+sport:["Ballon","Arbitre","Stade","Penalty","Gardien","Marathon","Médaille","Piscine","Raquette","Vélo","Ski","Boxe","Judo","Panier","Filet","Podium","Sifflet","Maillot","Coach","Supporter",
+ "Carton","Champion","Course","Trophée","Haltère","Plongeon","Surf","Tir","Échauffement","Olympique"],
+rap:["Rappeur","Freestyle","Clip","Micro","Studio","Feat","Clash","Label","Album","Mixtape","Punchline","Beat","Disque","Concert","Drill","Cagoule","Marseille","Verlan","Refrain","Platine",
+ "Stream","Banlieue","Rime","Flow","Scène","Diamant","Producteur","Featuring","Couplet","Booba"]
+};
 
 // ====== ENTRE NOUS — moteur multijoueur ======
 const APP='en1';
@@ -1155,6 +1186,8 @@ const GAMES={
   r:"Une affirmation s'affiche : <b>vrai ou faux ?</b> Vous avez 20 secondes. Bonne réponse : <b>+2</b>, et <b>+1</b> pour le plus rapide. L'explication apparaît à la révélation."},
  dix:{e:'💯',n:"C'est un 10 mais…",d:'Une note parfaite… puis le défaut qui gâche tout. Tu baisses la note de combien ?',min:2,c:'#ff8a3d',
   r:"Un mec ou une meuf imaginaire reçoit une note de départ… puis tombe le <b>« mais… »</b> (un défaut bien gênant). Chacun donne sa <b>nouvelle note de 0 à 10</b>. À la révélation : toutes les notes, la moyenne, le plus indulgent 😇 et le plus sévère 😈. Ceux qui sont le plus proches de la moyenne du groupe gagnent <b>1 point</b>."},
+ mdp:{e:'🔑',n:'Mot de passe',d:'Fais deviner un mot avec un seul mot : moins il faut d\'indices, plus ça rapporte.',min:2,c:'#5ad1ff',
+  r:"À chaque manche, un joueur devient l'<b>indicateur</b> : lui seul voit le <b>mot de passe</b>. Il donne <b>un seul mot</b> comme indice (interdit d'utiliser le mot lui-même ou un mot de la même famille). Les autres ont <b>un essai par indice</b>. Trouvé au 1er indice = <b>5 pts</b>, puis 4, 3, 2, 1. L'indicateur gagne autant que le meilleur devineur. 5 indices maximum !"},
  qsj:{e:'🔍',n:'Qui suis-je ?',d:'Des indices qui se dévoilent un à un : trouve le perso ou l\'artiste au plus vite.',min:2,c:'#ff6bd6',
   r:"Un mystérieux personnage (ou artiste) se décrit en <b>3 indices</b>, du plus dur au plus facile, un toutes les 10 secondes. Tu n'as <b>qu'une seule réponse</b> : trouvé au 1er indice = <b>3 pts</b>, au 2e = 2 pts, au 3e = 1 pt."}
 };
@@ -1169,8 +1202,8 @@ function validImg(u){return typeof u==='string'&&u.length<9000&&/^data:image\/(j
 const range=n=>Array.from({length:n},(_,i)=>i);
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const ss={get(k,d){try{const v=sessionStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{sessionStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-const BANKS={roue:SPECTRES,duo:DUO,tp:TP,plus:PLUS,imp:IMP,quiz:QUIZ,vf:VF,qsj:QSJ,dix:DIX};
-const VERSION='14 nov · v9';
+const BANKS={roue:SPECTRES,duo:DUO,tp:TP,plus:PLUS,imp:IMP,quiz:QUIZ,vf:VF,qsj:QSJ,dix:DIX,mdp:MDP};
+const VERSION='14 nov · v10';
 const FL={};
 // liste à plat {c: catégorie, v: élément} — mêmes index chez tous les joueurs
 function flat(g){if(FL[g])return FL[g];const out=[];
@@ -1287,6 +1320,8 @@ function hostTick(){
   if(st.ord){for(const p of ps)if(ans(p,st)!==undefined&&!st.ord.includes(p.pid))st.ord.push(p.pid)}
   const el=Date.now()-(st.t0||Date.now());
   if(st.g==='qsj'){const cl=Math.min(2,Math.floor(el/QSJ_STEP));if(cl!==st.cl)st.cl=cl}
+  if(st.g==='mdp'){const giver=ps.find(p=>p.pid===st.giver);const gs=ps.filter(p=>p.pid!==st.giver);const n=mdpClues(giver,st).length;
+   if(gs.length&&(gs.every(p=>ans(p,st))||(n>=5&&gs.every(p=>ans(p,st)||mdpTries(p,st).length>=5))))doReveal(st,ps)}
   if(st.g==='anim'){const cl=Math.min(2,Math.floor(el/AN_STEP));if(cl>(st.cl|0))st.cl=cl}
   const ex=expected(st,ps);
   if((ex&&ex.length&&ex.every(p=>ans(p,st)!==undefined))||((st.g==='quiz'||st.g==='vf')&&el>QTIME+1500)||(st.g==='qsj'&&el>QSJ_MAX)||(st.g==='anim'&&el>AN_MAX))doReveal(st,ps)}
@@ -1308,6 +1343,7 @@ function setupRound(st){
  switch(st.g){
   case'roue':st.mi=(st.mi+1)%Math.max(1,order.length);st.med=order[st.mi];st.q=pick(st,pool);st.t=Math.round(12+Math.random()*156);break;
   case'qdn':case'tp':case'plus':st.q=pick(st,pool);break;
+  case'mdp':st.mi=(st.mi+1)%Math.max(1,order.length);st.giver=order[st.mi];st.q=pick(st,pool);break;
   case'dix':st.q=pick(st,pool);st.gd=Math.random()<.5?'m':'f';st.bn=[7,8,9,10,10,10,10][Math.floor(Math.random()*7)];break;
   case'duo':st.mi=(st.mi+1)%Math.max(1,order.length);st.sub=order[st.mi];st.q=pick(st,pool);break;
   case'quiz':st.q=pick(st,pool);st.op=shuffled([0,1,2,3],Math.floor(Math.random()*1e9));st.ord=[];st.t0=Date.now();break;
@@ -1334,6 +1370,7 @@ function doReveal(st,ps){
    for(const pid of (st.ord||[])){const p=ps.find(x=>x.pid===pid);if(p&&ok(ans(p,st))){first=pid;break}}
    ps.forEach(p=>{if(ok(ans(p,st)))last[p.pid]=2+(p.pid===first?1:0)});st.first=first;break}
   case'qsj':ps.forEach(p=>{const v=ans(p,st);if(v&&v.o===st.q)last[p.pid]=Math.max(1,3-(v.l|0))});break;
+  case'mdp':{let best=0;ps.forEach(p=>{if(p.pid===st.giver)return;const v=ans(p,st);if(v&&v.n){const pts=Math.max(1,6-v.n);last[p.pid]=pts;best=Math.max(best,pts)}});if(best)last[st.giver]=best;break}
   case'dix':{const vs=ps.map(p=>({pid:p.pid,v:ans(p,st)})).filter(x=>typeof x.v==='number');if(vs.length>1){const avg=vs.reduce((a,x)=>a+x.v,0)/vs.length;
    const d=Math.min(...vs.map(x=>Math.abs(x.v-avg)));vs.forEach(x=>{if(Math.abs(Math.abs(x.v-avg)-d)<1e-9)last[x.pid]=1})}break}
   case'anim':ps.forEach(p=>{const v=ans(p,st);if(v&&v.ok)last[p.pid]=Math.max(1,3-(v.l|0))});break;
@@ -1357,7 +1394,7 @@ function saveSess(){const v=S.code?{code:S.code,host:S.host,t:Date.now()}:null;s
 function enter(code,asHost){
  S.code=code;S.host=asHost;S.joinedAt=Date.now();S.modal=null;
  if(asHost){S.st=ls.get("en_host_"+code,null)||newSt();if(!S.st.pl.includes(S.me.pid))S.st.pl.push(S.me.pid)}
- Net.set({app:APP,code,pid:S.me.pid,n:S.me.n,av:S.me.av,img:null,h:asHost?true:null,st:null,a:null,ok:null});
+ Net.set({app:APP,code,pid:S.me.pid,n:S.me.n,av:S.me.av,img:null,h:asHost?true:null,st:null,a:null,ok:null,cl:null,gs:null});
  S.lastPushed='';pushSt();saveSess();
  try{if(location.hash!=='#'+code)history.replaceState(null,'','#'+code)}catch(e){try{location.hash=code}catch(_){}}
 }
@@ -1372,6 +1409,7 @@ function sigOf(){const sc=screen();const g=G();const ps=present();const parts=[s
  if(g&&g.g){parts.push(g.g,g.ph,g.r,JSON.stringify(myAns()),S.showWord);
   if(g.g==='roue'){const m=ps.find(p=>p.pid===g.med);parts.push(!!ans(m,g))}
   if(g.g==='qsj'||g.g==='anim')parts.push(g.cl);
+  if(g.g==='mdp'){const gv=ps.find(p=>p.pid===g.giver);parts.push(mdpClues(gv,g).length,mdpTries(Object.assign({},Net.mine),g).length)}
   if(g.ph==='reveal')parts.push(ps.map(p=>JSON.stringify(ans(p,g))).join('|'));
  }
  if(sc==='lobby')parts.push(JSON.stringify(g.cfg));
@@ -1469,7 +1507,7 @@ function hostCtl(){const g=G();if(g.ph==='end')return'';if(!S.host)return`<div c
  return`<div class="hctl"><button class="btn ghost block" data-act="reveal">Révéler maintenant</button></div>`}
 
 function vGame(){const g=G();let body='';
- try{body=({roue:vRoue,qdn:vQdn,duo:vDuo,tp:vTp,plus:vPlus,imp:vImp,quiz:vQuiz,vf:vVf,qsj:vQsj,dix:vDix})[g.g](g)}catch(e){console.error(e);body=`<div class="card">Oups, petite erreur d'affichage.</div>`}
+ try{body=({roue:vRoue,qdn:vQdn,duo:vDuo,tp:vTp,plus:vPlus,imp:vImp,quiz:vQuiz,vf:vVf,qsj:vQsj,dix:vDix,mdp:vMdp})[g.g](g)}catch(e){console.error(e);body=`<div class="card">Oups, petite erreur d'affichage.</div>`}
  if(g.ph==='end')return`${topbar(true)}${vEnd(g)}`;
  return`${topbar(true)}<div class="rnd">Manche ${g.n}${g.cfg.len?` / ${g.cfg.len}`:''}${g.cfg.len?`<span class="prog"><i style="width:${100*g.n/g.cfg.len}%"></i></span>`:''}</div>${body}${L('hctl',hostCtl)}`}
 
@@ -1649,6 +1687,30 @@ function vAnim(g){const it=item(g);const [names,chars]=it.v;const mine=myAns();c
    <div class="arow"><span class="mut">Trouve maintenant : <b class="yel">${pts} pt${pts>1?'s':''}</b></span><button class="alink" data-act="passanim">Je passe</button></div>`}
  </div>${L('stat',()=>statusHTML(present()))}`}
 
+// ----- mot de passe -----
+function mdpClues(p,g){return p&&p.cl&&p.cl.k===g.r&&Array.isArray(p.cl.l)?p.cl.l.slice(0,5).map(x=>String(x).slice(0,30)):[]}
+function mdpTries(p,g){return p&&p.gs&&p.gs.k===g.r&&Array.isArray(p.gs.l)?p.gs.l.slice(0,5).map(x=>String(x).slice(0,30)):[]}
+function stemW(x){let n=normT(x);if(n.length>4)n=n.replace(/(s|x)$/,'');return n}
+function sameWord(a,b){const x=stemW(a),y=stemW(b);if(!x||!y)return false;if(x===y)return true;return y.length>=6&&lev(x,y)<=1}
+function vMdp(g){const word=item(g).v;const ps=present();const me=S.me.pid;const isG=me===g.giver;const giver=ps.find(p=>p.pid===g.giver);const clues=mdpClues(giver,g);
+ const guessers=ps.filter(p=>p.pid!==g.giver);
+ const feed=()=>{const ps2=present();const gv=ps2.find(p=>p.pid===g.giver);const cl=mdpClues(gv,g);const gs=ps2.filter(p=>p.pid!==g.giver);
+  return`<div class="mclues">${[0,1,2,3,4].map(i=>{const c=cl[i];const tries=gs.map(p=>{let t=mdpTries(p,g)[i];if(t==='—')t='';const v=ans(p,g);const ok=v&&v.n===i+1;const show=!ok||isG||g.ph==='reveal';return t||ok?`<span class="mtry ${ok?'ok':''}" style="--pc:${pinfo(p.pid).c}">${pinfo(p.pid).a}${show?esc(t||''):''}${ok?' ✓':''}</span>`:''}).join('');
+   return`<div class="mclue ${c?'':'empty'} ${i===cl.length&&g.ph!=='reveal'?'next':''}"><span class="mpts">${5-i}</span><span class="mword">${c?esc(c):i===cl.length&&g.ph!=='reveal'?'Indice en attente…':'—'}</span><span class="mtries">${tries}</span></div>`}).join('')}</div>`};
+ const head=`<div class="role">🔑 Indicateur : ${chip(g.giver)}</div>`;
+ if(g.ph==='reveal')return`${head}<div class="truth"><div class="lbl">Le mot de passe était</div><div class="tv">${esc(word)}</div></div>${feed()}${lastPts()}`;
+ if(isG){const done=clues.length>=5;S.after.push(()=>{const i=document.getElementById('mclue');i&&i.focus()});
+  return`${head}<div class="msecret"><div class="lbl">Ton mot de passe</div><div class="mpw">${esc(word)}</div><div class="mut">Fais-le deviner avec <b>un seul mot</b> à chaque indice.</div></div>
+  ${done?'<p class="mut c">Tu as donné tes 5 indices. On attend les dernières réponses…</p>':`<div class="row"><input id="mclue" class="txt" maxlength="30" placeholder="Indice n°${clues.length+1} (un seul mot)" autocomplete="off"><button class="btn pink" data-act="mdpclue">Donner</button></div>`}
+  ${L('mfeed',feed)}`}
+ const mine=myAns();const tries=mdpTries(Object.assign({},Net.mine),g);const canTry=!mine&&clues.length>0&&tries.length<clues.length;
+ if(canTry)S.after.push(()=>{const i=document.getElementById('mguess');i&&i.focus()});
+ return`${head}${L('mfeed',feed)}
+  ${mine?`<div class="aok">✅ Trouvé : <b>${esc(word)}</b> — ${Math.max(1,6-mine.n)} pts</div>`
+  :!clues.length?`<div class="card c pulse">🔑 ${esc(firstName(g.giver))} prépare son premier indice…</div>`
+  :canTry?`<div class="row"><input id="mguess" class="txt" maxlength="30" placeholder="Ta réponse (${Math.max(1,6-clues.length)} pts)" autocomplete="off"><button class="btn teal" data-act="mdpguess">Proposer</button></div>`
+  :tries.length>=5?'<p class="mut c">Plus d\'essais pour cette manche 😢</p>':'<p class="mut c">Raté ! Attends l\'indice suivant…</p>'}`}
+
 // ----- c'est un 10 mais… -----
 function vDix(g){const it=item(g);const m=g.gd!=='f';const flaw=it.v.replace(/\{P\}/g,m?'il':'elle');const mine=myAns();const ps=present();
  const card=`<div class="dixcard ${m?'m':'f'}"><div class="dixwho">${m?'🧔 Un mec':'👩 Une meuf'}</div>
@@ -1718,6 +1780,15 @@ const ACT={
  tovote(){hostDo(st=>{st.ph='vote'})},
  resetsc(){hostDo(st=>{for(const k in st.sc)st.sc[k]=0;st.m=0;st.qn=0})},
  ans(el){answer(el.dataset.v)},
+ mdpclue(){const g=G();if(!g||g.giver!==S.me.pid)return;const i=$('#mclue');const v=(i&&i.value||'').trim();const word=item(g).v;
+  if(!v)return toast('Écris un indice');if(/\s/.test(v))return toast('Un seul mot !');
+  const a=stemW(v),b=stemW(word);if(a.length>=3&&(a.includes(b)||b.includes(a)||sameWord(v,word)))return toast('Interdit : trop proche du mot de passe !');
+  const cur=mdpClues(Object.assign({},Net.mine),g);if(cur.some(c=>normT(c)===normT(v)))return toast('Déjà donné !');if(cur.length>=5)return;
+  Net.set({cl:{k:g.r,l:[...cur,v.slice(0,30)]}});i.value=''},
+ mdpguess(){const g=G();if(!g||myAns())return;const i=$('#mguess');const v=(i&&i.value||'').trim();if(!v)return toast('Écris ta réponse');if(/\s/.test(v)&&v.split(/\s+/).length>2)return toast('Un mot, pas une phrase !');
+  const giver=present().find(p=>p.pid===g.giver);const n=mdpClues(giver,g).length;const tries=mdpTries(Object.assign({},Net.mine),g);if(tries.length>=n)return;
+  const nt=[...tries];while(nt.length<n-1)nt.push('—');nt.push(v.slice(0,30));Net.set({gs:{k:g.r,l:nt}});
+  if(sameWord(v,item(g).v)){answer({n});toast('🎉 Trouvé !')}else toast('❌ Raté !')},
  guessanim(){const g=G();if(!g||myAns()!==undefined)return;const i=$('#aguess');const v=(i&&i.value||'').trim();if(!v)return toast("Écris le nom d'un anime");
   if(matchTitle(v,item(g).v[0])){answer({ok:1,l:g.cl|0});toast('🎉 Bien joué !')}else{toast('❌ Raté, essaie encore');i.value='';const f=document.querySelector('.ainput');if(f){f.classList.remove('shake');void f.offsetWidth;f.classList.add('shake')}i.focus()}},
  passanim(){if(myAns()===undefined)answer({ok:0})},
@@ -1741,7 +1812,7 @@ function loadPhoto(file){if(!file||!/^image\//.test(file.type))return toast('Cho
 document.addEventListener('change',e=>{if(e.target&&e.target.id==='photo'){loadPhoto(e.target.files&&e.target.files[0]);e.target.value=''}});
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const f=ACT[el.dataset.act];if(f)f(el,e)});
 document.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const id=e.target&&e.target.id;
- const map={clue:'sendclue',dans:'sendtxt',jcode:'join',aguess:'guessanim',name:null};if(id in map&&map[id])ACT[map[id]]()});
+ const map={clue:'sendclue',dans:'sendtxt',jcode:'join',aguess:'guessanim',mclue:'mdpclue',mguess:'mdpguess',name:null};if(id in map&&map[id])ACT[map[id]]()});
 // reset showWord à chaque manche
 let lastR=null;setInterval(()=>{const g=G();if(g&&g.r!==lastR){lastR=g.r;if(S.showWord){S.showWord=false;onNet()}}},400);
 
