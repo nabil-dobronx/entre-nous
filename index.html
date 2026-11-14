@@ -215,6 +215,20 @@ button.gs{cursor:pointer}
 .aok{padding:14px;border-radius:14px;background:color-mix(in srgb,var(--teal) 18%,var(--card));border:1px solid var(--teal);text-align:center;font-size:16px}.aok.pass{background:var(--card);border-color:var(--line)}
 .found{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:8px 0}.found b{color:var(--yel)}
 .yel{color:var(--yel)}.ver{text-align:center;font-size:12px;color:var(--mut);opacity:.6;margin:16px 0 0}
+.dixcard{border-radius:26px;padding:24px 20px;margin:10px 0 16px;text-align:center;background:linear-gradient(150deg,#ff8a3d55,#2a1a55 75%);border:1px solid #ff8a3d88;box-shadow:0 10px 30px -12px #ff8a3daa}
+.dixcard.f{background:linear-gradient(150deg,#ff4d8d55,#2a1a55 75%);border-color:#ff4d8d88}
+.dixwho{font-size:15px;font-weight:800;color:#ffe9f3;opacity:.85;text-transform:uppercase;letter-spacing:.1em}
+.dixline{font:700 36px Fredoka,Nunito,system-ui,sans-serif;margin:6px 0 4px}.dixn{color:var(--yel);font-size:52px;vertical-align:-4px}
+.dixbut{font:600 24px/1.25 Fredoka,Nunito,system-ui,sans-serif;color:#fff;animation:pop .35s ease both}
+.notes{display:grid;grid-template-columns:repeat(11,1fr);gap:6px;margin:8px 0}
+@media(max-width:520px){.notes{grid-template-columns:repeat(6,1fr)}}
+.note{aspect-ratio:1;border:0;border-radius:14px;background:color-mix(in srgb,var(--nc) 22%,var(--card));border:2px solid color-mix(in srgb,var(--nc) 55%,transparent);color:var(--tx);font:700 20px Fredoka,Nunito,system-ui,sans-serif;cursor:pointer;transition:transform .1s}
+.note:hover{transform:translateY(-2px)}.note.on{background:var(--nc);color:#1a0f33;transform:scale(1.1)}.note[disabled]:not(.on){opacity:.35}
+.dixavg{text-align:center;margin:8px 0}.dixbig{font:700 56px Fredoka,Nunito,system-ui,sans-serif;color:var(--yel);line-height:1}.dixbig small{font-size:22px;color:var(--mut)}
+.dixlist{display:grid;gap:8px;margin:12px 0}.dixrow{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:14px;background:rgba(255,255,255,.05);border-left:4px solid var(--pc)}
+.dixrow .av{font-size:22px}.dixrow .pn{width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dixrow b{font:700 20px Fredoka,Nunito,system-ui,sans-serif;width:28px;text-align:right}
+.dixbar{flex:1;height:10px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}.dixbar i{display:block;height:100%;background:var(--pc);border-radius:99px;animation:grow .7s ease both;transform-origin:left}
+.dixex{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0}.dixex>span{display:flex;align-items:center;gap:4px}.dixex b{color:var(--yel)}
 .center{text-align:center;margin-top:40px}.big{font-size:54px}
 #banner{position:fixed;left:50%;bottom:12px;transform:translateX(-50%) translateY(150%);max-width:calc(100% - 24px);width:560px;background:#3a2672;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:13px;font-weight:700;transition:transform .3s;z-index:40;text-align:center}
 #banner.show{transform:translateX(-50%)}#banner.err{background:#6b1838}#banner.info{background:#22305e}
@@ -1065,6 +1079,57 @@ add(QSJ,'mus',[["Shakira","Je danse très bien","Je suis colombienne","J'ai chan
  ["Coldplay","Notre chanteur s'appelle Chris Martin","Nous sommes britanniques","Nous avons chanté « Viva la Vida »"],["Bruno Mars","J'ai fait un duo avec Anderson .Paak (Silk Sonic)","Je suis né à Hawaï","J'ai chanté « Uptown Funk » avec Mark Ronson"],
  ["Lady Gaga","Je porte des tenues spectaculaires","J'ai joué dans « A Star Is Born »","J'ai chanté « Bad Romance »"],["Dua Lipa","Je suis britannique d'origine albanaise","J'ai chanté pour le film Barbie","J'ai chanté « Levitating »"]]);
 
+// ====== C'EST UN(E) 10 MAIS… : défauts ({P} = il / elle) ======
+const DIX={
+gen:["mais {P} met de la mayonnaise sur ses pâtes","mais {P} répond « ok. » à tous tes longs messages","mais {P} applaudit quand l'avion atterrit","mais {P} n'a jamais vu un seul film de sa vie",
+ "mais {P} met ses vidéos en haut-parleur dans le métro","mais {P} mange les chips avec une fourchette","mais {P} parle de son ex toutes les cinq minutes","mais {P} a 47 000 notifications non lues",
+ "mais {P} t'appelle « bro » même en rendez-vous","mais {P} met des glaçons dans son vin rouge","mais {P} écrit « sava » au lieu de « ça va »","mais {P} a un tatouage du visage de sa mère sur le torse",
+ "mais {P} vit encore chez ses parents à 34 ans et ne compte pas partir","mais {P} ne sait pas nager","mais {P} mange sa pizza en commençant par la croûte","mais {P} envoie des vocaux de 7 minutes",
+ "mais {P} like ses propres photos","mais {P} dit « en vrai » à chaque phrase","mais {P} parle de cryptomonnaie à chaque repas","mais {P} a une peur panique des pigeons",
+ "mais {P} arrive toujours avec une heure de retard","mais {P} rit comme un phoque","mais {P} n'aime pas les animaux","mais {P} lit les spoilers à voix haute",
+ "mais {P} porte des chaussettes avec des sandales","mais {P} commente tous les films pendant qu'ils passent","mais {P} dit « bon appétit » à la caissière","mais {P} appelle sa mère pour choisir ses vêtements",
+ "mais {P} n'a jamais terminé une seule série","mais {P} garde ses chaussures à l'intérieur","mais {P} a 12 chats et en veut encore","mais {P} chante faux en permanence",
+ "mais {P} répète « je suis pas comme les autres »","mais {P} fait la bise à tout le monde, même à ton boss","mais {P} ne ferme jamais les placards","mais {P} lit tes messages par-dessus ton épaule",
+ "mais {P} a son propre selfie en fond d'écran","mais {P} mange le dernier morceau sans demander","mais {P} met 45 minutes à commander au restaurant","mais {P} filme les concerts en entier",
+ "mais {P} roule à 20 km/h sur l'autoroute","mais {P} déteste le chocolat","mais {P} met du ketchup sur tout, même sur les sushis","mais {P} parle de sa salle de sport à chaque phrase",
+ "mais {P} ronfle comme un tracteur","mais {P} t'appelle par le prénom de son ex une fois sur deux","mais {P} a toujours 3 % de batterie","mais {P} poste 40 stories par jour",
+ "mais {P} a peur du noir à 30 ans","mais {P} chante au karaoké à chaque soirée sans qu'on lui demande","mais {P} dit « deux secondes » et revient deux heures après","mais {P} ne dit jamais merci au livreur",
+ "mais {P} pense que la Terre est plate","mais {P} te refile les cadeaux qu'on lui a offerts","mais {P} se coupe les ongles à table","mais {P} n'a jamais goûté de fromage",
+ "mais {P} dort 14 heures par nuit","mais {P} parle plus à sa plante qu'à toi","mais {P} collectionne 300 figurines de canards","mais {P} t'envoie des mèmes à 4 h du matin",
+ "mais {P} t'emmène au fast-food pour chaque grande occasion","mais {P} mange en faisant des bruits de bouche","mais {P} t'appelle « mon reuf » devant ta famille","mais {P} trempe ses frites dans son milkshake",
+ "mais {P} n'a jamais répondu à un appel de sa vie","mais {P} fait des fautes dans tous ses messages, même « bonjour »","mais {P} rembourse toujours avec un mois de retard","mais {P} met 3 alarmes et ne se réveille jamais",
+ "mais {P} parle de son horoscope pour chaque décision","mais {P} garde les emballages de tout « au cas où »"],
+hsr:["mais {P} n'a que des persos 4★","mais {P} skippe toutes les cinématiques","mais {P} a dépensé son loyer en jades stellaires","mais {P} fouille les poubelles comme le Pionnier… dans la vraie vie",
+ "mais {P} trouve que Pom-Pom est surcoté","mais {P} parle de Kafka dans son sommeil","mais {P} met tout en combat automatique","mais {P} n'a jamais fini l'Univers simulé",
+ "mais {P} a perdu dix 50/50 d'affilée et en parle tout le temps","mais {P} veut appeler votre enfant Firefly","mais {P} t'appelle « Pionnier » au lieu de ton prénom","mais {P} a 300 heures sur HSR sans connaître le lore",
+ "mais {P} pense que March 7th est une date","mais {P} juge tous ceux qui jouent à HSR","mais {P} achète le pass de combat pour toute sa famille","mais {P} a appelé son wifi « Astral Express »",
+ "mais {P} imite la voix de Pom-Pom en permanence","mais {P} quitte les dîners pour faire ses missions journalières","mais {P} prie les Aeons avant chaque examen","mais {P} refuse de sortir pendant une nouvelle bannière"],
+gi:["mais {P} a dépensé 3 000 € en vœux","mais {P} n'a que Paimon comme amie","mais {P} appelle tout le monde « nourriture de secours »","mais {P} n'a jamais ouvert un seul coffre",
+ "mais {P} a cassé sa manette dans l'Abîme spiralé","mais {P} parle de sa résine au lieu de dormir","mais {P} veut emménager dans son Pot de Sérénité","mais {P} a 1 200 heures sur Genshin",
+ "mais {P} trouve que Venti chante faux","mais {P} ne joue que Qiqi","mais {P} pleure à chaque musique de Liyue","mais {P} t'appelle « Voyageur »",
+ "mais {P} ne mange que du tofu aux amandes","mais {P} pêche dans Genshin pendant vos rendez-vous","mais {P} a appelé son chat Klee… et il casse tout","mais {P} veut un mariage à thème Fontaine",
+ "mais {P} parle aux Slimes","mais {P} ne connaît le nom d'aucune nation","mais {P} oublie toujours son portefeuille, comme Zhongli","mais {P} juge ton équipe dans l'Abîme"],
+ani:["mais {P} regarde tout en VF, même les openings","mais {P} spoile la fin de chaque anime","mais {P} crie le nom de ses attaques en faisant la vaisselle","mais {P} court comme Naruto dans la rue",
+ "mais {P} a une waifu imprimée sur son oreiller","mais {P} dit que Naruto est mieux que One Piece… très fort","mais {P} pleure à chaque épisode, même les fillers","mais {P} parle japonais avec un accent inventé",
+ "mais {P} n'a jamais vu L'Attaque des Titans","mais {P} t'appelle « senpai »","mais {P} a appelé sa voiture « Thousand Sunny »","mais {P} veut un mariage en cosplay",
+ "mais {P} pense que les animes, c'est pour les enfants","mais {P} a lu la fin de ton manga et sourit bizarrement","mais {P} a 400 figurines dans sa chambre","mais {P} lit des scans traduits par Google Traduction",
+ "mais {P} regarde tous les animes en vitesse x2","mais {P} trouve que Gojo est surcoté","mais {P} fait des Kamehameha sur les pigeons","mais {P} n'a jamais vu un seul film Ghibli"],
+mus:["mais {P} écoute sa musique sans écouteurs dans le bus","mais {P} chante faux sous ta fenêtre tous les matins","mais {P} ne connaît que les refrains","mais {P} écoute la même chanson en boucle depuis 2019",
+ "mais {P} déteste la musique, toute la musique","mais {P} fait du air guitar en public","mais {P} n'écoute que des génériques de dessins animés","mais {P} a un récap Spotify honteux",
+ "mais {P} chante pendant les films","mais {P} pense que Mozart est un rappeur","mais {P} joue de la flûte à bec tous les soirs","mais {P} met le son à fond à 7 h du matin",
+ "mais {P} t'envoie des vocaux où {P} chante","mais {P} met de la musique pendant que tu parles","mais {P} danse comme en 2008","mais {P} applaudit au milieu des chansons",
+ "mais {P} critique tes goûts musicaux devant tes amis","mais {P} ne connaît aucune chanson française","mais {P} siffle tout le temps","mais {P} veut monter un groupe de kazoo avec toi"],
+sport:["mais {P} pleure quand son équipe perd","mais {P} regarde le foot pendant ton anniversaire","mais {P} porte un maillot de foot à chaque rendez-vous","mais {P} commente ton footing comme un match",
+ "mais {P} a abandonné la salle au bout de deux jours","mais {P} crie sur l'arbitre devant la télé","mais {P} se prend pour Mbappé au five","mais {P} déteste tous les sports",
+ "mais {P} soutient l'OM et le PSG en même temps","mais {P} fait des pompes au restaurant","mais {P} te réveille à 5 h pour aller courir","mais {P} parle de ses protéines à chaque repas",
+ "mais {P} veut se tatouer le logo de son club sur le front","mais {P} triche au foot entre potes","mais {P} se blesse à l'échauffement à chaque fois","mais {P} veut que vous couriez un marathon ensemble",
+ "mais {P} parie sur tous les matchs","mais {P} pense que le curling est le plus grand sport du monde","mais {P} a appelé son chien Zidane","mais {P} refuse de rater un seul match de padel"],
+rap:["mais {P} n'écoute que Jul, en boucle, depuis 2014","mais {P} fait des ad-libs à chaque phrase","mais {P} rappe ses messages vocaux","mais {P} se prend pour Booba",
+ "mais {P} porte une cagoule en plein été","mais {P} répète que le rap c'était mieux avant","mais {P} t'a écrit un son d'amour (et c'est gênant)","mais {P} clashe ses collègues en freestyle",
+ "mais {P} fait le signe de PNL sur toutes les photos","mais {P} veut appeler votre enfant Ninho","mais {P} déteste le rap","mais {P} a sorti 14 mixtapes que personne n'écoute",
+ "mais {P} met de la drill à fond chez ta grand-mère","mais {P} parle uniquement en verlan","mais {P} se fait appeler « Le Boss » par tout le monde","mais {P} tourne des clips dans ton salon",
+ "mais {P} pense qu'Orelsan est un fromage","mais {P} a un tatouage « 13 » alors qu'{P} vient de Lille","mais {P} commence chaque phrase par « yeah »","mais {P} veut absolument faire un feat avec toi"]
+};
 
 // ====== ENTRE NOUS — moteur multijoueur ======
 const APP='en1';
@@ -1088,6 +1153,8 @@ const GAMES={
   r:"Une question, quatre réponses, <b>20 secondes</b>. Bonne réponse : <b>+2</b>. Le plus rapide à trouver gagne <b>+1</b> en bonus. Tout le monde joue en même temps."},
  vf:{e:'✅',n:'Vrai ou Faux',d:'Une affirmation, deux boutons. Qui connaît vraiment son sujet ?',min:2,c:'#a6ff4d',
   r:"Une affirmation s'affiche : <b>vrai ou faux ?</b> Vous avez 20 secondes. Bonne réponse : <b>+2</b>, et <b>+1</b> pour le plus rapide. L'explication apparaît à la révélation."},
+ dix:{e:'💯',n:"C'est un 10 mais…",d:'Une note parfaite… puis le défaut qui gâche tout. Tu baisses la note de combien ?',min:2,c:'#ff8a3d',
+  r:"Un mec ou une meuf imaginaire reçoit une note de départ… puis tombe le <b>« mais… »</b> (un défaut bien gênant). Chacun donne sa <b>nouvelle note de 0 à 10</b>. À la révélation : toutes les notes, la moyenne, le plus indulgent 😇 et le plus sévère 😈. Ceux qui sont le plus proches de la moyenne du groupe gagnent <b>1 point</b>."},
  qsj:{e:'🔍',n:'Qui suis-je ?',d:'Des indices qui se dévoilent un à un : trouve le perso ou l\'artiste au plus vite.',min:2,c:'#ff6bd6',
   r:"Un mystérieux personnage (ou artiste) se décrit en <b>3 indices</b>, du plus dur au plus facile, un toutes les 10 secondes. Tu n'as <b>qu'une seule réponse</b> : trouvé au 1er indice = <b>3 pts</b>, au 2e = 2 pts, au 3e = 1 pt."}
 };
@@ -1102,8 +1169,8 @@ function validImg(u){return typeof u==='string'&&u.length<9000&&/^data:image\/(j
 const range=n=>Array.from({length:n},(_,i)=>i);
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const ss={get(k,d){try{const v=sessionStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{sessionStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-const BANKS={roue:SPECTRES,duo:DUO,tp:TP,plus:PLUS,imp:IMP,quiz:QUIZ,vf:VF,qsj:QSJ};
-const VERSION='13 nov · v8';
+const BANKS={roue:SPECTRES,duo:DUO,tp:TP,plus:PLUS,imp:IMP,quiz:QUIZ,vf:VF,qsj:QSJ,dix:DIX};
+const VERSION='14 nov · v9';
 const FL={};
 // liste à plat {c: catégorie, v: élément} — mêmes index chez tous les joueurs
 function flat(g){if(FL[g])return FL[g];const out=[];
@@ -1230,7 +1297,7 @@ function expected(g,ps){
   case'roue':{const med=ps.find(p=>p.pid===g.med);if(!med||!ans(med,g))return null;return ps.filter(p=>p.pid!==g.med)}
   case'qdn':return ps.filter(p=>g.cfg.cp.includes(p.pid)).length===2?ps.filter(p=>g.cfg.cp.includes(p.pid)):null;
   case'duo':return ps.some(p=>p.pid===g.sub)&&ps.length>1?ps:null;
-  case'tp':case'plus':case'quiz':case'vf':case'qsj':case'anim':return ps;
+  case'tp':case'plus':case'quiz':case'vf':case'qsj':case'dix':return ps;
   case'imp':return g.ph==='vote'?ps:null;
  }return null}
 function pick(st,list){const d=shuffled(list,st.seed);return d[st.i%d.length]}
@@ -1241,6 +1308,7 @@ function setupRound(st){
  switch(st.g){
   case'roue':st.mi=(st.mi+1)%Math.max(1,order.length);st.med=order[st.mi];st.q=pick(st,pool);st.t=Math.round(12+Math.random()*156);break;
   case'qdn':case'tp':case'plus':st.q=pick(st,pool);break;
+  case'dix':st.q=pick(st,pool);st.gd=Math.random()<.5?'m':'f';st.bn=[7,8,9,10,10,10,10][Math.floor(Math.random()*7)];break;
   case'duo':st.mi=(st.mi+1)%Math.max(1,order.length);st.sub=order[st.mi];st.q=pick(st,pool);break;
   case'quiz':st.q=pick(st,pool);st.op=shuffled([0,1,2,3],Math.floor(Math.random()*1e9));st.ord=[];st.t0=Date.now();break;
   case'vf':st.q=pick(st,pool);st.ord=[];st.t0=Date.now();break;
@@ -1266,6 +1334,8 @@ function doReveal(st,ps){
    for(const pid of (st.ord||[])){const p=ps.find(x=>x.pid===pid);if(p&&ok(ans(p,st))){first=pid;break}}
    ps.forEach(p=>{if(ok(ans(p,st)))last[p.pid]=2+(p.pid===first?1:0)});st.first=first;break}
   case'qsj':ps.forEach(p=>{const v=ans(p,st);if(v&&v.o===st.q)last[p.pid]=Math.max(1,3-(v.l|0))});break;
+  case'dix':{const vs=ps.map(p=>({pid:p.pid,v:ans(p,st)})).filter(x=>typeof x.v==='number');if(vs.length>1){const avg=vs.reduce((a,x)=>a+x.v,0)/vs.length;
+   const d=Math.min(...vs.map(x=>Math.abs(x.v-avg)));vs.forEach(x=>{if(Math.abs(Math.abs(x.v-avg)-d)<1e-9)last[x.pid]=1})}break}
   case'anim':ps.forEach(p=>{const v=ans(p,st);if(v&&v.ok)last[p.pid]=Math.max(1,3-(v.l|0))});break;
   case'imp':{const t={};ps.forEach(p=>{const v=ans(p,st);if(v)t[v]=(t[v]||0)+1});const mx=Math.max(0,...Object.values(t));const top=Object.keys(t).filter(k=>t[k]===mx);
    st.out=top.length===1?top[0]:null;st.caught=st.out===st.imp;
@@ -1399,7 +1469,7 @@ function hostCtl(){const g=G();if(g.ph==='end')return'';if(!S.host)return`<div c
  return`<div class="hctl"><button class="btn ghost block" data-act="reveal">Révéler maintenant</button></div>`}
 
 function vGame(){const g=G();let body='';
- try{body=({roue:vRoue,qdn:vQdn,duo:vDuo,tp:vTp,plus:vPlus,imp:vImp,quiz:vQuiz,vf:vVf,qsj:vQsj,anim:vAnim})[g.g](g)}catch(e){console.error(e);body=`<div class="card">Oups, petite erreur d'affichage.</div>`}
+ try{body=({roue:vRoue,qdn:vQdn,duo:vDuo,tp:vTp,plus:vPlus,imp:vImp,quiz:vQuiz,vf:vVf,qsj:vQsj,dix:vDix})[g.g](g)}catch(e){console.error(e);body=`<div class="card">Oups, petite erreur d'affichage.</div>`}
  if(g.ph==='end')return`${topbar(true)}${vEnd(g)}`;
  return`${topbar(true)}<div class="rnd">Manche ${g.n}${g.cfg.len?` / ${g.cfg.len}`:''}${g.cfg.len?`<span class="prog"><i style="width:${100*g.n/g.cfg.len}%"></i></span>`:''}</div>${body}${L('hctl',hostCtl)}`}
 
@@ -1578,6 +1648,19 @@ function vAnim(g){const it=item(g);const [names,chars]=it.v;const mine=myAns();c
    :`<div class="ainput"><input id="aguess" class="txt" placeholder="Nom de l'anime…" autocomplete="off" maxlength="60"><button class="abtn" data-act="guessanim">Répondre</button></div>
    <div class="arow"><span class="mut">Trouve maintenant : <b class="yel">${pts} pt${pts>1?'s':''}</b></span><button class="alink" data-act="passanim">Je passe</button></div>`}
  </div>${L('stat',()=>statusHTML(present()))}`}
+
+// ----- c'est un 10 mais… -----
+function vDix(g){const it=item(g);const m=g.gd!=='f';const flaw=it.v.replace(/\{P\}/g,m?'il':'elle');const mine=myAns();const ps=present();
+ const card=`<div class="dixcard ${m?'m':'f'}"><div class="dixwho">${m?'🧔 Un mec':'👩 Une meuf'}</div>
+  <div class="dixline">C'est ${m?'un':'une'} <span class="dixn">${g.bn}</span></div><div class="dixbut">${esc(flaw)}…</div><div class="qcat">${catLabel('dix',it.c)}</div></div>`;
+ if(g.ph==='reveal'){const vs=ps.map(p=>({pid:p.pid,v:ans(p,g)})).filter(x=>typeof x.v==='number').sort((a,b)=>b.v-a.v);
+  if(!vs.length)return`${card}<p class="mut c">Personne n'a noté.</p>`;
+  const avg=vs.reduce((a,x)=>a+x.v,0)/vs.length;const hi=vs[0],lo=vs[vs.length-1];const drop=g.bn-avg;const fr=x=>x.toFixed(1).replace('.',',');
+  return`${card}<div class="dixavg"><div class="lbl">Note du groupe</div><div class="dixbig">${fr(avg)}<small>/10</small></div><p class="mut">${drop>0.05?`${m?'Il':'Elle'} a perdu ${fr(drop)} point${drop>=2?'s':''} 😬`:drop<-0.05?`Le défaut ${m?'le':'la'} rend encore plus attirant${m?'':'e'} 😳`:`Rien n'a changé : toujours ${m?'un':'une'} ${g.bn}`}</p></div>
+  <div class="dixlist">${vs.map(x=>`<div class="dixrow" style="--pc:${pinfo(x.pid).c}"><span class="av">${pinfo(x.pid).a}</span><span class="pn">${esc(pinfo(x.pid).n)}</span><span class="dixbar"><i style="width:${x.v*10}%"></i></span><b>${x.v}</b></div>`).join('')}</div>
+  ${vs.length>1&&hi.v!==lo.v?`<div class="dixex"><span>😇 Plus indulgent : ${chip(hi.pid,` <b>${hi.v}</b>`)}</span><span>😈 Plus sévère : ${chip(lo.pid,` <b>${lo.v}</b>`)}</span></div>`:''}${lastPts()}`}
+ return`${card}<div class="lbl c">Ta nouvelle note</div><div class="notes">${range(11).map(n=>`<button class="note ${mine===n?'on':''}" style="--nc:hsl(${n*12} 85% 60%)" data-act="ansn" data-v="${n}" ${mine!==undefined?'disabled':''}>${n}</button>`).join('')}</div>
+  ${mine!==undefined?`<p class="mut c">Note verrouillée : <b>${mine}/10</b> 🔒</p>`:''}${L('stat',()=>statusHTML(present()))}`}
 
 // ----- modales -----
 const LENS=[5,10,15,20,30,0];

@@ -11,6 +11,7 @@ Site de mini-jeux à jouer entre amis, chacun sur son téléphone. L'hôte crée
 - 🕵️ **L'Imposteur** (Undercover / Mister White)
 - 🧩 **Quiz** — QCM chronométré, bonus au plus rapide
 - ✅ **Vrai ou Faux** — avec l'explication à chaque réponse
+- 💯 **C'est un 10 mais…** — une note parfaite, un défaut qui gâche tout : chacun redonne sa note de 0 à 10
 - 🔍 **Qui suis-je ?** — indices progressifs, moins d'indices = plus de points
 
 Chaque jeu propose des catégories au choix : 🎲 Général, 🚂 Honkai: Star Rail, ⚔️ Genshin Impact, 🍙 Manga / Animé, 🎵 Musique, ⚽ Sport, 🎤 Rap FR (plus de 2 300 questions au total).
