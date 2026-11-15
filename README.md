@@ -13,6 +13,7 @@ Site de mini-jeux à jouer entre amis, chacun sur son téléphone. L'hôte crée
 - ✅ **Vrai ou Faux** — avec l'explication à chaque réponse
 - 💯 **C'est un 10 mais…** — une note parfaite, un défaut qui gâche tout : chacun redonne sa note de 0 à 10
 - 🔑 **Mot de passe** — chacun son tour fait deviner sa série de mots (1re lettre donnée), un seul mot par indice, 5 → 1 pt
+- 🙅 **Ne dis pas la même chose que moi** — des thèmes de plus en plus précis : cite une réponse différente de celle choisie en secret par le site, sinon tu es éliminé
 - 🔍 **Qui suis-je ?** — indices progressifs, moins d'indices = plus de points
 
 Chaque jeu propose des catégories au choix : 🎲 Général, 🚂 Honkai: Star Rail, ⚔️ Genshin Impact, 🍙 Manga / Animé, 🎵 Musique, ⚽ Sport, 🎤 Rap FR (plus de 3 700 questions au total, thème affiché en haut de chaque question).

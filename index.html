@@ -244,6 +244,18 @@ button.gs{cursor:pointer}
 .theme b{color:var(--tx)}
 .mpat{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:6px 0 2px;font:700 30px Fredoka,Nunito,system-ui,sans-serif}
 .mpat b{color:var(--yel);min-width:22px;text-align:center}.mpat span{color:var(--mut);min-width:22px;text-align:center}.mpat i{font-style:normal;color:var(--mut);min-width:10px}
+.ndlad{display:grid;gap:6px;margin:4px 0 10px}
+.ndst{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:14px;color:var(--mut)}
+.ndst span{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);font:700 13px Fredoka,Nunito,system-ui,sans-serif}
+.ndst.done{opacity:.6;text-decoration:line-through}.ndst.cur{color:var(--tx);border-color:#a6ff4d;background:color-mix(in srgb,#a6ff4d 14%,var(--card));font-weight:800}.ndst.cur span{background:#a6ff4d;color:#1a0f33}
+.ndst.next{opacity:.45;font-style:italic}
+.ndcount{margin-top:10px;font-size:14px;opacity:.85}
+.ndrows{display:grid;gap:8px;margin:10px 0}
+.ndrow{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.05);border-left:4px solid var(--pc)}
+.ndrow .av{font-size:22px}.ndrow .pn{width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ndrow .ndsaid{flex:1;font:700 17px Fredoka,Nunito,system-ui,sans-serif}
+.ndrow.same{background:color-mix(in srgb,var(--pink) 20%,transparent)}.ndrow.ok b{color:var(--teal)}.ndrow.same b{color:var(--pink)}
+.ndall{margin:8px 0;padding:10px 14px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:14px}.ndall summary{cursor:pointer;color:var(--mut);font-weight:800}
+.ndall p{line-height:1.7}.ndall .pick{color:var(--yel);font-weight:900}
 .center{text-align:center;margin-top:40px}.big{font-size:54px}
 #banner{position:fixed;left:50%;bottom:12px;transform:translateX(-50%) translateY(150%);max-width:calc(100% - 24px);width:560px;background:#3a2672;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:13px;font-weight:700;transition:transform .3s;z-index:40;text-align:center}
 #banner.show{transform:translateX(-50%)}#banner.err{background:#6b1838}#banner.info{background:#22305e}
@@ -1407,6 +1419,102 @@ add(MDP,'sport',["Football","Tennis","Basket","Rugby","Handball","Volley","Natat
  "Nadal","Riner","Wembanyama","Corner","Hors-jeu","Dunk","Smash","Essai","Mêlée","Vestiaire"]);
 add(MDP,'rap',["Jul","PNL","Nekfeu","Orelsan","Ninho","SCH","Damso","Gims","Soprano","Vald","Gazo","Hamza","Kaaris","Lomepal","IAM","NTM","Diam's","Bigflo","Ad-lib","Autotune",
  "Instru","Sample","Battle","Rappeuse","Quartier","Bling","Chaîne","Casquette","Survêtement","Hit"]);
+// ====== NE DIS PAS LA MÊME CHOSE QUE MOI : chaînes du plus vague au plus précis ======
+// chaque étape : [thème, [réponses possibles, alias séparés par |]]
+const GI_ALL=["Venti|Barbatos","Zhongli|Morax","Raiden|Raiden Shogun|Ei","Nahida|Kusanali","Furina|Focalors","Mavuika","Diluc","Kaeya","Jean","Klee","Amber","Lisa","Barbara","Noelle","Razor","Bennett","Fischl","Sucrose","Mona","Albedo","Eula","Diona","Rosaria","Mika",
+ "Xiao","Ganyu","Keqing","Ningguang","Beidou","Hu Tao","Qiqi","Xiangling","Xingqiu","Chongyun","Xinyan","Yelan","Shenhe","Yaoyao","Yun Jin","Baizhu","Yanfei","Gaming","Xianyun",
+ "Ayaka|Kamisato Ayaka","Ayato|Kamisato Ayato","Yoimiya","Itto|Arataki Itto","Kokomi|Sangonomiya Kokomi","Gorou","Sara|Kujou Sara","Sayu","Thoma","Kazuha|Kaedehara Kazuha","Yae Miko|Yae","Kirara","Shinobu|Kuki Shinobu","Heizou|Shikanoin Heizou",
+ "Tighnari","Collei","Cyno","Nilou","Alhaitham","Kaveh","Dehya","Candace","Layla","Faruzan","Wanderer|Vagabond|Scaramouche","Neuvillette","Wriothesley","Lyney","Lynette","Freminet","Navia","Charlotte","Chevreuse","Chiori","Clorinde","Sigewinne","Emilie",
+ "Arlecchino","Childe|Tartaglia","Kinich","Mualani","Kachina","Xilonen","Chasca","Ororon","Citlali","Aether|Voyageur","Lumine|Voyageuse","Aloy"];
+const HSR_ALL=["Himeko","Welt","Bronya","Gepard","Clara","Yanqing","Bailu","Seele","Jing Yuan","Silver Wolf","Luocha","Blade","Kafka","Fu Xuan","Jingliu","Topaz","Dan Heng|Imbibitor Lunae","Huohuo","Argenti","Ruan Mei","Dr. Ratio|Ratio|Veritas Ratio",
+ "Black Swan","Sparkle","Acheron","Aventurine","Robin","Boothill","Firefly","Jade","Yunli","Jiaoqiu","Feixiao","Lingsha","Rappa","Sunday","Fugue","The Herta|Grande Herta","Herta","Aglaea","Tribbie","Mydei","Castorice","Anaxa","Phainon","Hyacine","Cipher",
+ "March 7th|March","Arlan","Asta","Serval","Natasha","Pela","Sampo","Hook","Qingque","Tingyun","Sushang","Lynx","Luka","Yukong","Guinaifen","Hanya","Xueyi","Misha","Gallagher","Moze","Pionnier|Pionnière|Caelus|Stelle|Trailblazer"];
+const ND={
+gi:[
+ [["Un personnage jouable de Genshin",GI_ALL],["Un Archon",["Venti|Barbatos","Zhongli|Morax","Raiden|Raiden Shogun|Ei","Nahida|Kusanali","Furina|Focalors","Mavuika","Tsaritsa|La Tsaritsa"]],["Un Archon de Mondstadt ou de Liyue",["Venti|Barbatos","Zhongli|Morax"]]],
+ [["Un personnage de Mondstadt",["Venti","Diluc","Kaeya","Jean","Klee","Amber","Lisa","Barbara","Noelle","Razor","Bennett","Fischl","Sucrose","Mona","Albedo","Eula","Diona","Rosaria","Mika"]],["Un personnage Pyro de Mondstadt",["Diluc","Klee","Amber","Bennett"]],["Un Pyro de Mondstadt qui manie une claymore ou un catalyseur",["Diluc","Klee"]]],
+ [["Un personnage de Liyue",["Zhongli","Xiao","Ganyu","Keqing","Ningguang","Beidou","Hu Tao","Qiqi","Xiangling","Xingqiu","Chongyun","Xinyan","Yelan","Shenhe","Yaoyao","Yun Jin","Baizhu","Yanfei","Gaming","Xianyun"]],
+  ["Un personnage de Liyue qui manie une lance",["Zhongli","Xiao","Hu Tao","Xiangling","Shenhe","Yaoyao","Yun Jin"]],["Un 5★ de Liyue à la lance",["Zhongli","Xiao","Hu Tao","Shenhe"]],["Un 5★ de Liyue à la lance, Pyro ou Anemo",["Xiao","Hu Tao"]]],
+ [["Un Harbinger des Fatui",["Pierro","Capitano|Il Capitano","Dottore|Il Dottore","Columbina","Arlecchino","Pulcinella","Scaramouche|Wanderer|Vagabond","Sandrone","Signora|La Signora","Pantalone","Childe|Tartaglia"]],
+  ["Un Harbinger devenu jouable",["Childe|Tartaglia","Arlecchino","Scaramouche|Wanderer|Vagabond"]],["Un Harbinger jouable qui manie un arc ou une lance",["Childe|Tartaglia","Arlecchino"]]],
+ [["Une nation de Teyvat",["Mondstadt","Liyue","Inazuma","Sumeru","Fontaine","Natlan","Snezhnaya"]],["Une nation explorable avant Natlan",["Mondstadt","Liyue","Inazuma","Sumeru","Fontaine"]],["Une des deux premières nations",["Mondstadt","Liyue"]]],
+ [["Un élément de Genshin",["Anemo","Geo","Électro|Electro","Dendro","Hydro","Pyro","Cryo"]],["Un élément dont l'Archon est jouable",["Anemo","Geo","Électro|Electro","Dendro","Hydro","Pyro"]],["L'élément d'un des deux premiers Archons",["Anemo","Geo"]]],
+ [["Un personnage qu'on croise au tout début de l'aventure",["Paimon","Aether","Lumine","Amber","Kaeya","Lisa","Venti","Jean","Diluc"]],["Un des jumeaux voyageurs",["Aether|Voyageur","Lumine|Voyageuse"]]],
+ [["Un personnage d'Inazuma",["Raiden|Raiden Shogun|Ei","Ayaka|Kamisato Ayaka","Ayato|Kamisato Ayato","Yoimiya","Itto|Arataki Itto","Kokomi","Gorou","Sara|Kujou Sara","Sayu","Thoma","Kazuha","Yae Miko|Yae","Kirara","Shinobu|Kuki Shinobu","Heizou","Chiori"]],
+  ["Un perso d'Inazuma du clan Kamisato (famille ou serviteur)",["Ayaka|Kamisato Ayaka","Ayato|Kamisato Ayato","Thoma"]],["Un membre de la fratrie Kamisato",["Ayaka|Kamisato Ayaka","Ayato|Kamisato Ayato"]]]
+],
+hsr:[
+ [["Un personnage jouable de HSR",HSR_ALL],["Un membre de l'Astral Express",["Himeko","Welt","March 7th|March","Dan Heng","Pom-Pom","Pionnier|Pionnière|Caelus|Stelle|Trailblazer"]],
+  ["Un membre jouable de l'Express qui n'est pas le Pionnier",["Himeko","Welt","March 7th|March","Dan Heng"]],["Un membre de l'Express avec un passé mystérieux ou une forme cachée",["March 7th|March","Dan Heng"]]],
+ [["Un Chasseur de Stellarons",["Kafka","Blade","Silver Wolf","Firefly|Sam","Elio"]],["Un Chasseur de Stellarons jouable",["Kafka","Blade","Silver Wolf","Firefly|Sam"]],["Un Chasseur de Stellarons Foudre ou Vent",["Kafka","Blade"]]],
+ [["Un Aeon",["Akivili","Lan","Nanook","Qlipoth","Aha","Nous","IX","Xipe","Yaoshi","Fuli","Idrila"]],["L'Aeon d'un Path jouable",["Lan","Nanook","Qlipoth","Nous","IX","Xipe","Yaoshi","Fuli"]],["L'Aeon de la Destruction ou de la Préservation",["Nanook","Qlipoth"]]],
+ [["Un lieu de HSR",["Jarilo-VI|Jarilo","Belobog","Luofu|Xianzhou Luofu|Xianzhou","Penacony","Station Herta|Station spatiale Herta","Amphoreus","Astral Express|Express","Bas-Fonds"]],
+  ["Un lieu visité dans les premières versions (1.x)",["Jarilo-VI|Jarilo","Belobog","Luofu|Xianzhou Luofu|Xianzhou","Station Herta|Station spatiale Herta","Bas-Fonds"]],["Un lieu de Jarilo-VI",["Belobog","Bas-Fonds"]]],
+ [["Un personnage du Xianzhou Luofu",["Jing Yuan","Yanqing","Fu Xuan","Qingque","Bailu","Tingyun","Sushang","Jingliu","Huohuo","Yukong","Guinaifen","Hanya","Xueyi"]],["Un perso du Luofu qui se bat à l'épée",["Yanqing","Sushang","Jingliu"]],["Un épéiste du Luofu de l'élément Glace",["Yanqing","Jingliu"]]],
+ [["Un élément de combat de HSR",["Physique","Feu","Glace","Foudre","Vent","Quantique","Imaginaire"]],["Un élément qui existe aussi dans Genshin (sous un autre nom)",["Feu","Glace","Foudre","Vent"]],["L'élément le plus chaud ou le plus froid",["Feu","Glace"]]],
+ [["Un Path de HSR",["Destruction","Chasse","Érudition|Erudition","Harmonie","Nihilité|Nihilite","Préservation|Preservation","Abondance","Souvenir|Remembrance"]],["Un Path de soutien ou de défense",["Harmonie","Nihilité|Nihilite","Préservation|Preservation","Abondance","Souvenir|Remembrance"]],["Un Path qui protège ou soigne",["Préservation|Preservation","Abondance"]]],
+ [["Un personnage de Belobog",["Bronya","Seele","Gepard","Serval","Natasha","Pela","Sampo","Hook","Clara","Lynx","Luka","Cocolia","Svarog"]],["Un membre de la famille Landau",["Gepard","Serval","Lynx"]],["Un Landau de l'élément Glace ou Foudre",["Gepard","Serval"]]]
+],
+ani:[
+ [["Un membre de l'équipage du Chapeau de paille",["Luffy","Zoro","Nami","Usopp","Sanji","Chopper","Robin|Nico Robin","Franky","Brook","Jinbe"]],["Un Chapeau de paille qui a mangé un fruit du démon",["Luffy","Chopper","Robin|Nico Robin","Brook"]],["Un utilisateur de fruit du démon humain",["Luffy","Robin|Nico Robin"]]],
+ [["Un joueur de Karasuno",["Hinata","Kageyama","Tsukishima","Yamaguchi","Nishinoya","Tanaka","Daichi","Sugawara","Asahi","Ennoshita","Kinoshita","Narita"]],["Un joueur de 1re année de Karasuno",["Hinata","Kageyama","Tsukishima","Yamaguchi"]],["Le duo le plus célèbre de Karasuno",["Hinata","Kageyama"]]],
+ [["Un membre des Black Stones ou de Trapnest",["Nana|Nana Osaki","Nobu","Yasu","Shin","Ren","Takumi","Reira","Naoki"]],["Un membre des Black Stones (d'origine ou non)",["Nana|Nana Osaki","Nobu","Yasu","Shin","Ren"]],["Un guitariste des Black Stones",["Nobu","Ren"]]],
+ [["Une classe de Servant dans Fate",["Saber","Archer","Lancer","Rider","Caster","Assassin","Berserker","Ruler","Avenger","Shielder","Moon Cancer","Alter Ego","Foreigner","Pretender"]],
+  ["Une des 7 classes classiques",["Saber","Archer","Lancer","Rider","Caster","Assassin","Berserker"]],["Une des trois classes de chevaliers",["Saber","Archer","Lancer"]],["Une classe de chevalier qui ne tire pas à l'arc",["Saber","Lancer"]]],
+ [["Un pilier (Hashira) de Demon Slayer",["Giyu|Giyu Tomioka","Rengoku|Kyojuro Rengoku","Shinobu|Shinobu Kocho","Tengen|Tengen Uzui","Mitsuri|Mitsuri Kanroji","Muichiro|Muichiro Tokito","Obanai|Obanai Iguro","Sanemi|Sanemi Shinazugawa","Gyomei|Gyomei Himejima"]],
+  ["Le pilier de l'Eau ou de la Flamme",["Giyu|Giyu Tomioka","Rengoku|Kyojuro Rengoku"]]],
+ [["Un des Neuf Titans",["Titan Assaillant|Assaillant","Titan Colossal|Colossal","Titan Cuirassé|Cuirassé","Titan Féminin|Féminin","Titan Bestial|Bestial","Titan Mâchoire|Mâchoire","Titan Charrette|Charrette","Titan Marteau d'armes|Marteau d'armes","Titan Originel|Originel"]],
+  ["Un Titan qu'Eren a possédé",["Titan Assaillant|Assaillant","Titan Originel|Originel","Titan Marteau d'armes|Marteau d'armes"]],["Un Titan qu'Eren a reçu de son père",["Titan Assaillant|Assaillant","Titan Originel|Originel"]]],
+ [["Un Pokémon de départ de Kanto ou une de ses évolutions",["Bulbizarre","Herbizarre","Florizarre","Salamèche","Reptincel","Dracaufeu","Carapuce","Carabaffe","Tortank","Pikachu"]],["Un starter de Kanto non évolué",["Bulbizarre","Salamèche","Carapuce"]],["Un starter de Kanto de type Feu ou Eau",["Salamèche","Carapuce"]]],
+ [["Un membre de l'équipe 7 (Naruto)",["Naruto","Sasuke","Sakura","Kakashi","Sai","Yamato"]],["Un genin d'origine de l'équipe 7",["Naruto","Sasuke","Sakura"]],["Un genin de l'équipe 7 rival de l'autre",["Naruto","Sasuke"]]]
+],
+mus:[
+ [["Un instrument de musique",["Guitare","Piano","Violon","Batterie","Basse","Flûte","Trompette","Saxophone","Harpe","Accordéon","Violoncelle","Contrebasse","Clarinette","Trombone","Ukulélé","Banjo","Orgue","Synthé|Synthétiseur","Harmonica","Tuba","Xylophone","Djembé","Alto","Mandoline","Cor","Hautbois","Basson","Triangle","Tambourin","Cornemuse"]],
+  ["Un instrument à cordes",["Guitare","Violon","Violoncelle","Contrebasse","Basse","Harpe","Ukulélé","Banjo","Mandoline","Alto"]],["Un instrument à cordes joué avec un archet",["Violon","Violoncelle","Contrebasse","Alto"]],["Le plus aigu ou le plus grave de la famille",["Violon","Contrebasse"]]],
+ [["Un membre des Beatles",["John Lennon|Lennon|John","Paul McCartney|McCartney|Paul","George Harrison|Harrison|George","Ringo Starr|Ringo"]],["Un Beatles chanteur principal du groupe",["John Lennon|Lennon|John","Paul McCartney|McCartney|Paul"]]],
+ [["Un groupe de K-pop",["BTS","BLACKPINK","EXO","TWICE","Stray Kids","SEVENTEEN","NewJeans","BIGBANG","aespa","ITZY","Red Velvet","TXT","ATEEZ","ENHYPEN","LE SSERAFIM","IVE"]],["Un membre de BTS",["RM","Jin","Suga","J-Hope","Jimin","V","Jungkook|Jung Kook"]],["Un rappeur de BTS",["RM","Suga","J-Hope"]]],
+ [["Une membre de BLACKPINK",["Jisoo","Jennie","Rosé|Rose","Lisa"]],["Une membre de BLACKPINK née hors de Corée",["Rosé|Rose","Lisa"]]],
+ [["Un genre musical",["Rock","Pop","Rap|Hip-hop","Jazz","Blues","Reggae","Métal|Metal","Punk","Funk","Soul","Disco","Techno","House","Électro|Electro","Classique","Country","R&B|RnB","Gospel","K-pop","J-pop","Variété","Opéra","Zouk","Afrobeat","Drill","Trap","Grunge","Ska"]],
+  ["Un genre né aux États-Unis",["Jazz","Blues","Rock","Rap|Hip-hop","Country","Funk","Soul","House","Techno","R&B|RnB","Gospel","Disco","Grunge"]],["Un genre né dans le sud des États-Unis au début du XXe siècle",["Jazz","Blues"]]],
+ [["Une note de musique",["Do","Ré|Re","Mi","Fa","Sol","La","Si"]],["Une note qui est aussi un mot courant",["Sol","La","Si"]],["La note qui est aussi un article, ou celle qui veut dire « if »",["La","Si"]]],
+ [["Un membre de Queen",["Freddie Mercury|Mercury|Freddie","Brian May|May|Brian","Roger Taylor|Taylor|Roger","John Deacon|Deacon"]],["Le chanteur ou le guitariste de Queen",["Freddie Mercury|Mercury|Freddie","Brian May|May|Brian"]]],
+ [["Un membre de Daft Punk ou de Justice",["Thomas Bangalter|Bangalter","Guy-Manuel de Homem-Christo|Guy-Man|Homem-Christo","Gaspard Augé|Augé","Xavier de Rosnay|de Rosnay"]],["Un membre de Daft Punk",["Thomas Bangalter|Bangalter","Guy-Manuel de Homem-Christo|Guy-Man|Homem-Christo"]]]
+],
+sport:[
+ [["Un sport olympique d'été",["Athlétisme","Natation","Judo","Football","Basket","Handball","Volley","Rugby","Tennis","Badminton","Tennis de table|Ping-pong","Escrime","Boxe","Lutte","Gymnastique","Cyclisme","Aviron","Canoë","Voile","Tir à l'arc","Tir","Équitation","Haltérophilie","Taekwondo","Triathlon","Pentathlon moderne","Golf","Escalade","Skateboard|Skate","Surf","Breaking","Plongeon","Water-polo","Hockey sur gazon"]],
+  ["Un sport de raquette",["Tennis","Badminton","Tennis de table|Ping-pong","Squash","Padel"]],["Un sport de raquette avec un volant ou une petite balle en plastique",["Badminton","Tennis de table|Ping-pong"]]],
+ [["Un club de foot français",["PSG|Paris Saint-Germain|Paris SG","OM|Olympique de Marseille|Marseille","OL|Olympique lyonnais|Lyon","Monaco|AS Monaco","Lille|LOSC","Rennes","Nice","Lens","Nantes","Saint-Étienne|ASSE|Sainté","Bordeaux","Strasbourg","Toulouse","Montpellier","Reims","Brest","Lorient","Auxerre","Le Havre","Metz","Angers","Sochaux"]],
+  ["Un club qui a déjà été champion de France",["PSG|Paris Saint-Germain|Paris SG","OM|Olympique de Marseille|Marseille","OL|Olympique lyonnais|Lyon","Monaco|AS Monaco","Lille|LOSC","Nantes","Saint-Étienne|ASSE|Sainté","Bordeaux","Reims","Nice","Lens","Strasbourg","Montpellier","Auxerre","Sochaux"]],["Un club français vainqueur de la Ligue des champions",["PSG|Paris Saint-Germain|Paris SG","OM|Olympique de Marseille|Marseille"]]],
+ [["Un joueur de l'équipe de France championne du monde 2018",["Lloris","Pavard","Varane","Umtiti","Hernandez|Lucas Hernandez","Kanté|Kante","Pogba","Matuidi","Griezmann","Mbappé|Mbappe","Giroud","Mandanda","Areola","Kimpembe","Mendy","Sidibé|Sidibe","Rami","Tolisso","Nzonzi","Lemar","Dembélé|Dembele","Fekir","Thauvin"]],
+  ["Un buteur français de la finale 2018",["Griezmann","Pogba","Mbappé|Mbappe"]],["Un buteur de la finale 2018 qui a marqué dans le jeu",["Pogba","Mbappé|Mbappe"]]],
+ [["Un pays champion du monde de foot",["Brésil|Bresil","Allemagne","Italie","Argentine","France","Uruguay","Angleterre","Espagne"]],["Un pays champion du monde au moins 3 fois",["Brésil|Bresil","Allemagne","Italie","Argentine"]],["Un pays champion du monde au moins 4 fois",["Brésil|Bresil","Allemagne","Italie"]],["Un pays champion du monde exactement 4 fois",["Allemagne","Italie"]]],
+ [["Un tournoi du Grand Chelem",["Open d'Australie|Australian Open","Roland-Garros|Roland Garros","Wimbledon","US Open"]],["Un Grand Chelem qui ne se joue pas sur dur",["Roland-Garros|Roland Garros","Wimbledon"]]],
+ [["Une équipe NBA",["Lakers","Celtics","Bulls","Warriors","Spurs","Heat","Knicks","Nets","Bucks","Suns","Mavericks","Nuggets","Clippers","Raptors","76ers|Sixers","Rockets","Thunder","Jazz","Kings","Hawks","Hornets","Pistons","Pacers","Cavaliers|Cavs","Magic","Grizzlies","Pelicans","Timberwolves|Wolves","Trail Blazers|Blazers","Wizards"]],
+  ["Une équipe NBA de Californie",["Lakers","Clippers","Warriors","Kings"]],["Une équipe NBA de Los Angeles",["Lakers","Clippers"]]],
+ [["Un sport de combat",["Boxe","Judo","Karaté","Taekwondo","Lutte","MMA","Kick-boxing","Muay-thaï|Boxe thaï","Jiu-jitsu","Sumo","Escrime","Aïkido","Capoeira","Kung-fu","Savate|Boxe française"]],["Un sport de combat olympique",["Boxe","Judo","Karaté","Taekwondo","Lutte","Escrime"]],["Un art martial japonais olympique",["Judo","Karaté"]]]
+],
+rap:[
+ [["Un rappeur marseillais",["Jul","SCH","Naps","Soprano","Alonzo","Soso Maness","Akhenaton","Shurik'n","L'Algérino","Kofs","Elams","Hooss","Vincenzo","Le Rat Luciano","Keny Arkana"]],["Un membre d'IAM ou de Psy 4 de la Rime",["Akhenaton","Shurik'n","Kheops","Imhotep","Soprano","Alonzo","Vincenzo","Sya Styles"]],["Un ex-Psy 4 de la Rime devenu star en solo",["Soprano","Alonzo"]]],
+ [["Un membre de la Sexion d'Assaut",["Gims|Maître Gims","Black M","Lefa","Maska","Barack Adama","JR O Crom","L.I.O. Pétrodollars|LIO"]],["Un membre de la Sexion d'Assaut devenu une star en solo",["Gims|Maître Gims","Black M"]]],
+ [["Un rappeur belge",["Damso","Hamza","Shay","Roméo Elvis|Romeo Elvis","Caballero","JeanJass","Krisy","Isha","Baloji","Frenetik","Zwangere Guy"]],["Un rappeur belge passé par le label 92i",["Damso","Shay"]]],
+ [["Un rappeur de L'Entourage ou de 1995",["Nekfeu","Alpha Wann","Sneazzy","Areno Jaz","Fonky Flav'","Jazzy Bazz","Deen Burbigo","Framal","Doums"]],["Un membre de 1995",["Nekfeu","Alpha Wann","Sneazzy","Areno Jaz","Fonky Flav'"]],["Le membre de 1995 avec le plus gros succès solo, ou celui qui a fondé Don Dada",["Nekfeu","Alpha Wann"]]],
+ [["Un duo de rap français",["PNL","Bigflo & Oli|Bigflo et Oli|Bigflo","Casseurs Flowters","Lunatic","NTM|Suprême NTM","Ärsenik|Arsenik"]],["Un duo de rap formé par deux frères",["PNL","Bigflo & Oli|Bigflo et Oli|Bigflo","Ärsenik|Arsenik"]],["Un duo de frères qui a explosé dans les années 2010",["PNL","Bigflo & Oli|Bigflo et Oli|Bigflo"]]],
+ [["Un album de Booba",["Temps mort","Panthéon|Pantheon","Ouest Side","0.9","Lunatic","Futur","D.U.C|DUC","Nero Nemesis","Trône|Trone","ULTRA"]],["Un album de Booba sorti à partir de 2015",["Nero Nemesis","Trône|Trone","ULTRA"]],["Un des deux derniers albums de Booba",["Trône|Trone","ULTRA"]]],
+ [["Un rappeur de Seine-Saint-Denis (93)",["Kaaris","Kalash Criminel","Maes","Vald","Sofiane|Fianso","Dinos","Joey Starr|JoeyStarr","Kool Shen","Sefyu","Tiakola"]],["Un rappeur de Sevran",["Kaaris","Kalash Criminel","Maes"]],["Un rappeur de Sevran qui porte une cagoule ou qui s'est battu avec Booba",["Kalash Criminel","Kaaris"]]]
+],
+gen:[
+ [["Un pays d'Europe",["France","Allemagne","Italie","Espagne","Portugal","Belgique","Suisse","Luxembourg","Pays-Bas","Royaume-Uni|Angleterre","Irlande","Danemark","Suède","Norvège","Finlande","Pologne","Autriche","Grèce","Croatie","Hongrie","République tchèque|Tchéquie","Roumanie","Bulgarie","Serbie","Ukraine","Islande","Monaco","Andorre","Malte","Slovénie","Slovaquie"]],
+  ["Un pays voisin de la France",["Belgique","Luxembourg","Allemagne","Suisse","Italie","Espagne","Andorre","Monaco"]],["Un pays voisin où l'on parle aussi français",["Belgique","Luxembourg","Suisse","Monaco"]],["Un pays voisin francophone qui n'est ni une principauté ni un grand-duché",["Belgique","Suisse"]]],
+ [["Une couleur",["Rouge","Bleu","Vert","Jaune","Orange","Violet","Rose","Noir","Blanc","Gris","Marron","Turquoise","Beige","Doré|Or","Argenté|Argent","Bordeaux","Indigo","Cyan","Magenta","Kaki"]],["Une couleur du drapeau français",["Bleu","Blanc","Rouge"]],["Une couleur du drapeau français qui n'est pas le blanc",["Bleu","Rouge"]]],
+ [["Un animal de la ferme",["Vache","Cochon","Poule","Mouton","Chèvre","Cheval","Âne|Ane","Canard","Lapin","Oie","Dinde","Coq","Chien","Chat","Taureau"]],["Un animal de la ferme à plumes",["Poule","Coq","Canard","Oie","Dinde"]],["Le mâle ou la femelle de la même espèce de volaille",["Poule","Coq"]]],
+ [["Un jour de la semaine",["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"]],["Un jour qui finit par « di »",["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"]],["Un jour du week-end",["Samedi","Dimanche"]]],
+ [["Une planète du système solaire",["Mercure","Vénus|Venus","Terre","Mars","Jupiter","Saturne","Uranus","Neptune"]],["Une planète gazeuse",["Jupiter","Saturne","Uranus","Neptune"]],["La plus grosse planète ou celle aux plus beaux anneaux",["Jupiter","Saturne"]]],
+ [["Un fruit",["Pomme","Poire","Banane","Fraise","Cerise","Orange","Citron","Kiwi","Mangue","Ananas","Raisin","Pêche|Peche","Abricot","Prune","Framboise","Myrtille","Pastèque","Melon","Figue","Grenade","Clémentine|Clementine","Litchi","Noix de coco|Coco","Groseille","Mûre|Mure"]],
+  ["Un fruit rouge",["Fraise","Framboise","Cerise","Groseille","Grenade","Canneberge|Cranberry"]],["Le fruit d'un fraisier ou d'une Forêt-Noire",["Fraise","Cerise"]]],
+ [["Un continent",["Europe","Asie","Afrique","Amérique|Amérique du Nord|Amérique du Sud","Océanie","Antarctique|Antarctica"]],["Un continent qui commence par la lettre A",["Asie","Afrique","Amérique|Amérique du Nord|Amérique du Sud","Antarctique|Antarctica"]],["Le continent le plus froid ou le plus chaud",["Antarctique|Antarctica","Afrique"]]],
+ [["Un signe du zodiaque",["Bélier|Belier","Taureau","Gémeaux|Gemeaux","Cancer","Lion","Vierge","Balance","Scorpion","Sagittaire","Capricorne","Verseau","Poissons"]],["Un signe d'eau",["Cancer","Scorpion","Poissons"]],["Un signe d'eau représenté par un animal à pinces",["Cancer","Scorpion"]]]
+]
+};
 
 // ====== ENTRE NOUS — moteur multijoueur ======
 const APP='en1';
@@ -1434,6 +1542,8 @@ const GAMES={
   r:"Un mec ou une meuf imaginaire reçoit une note de départ… puis tombe le <b>« mais… »</b> (un défaut bien gênant). Chacun donne sa <b>nouvelle note de 0 à 10</b>. À la révélation : toutes les notes, la moyenne, le plus indulgent 😇 et le plus sévère 😈. Ceux qui sont le plus proches de la moyenne du groupe gagnent <b>1 point</b>."},
  mdp:{e:'🔑',n:'Mot de passe',d:'Fais deviner un mot avec un seul mot : moins il faut d\'indices, plus ça rapporte.',min:2,c:'#5ad1ff',
   r:"Chacun son tour, un joueur fait deviner <b>sa série de mots</b> (10 par défaut), puis on passe au suivant. Pour chaque mot, il donne <b>un seul mot</b> comme indice (interdit d'utiliser le mot lui-même ou un mot de la même famille), 5 indices maximum. Les autres voient la <b>1re lettre</b> et le nombre de lettres, et ont <b>un essai par indice</b>. Trouvé au 1er indice = <b>5 pts</b>, puis 4, 3, 2, 1. L'indicateur gagne autant que le meilleur devineur. Bloqué ? Il peut <b>passer</b> le mot."},
+ nd:{e:'🙅',n:'Ne dis pas la même chose que moi',d:'Le site choisit une réponse en secret. Cite autre chose… sinon tu es éliminé !',min:2,c:'#a6ff4d',
+  r:"Chaque manche est une <b>chaîne de thèmes</b>, du plus vague au plus précis (ex. « Un perso de Genshin » → « Un Archon » → « Un Archon de Mondstadt ou de Liyue »). À chaque étape, le site choisit <b>en secret</b> une réponse possible. Tape la tienne : si tu dis <b>la même chose que le site</b>, tu es éliminé de la chaîne 💀. Sinon tu marques <b>1 point</b> et tu continues. Survivre à la dernière étape (souvent 2 choix seulement !) rapporte <b>2 points bonus</b>. Ta réponse doit coller au thème : si le site ne la reconnaît pas, essaie autre chose."},
  qsj:{e:'🔍',n:'Qui suis-je ?',d:'Des indices qui se dévoilent un à un : trouve le perso ou l\'artiste au plus vite.',min:2,c:'#ff6bd6',
   r:"Un mystérieux personnage (ou artiste) se décrit en <b>3 indices</b>, du plus dur au plus facile, un toutes les 10 secondes. Tu n'as <b>qu'une seule réponse</b> : trouvé au 1er indice = <b>3 pts</b>, au 2e = 2 pts, au 3e = 1 pt."}
 };
@@ -1448,8 +1558,8 @@ function validImg(u){return typeof u==='string'&&u.length<9000&&/^data:image\/(j
 const range=n=>Array.from({length:n},(_,i)=>i);
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const ss={get(k,d){try{const v=sessionStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{sessionStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-const BANKS={roue:SPECTRES,duo:DUO,tp:TP,plus:PLUS,imp:IMP,quiz:QUIZ,vf:VF,qsj:QSJ,dix:DIX,mdp:MDP};
-const VERSION='15 nov · v11';
+const BANKS={roue:SPECTRES,duo:DUO,tp:TP,plus:PLUS,imp:IMP,quiz:QUIZ,vf:VF,qsj:QSJ,dix:DIX,mdp:MDP,nd:ND};
+const VERSION='15 nov · v12';
 const FL={};
 // liste à plat {c: catégorie, v: élément} — mêmes index chez tous les joueurs
 function flat(g){if(FL[g])return FL[g];const out=[];
@@ -1562,7 +1672,7 @@ function hostTick(){
  for(const{self,p}of Net.list()){if(self||!p||p.app!==APP||p.code!==S.code||!p.h||!p.st)continue;if((p.st.ep||0)>(S.st.ep||0)){S.host=false;S.st=null;Net.set({h:null,st:null});saveSess();return}}
  const st=S.st,ps=present();
  for(const p of ps){if(!st.pl.includes(p.pid))st.pl.push(p.pid);st.nm[p.pid]=[String(p.n||'').slice(0,18),p.av];if(st.sc[p.pid]==null)st.sc[p.pid]=0}
- if(st.g==='mdp'&&st.ph==='reveal'&&Date.now()-(st.revAt||0)>4000)doNext(st);
+ if((st.g==='mdp'&&st.ph==='reveal'&&Date.now()-(st.revAt||0)>4000)||(st.g==='nd'&&st.ph==='reveal'&&Date.now()-(st.revAt||0)>(ndDone(st)?7000:5000)))doNext(st);
  if(st.g&&st.ph!=='reveal'&&st.ph!=='end'){
   if(st.ord){for(const p of ps)if(ans(p,st)!==undefined&&!st.ord.includes(p.pid))st.ord.push(p.pid)}
   const el=Date.now()-(st.t0||Date.now());
@@ -1571,7 +1681,7 @@ function hostTick(){
    if(gs.length&&(gs.every(p=>ans(p,st))||(n>=5&&gs.every(p=>ans(p,st)||mdpTries(p,st).length>=5))))doReveal(st,ps)}}
   if(st.g==='anim'){const cl=Math.min(2,Math.floor(el/AN_STEP));if(cl>(st.cl|0))st.cl=cl}
   const ex=expected(st,ps);
-  if((ex&&ex.length&&ex.every(p=>ans(p,st)!==undefined))||((st.g==='quiz'||st.g==='vf')&&el>QTIME+1500)||(st.g==='qsj'&&el>QSJ_MAX)||(st.g==='anim'&&el>AN_MAX))doReveal(st,ps)}
+  if((ex&&ex.length&&ex.every(p=>ans(p,st)!==undefined))||((st.g==='quiz'||st.g==='vf')&&el>QTIME+1500)||(st.g==='qsj'&&el>QSJ_MAX)||(st.g==='nd'&&el>ND_TIME+1500)||(st.g==='anim'&&el>AN_MAX))doReveal(st,ps)}
  pushSt();
 }
 function expected(g,ps){
@@ -1580,6 +1690,7 @@ function expected(g,ps){
   case'qdn':return ps.filter(p=>g.cfg.cp.includes(p.pid)).length===2?ps.filter(p=>g.cfg.cp.includes(p.pid)):null;
   case'duo':return ps.some(p=>p.pid===g.sub)&&ps.length>1?ps:null;
   case'tp':case'plus':case'quiz':case'vf':case'qsj':case'dix':return ps;
+  case'nd':return ps.filter(p=>(g.alive||[]).includes(p.pid));
   case'imp':return g.ph==='vote'?ps:null;
  }return null}
 function pick(st,list){const d=shuffled(list,st.seed);return d[st.i%d.length]}
@@ -1590,6 +1701,9 @@ function setupRound(st){
  switch(st.g){
   case'roue':st.mi=(st.mi+1)%Math.max(1,order.length);st.med=order[st.mi];st.q=pick(st,pool);st.t=Math.round(12+Math.random()*156);break;
   case'qdn':case'tp':case'plus':st.q=pick(st,pool);break;
+  case'nd':{const F=flat('nd');const cont=st.si!=null&&F[st.q]&&!ndDone(st)&&(st.alive||[]).some(pid=>order.includes(pid));
+   if(cont){st.si++;st.n--;st.alive=st.alive.filter(pid=>order.includes(pid))}else{st.q=pick(st,pool);st.si=0;st.alive=order.slice()}
+   const step=F[st.q].v[st.si];st.sp=Math.floor(Math.random()*step[1].length);st.t0=Date.now();st.res=null;break}
   case'mdp':{const go=st.gorder&&st.gorder.length?st.gorder:order;const wpp=st.cfg.wpp||10;
    if(st.wi==null||st.wi>=wpp-1||!order.includes(st.giver)){st.mi=(st.mi|0)+(st.wi==null?1:1);if(st.wi==null)st.mi=0;st.wi=0;
     // indicateur suivant encore présent
@@ -1621,6 +1735,9 @@ function doReveal(st,ps){
    for(const pid of (st.ord||[])){const p=ps.find(x=>x.pid===pid);if(p&&ok(ans(p,st))){first=pid;break}}
    ps.forEach(p=>{if(ok(ans(p,st)))last[p.pid]=2+(p.pid===first?1:0)});st.first=first;break}
   case'qsj':ps.forEach(p=>{const v=ans(p,st);if(v&&v.o===st.q)last[p.pid]=Math.max(1,3-(v.l|0))});break;
+  case'nd':{const ch=flat('nd')[st.q].v;const res={};const alive=st.alive||[];
+   ps.forEach(p=>{if(!alive.includes(p.pid))return;const v=ans(p,st);if(!v||typeof v.o!=='number')res[p.pid]='none';else if(v.o===st.sp)res[p.pid]='same';else{res[p.pid]='ok';last[p.pid]=1}});
+   st.alive=alive.filter(pid=>res[pid]==='ok');if(st.si>=ch.length-1)st.alive.forEach(pid=>last[pid]=(last[pid]||0)+2);st.res=res;break}
   case'mdp':{let best=0;ps.forEach(p=>{if(p.pid===st.giver)return;const v=ans(p,st);if(v&&v.n){const pts=Math.max(1,6-v.n);last[p.pid]=pts;best=Math.max(best,pts)}});if(best)last[st.giver]=best;break}
   case'dix':{const vs=ps.map(p=>({pid:p.pid,v:ans(p,st)})).filter(x=>typeof x.v==='number');if(vs.length>1){const avg=vs.reduce((a,x)=>a+x.v,0)/vs.length;
    const d=Math.min(...vs.map(x=>Math.abs(x.v-avg)));vs.forEach(x=>{if(Math.abs(Math.abs(x.v-avg)-d)<1e-9)last[x.pid]=1})}break}
@@ -1635,10 +1752,12 @@ function doReveal(st,ps){
 // « Même réponse » : les points sont validés par la cible, on les compte en quittant la manche
 function settleDuo(st){if(st.g==='duo'&&st.ph==='reveal'&&st.ddone!==st.r){const subP=present().find(p=>p.pid===st.sub);const ok=subP&&subP.ok&&subP.ok.k===st.r?subP.ok.l:[];const last={};
   ok.forEach(pid=>{last[pid]=(last[pid]||0)+1;last[st.sub]=(last[st.sub]||0)+1});addPts(st,last);st.ddone=st.r}}
-function isLast(g){if(g.g==='mdp')return(g.wi|0)>=(g.cfg.wpp||10)-1&&(g.mi|0)>=(g.gorder||[]).length-1;return!!(g.cfg.len&&g.n>=g.cfg.len)}
+const ND_TIME=30000;
+function ndDone(g){const F=flat('nd');const ch=F[g.q]&&F[g.q].v;return g.si==null||!ch||g.si>=ch.length-1||!(g.alive||[]).length}
+function isLast(g){if(g.g==='nd')return ndDone(g)&&!!(g.cfg.len&&g.n>=g.cfg.len);if(g.g==='mdp')return(g.wi|0)>=(g.cfg.wpp||10)-1&&(g.mi|0)>=(g.gorder||[]).length-1;return!!(g.cfg.len&&g.n>=g.cfg.len)}
 function doNext(st){settleDuo(st);if(isLast(st))return doFinish(st);setupRound(st)}
 function doFinish(st){settleDuo(st);st.ph='end';st.last=null}
-function startGame(st,k,cfg){st.g=k;st.cfg=cfg;st.seed=Math.floor(Math.random()*1e9);st.i=-1;st.n=0;st.m=0;st.qn=0;st.mi=-1;st.wi=null;st.gs={};st.ddone=null;
+function startGame(st,k,cfg){st.g=k;st.cfg=cfg;st.seed=Math.floor(Math.random()*1e9);st.i=-1;st.n=0;st.m=0;st.qn=0;st.mi=-1;st.wi=null;st.si=null;st.alive=null;st.gs={};st.ddone=null;
  if(k==='mdp'){st.gorder=present().map(p=>p.pid);cfg.len=0}setupRound(st)}
 function hostDo(fn){if(!S.host||!S.st)return;fn(S.st);pushSt();onNet()}
 
@@ -1662,6 +1781,7 @@ function sigOf(){const sc=screen();const g=G();const ps=present();const parts=[s
  if(g&&g.g){parts.push(g.g,g.ph,g.r,JSON.stringify(myAns()),S.showWord);
   if(g.g==='roue'){const m=ps.find(p=>p.pid===g.med);parts.push(!!ans(m,g))}
   if(g.g==='qsj'||g.g==='anim')parts.push(g.cl);
+  if(g.g==='nd')parts.push(g.si,JSON.stringify(g.alive));
   if(g.g==='mdp'){const gv=ps.find(p=>p.pid===g.giver);parts.push(mdpClues(gv,g).length,mdpTries(Object.assign({},Net.mine),g).length)}
   if(g.ph==='reveal')parts.push(ps.map(p=>JSON.stringify(ans(p,g))).join('|'));
  }
@@ -1756,14 +1876,14 @@ function statusHTML(list,label){const g=G();if(!list||!list.length)return'';
 function hostCtl(){const g=G();if(g.ph==='end')return'';if(!S.host)return`<div class="hctl mut">${g.ph==='reveal'?'L\'hôte lance la suite…':''}</div>`;
  if(g.g==='imp'&&g.ph==='words')return`<div class="hctl"><button class="btn pink block" data-act="tovote">Passer au vote 🗳️</button></div>`;
  if(g.ph==='reveal'){const last=isLast(g);
-  return`<div class="hctl">${last?'<button class="btn pink block" data-act="finish">🏁 Voir les résultats</button>':`<button class="btn pink block" data-act="next">${g.g==='mdp'?'Mot suivant':'Manche suivante'} ➜</button>`+'<button class="btn ghost block endb" data-act="finish">Terminer la partie</button>'}</div>`}
+  return`<div class="hctl">${last?'<button class="btn pink block" data-act="finish">🏁 Voir les résultats</button>':`<button class="btn pink block" data-act="next">${g.g==='mdp'?'Mot suivant':g.g==='nd'?(ndDone(g)?'Chaîne suivante':'Étape suivante'):'Manche suivante'} ➜</button>`+'<button class="btn ghost block endb" data-act="finish">Terminer la partie</button>'}</div>`}
  return`<div class="hctl"><button class="btn ghost block" data-act="reveal">Révéler maintenant</button></div>`}
 
 function vGame(){const g=G();let body='';
- try{body=({roue:vRoue,qdn:vQdn,duo:vDuo,tp:vTp,plus:vPlus,imp:vImp,quiz:vQuiz,vf:vVf,qsj:vQsj,dix:vDix,mdp:vMdp})[g.g](g)}catch(e){console.error(e);body=`<div class="card">Oups, petite erreur d'affichage.</div>`}
+ try{body=({roue:vRoue,qdn:vQdn,duo:vDuo,tp:vTp,plus:vPlus,imp:vImp,quiz:vQuiz,vf:vVf,qsj:vQsj,dix:vDix,mdp:vMdp,nd:vNd})[g.g](g)}catch(e){console.error(e);body=`<div class="card">Oups, petite erreur d'affichage.</div>`}
  if(g.ph==='end')return`${topbar(true)}${vEnd(g)}`;
  const it=item(g);const theme=it&&it.c?`<div class="theme">Thème : <b>${catLabel(g.g,it.c)}</b></div>`:'';
- let rnd;if(g.g==='mdp'){const wpp=g.cfg.wpp||10,np=(g.gorder||[]).length||1;const tot=wpp*np;rnd=`Mot ${(g.wi|0)+1} / ${wpp} · Tour ${(g.mi|0)+1} / ${np}<span class="prog"><i style="width:${100*g.n/tot}%"></i></span>`}
+ let rnd;if(g.g==='nd'){const ch=it.v||[];rnd=`Chaîne ${g.n}${g.cfg.len?` / ${g.cfg.len}`:''} · Étape ${(g.si|0)+1} / ${ch.length}${g.cfg.len?`<span class="prog"><i style="width:${100*g.n/g.cfg.len}%"></i></span>`:''}`}else if(g.g==='mdp'){const wpp=g.cfg.wpp||10,np=(g.gorder||[]).length||1;const tot=wpp*np;rnd=`Mot ${(g.wi|0)+1} / ${wpp} · Tour ${(g.mi|0)+1} / ${np}<span class="prog"><i style="width:${100*g.n/tot}%"></i></span>`}
  else rnd=`Manche ${g.n}${g.cfg.len?` / ${g.cfg.len}`:''}${g.cfg.len?`<span class="prog"><i style="width:${100*g.n/g.cfg.len}%"></i></span>`:''}`;
  return`${topbar(true)}<div class="rnd">${rnd}</div>${theme}${body}${L('hctl',hostCtl)}`}
 
@@ -1943,6 +2063,25 @@ function vAnim(g){const it=item(g);const [names,chars]=it.v;const mine=myAns();c
    <div class="arow"><span class="mut">Trouve maintenant : <b class="yel">${pts} pt${pts>1?'s':''}</b></span><button class="alink" data-act="passanim">Je passe</button></div>`}
  </div>${L('stat',()=>statusHTML(present()))}`}
 
+// ----- ne dis pas la même chose que moi -----
+function ndMatch(txt,opts){const g=normT(txt);if(g.length<1)return -1;let best=-1,bd=99;
+ opts.forEach((o,i)=>o.split('|').forEach(a=>{const n=normT(a);if(!n)return;let d=n===g?0:lev(g,n);const tol=n.length>=9?2:n.length>=5?1:0;if(d<=tol&&d<bd){bd=d;best=i}}));return best}
+function vNd(g){const it=item(g);const ch=it.v;const si=g.si|0;const step=ch[si];const ps=present();const me=S.me.pid;const alive=(g.alive||[]).includes(me);const mine=myAns();
+ const name=i=>step[1][i].split('|')[0];
+ const ladder=`<div class="ndlad">${ch.map((s,i)=>`<div class="ndst ${i<si?'done':i===si?'cur':'next'}"><span>${i+1}</span>${i<=si?esc(s[0]):'Thème plus précis…'}</div>`).join('')}</div>`;
+ if(g.ph==='reveal'){const res=g.res||{};const ids=Object.keys(res);const over=ndDone(g);
+  const rows=ids.map(pid=>{const v=ans(ps.find(p=>p.pid===pid),g);const r=res[pid];const said=v&&typeof v.o==='number'?name(v.o):'—';
+   return`<div class="ndrow ${r}" style="--pc:${pinfo(pid).c}"><span class="av">${pinfo(pid).a}</span><span class="pn">${esc(pinfo(pid).n)}</span><span class="ndsaid">${esc(said)}</span><b>${r==='ok'?'✅':r==='same'?'💀 Pareil !':'⏳ Rien dit'}</b></div>`}).join('');
+  return`${ladder}<div class="truth"><div class="lbl">Le site disait</div><div class="tv">${esc(name(g.sp))}</div></div><div class="ndrows">${rows}</div>
+   <details class="ndall"><summary>Les ${step[1].length} réponses possibles</summary><p>${step[1].map((o,i)=>`<span class="${i===g.sp?'pick':''}">${esc(o.split('|')[0])}</span>`).join(' · ')}</p></details>
+   ${over?(g.alive||[]).length?`<p class="c">🏆 Survivants de la chaîne : ${(g.alive||[]).map(pid=>chip(pid)).join('')}</p>`:'<p class="mut c">Tout le monde est tombé ! Chaîne terminée.</p>':`<p class="mut c">Étape suivante dans quelques secondes…</p>`}${lastPts()}`}
+ const card=`<div class="qcard" style="--gc:${GAMES.nd.c}"><div class="qpre">Cite…</div><div class="qtxt">${esc(step[0])}</div><div class="ndcount">${step[1].length} réponses possibles · ne dis pas la même chose que moi !</div></div>`;
+ const stat=L('stat',()=>statusHTML(present().filter(p=>(G().alive||[]).includes(p.pid))));
+ if(!alive)return`${ladder}${card}<div class="card c">💀 Tu es éliminé de cette chaîne. Regarde les autres trembler !</div>${stat}`;
+ if(mine)return`${ladder}${card}${timerBar(g,ND_TIME)}<div class="aok">Tu as dit : <b>${esc(name(mine.o))}</b> 🤞</div>${stat}`;
+ S.after.push(()=>{const i=document.getElementById('ndans');i&&i.focus()});
+ return`${ladder}${card}${timerBar(g,ND_TIME)}<div class="row"><input id="ndans" class="txt" maxlength="40" placeholder="Ta réponse…" autocomplete="off"><button class="btn pink" data-act="ndsend">Valider</button></div>${stat}`}
+
 // ----- mot de passe -----
 function mdpClues(p,g){return p&&p.cl&&p.cl.k===g.r&&Array.isArray(p.cl.l)?p.cl.l.slice(0,5).map(x=>String(x).slice(0,30)):[]}
 function mdpTries(p,g){return p&&p.gs&&p.gs.k===g.r&&Array.isArray(p.gs.l)?p.gs.l.slice(0,5).map(x=>String(x).slice(0,30)):[]}
@@ -2045,6 +2184,8 @@ const ACT={
   const a=stemW(v),b=stemW(word);if(a.length>=3&&(a.includes(b)||b.includes(a)||sameWord(v,word)))return toast('Interdit : trop proche du mot de passe !');
   const cur=mdpClues(Object.assign({},Net.mine),g);if(cur.some(c=>normT(c)===normT(v)))return toast('Déjà donné !');if(cur.length>=5)return;
   Net.set({cl:{k:g.r,l:[...cur,v.slice(0,30)]}});i.value=''},
+ ndsend(){const g=G();if(!g||g.g!=='nd'||myAns())return;const i=$('#ndans');const v=(i&&i.value||'').trim();if(!v)return toast('Écris une réponse');
+  const step=item(g).v[g.si|0];const o=ndMatch(v,step[1]);if(o<0){toast('🤔 Pas reconnu pour ce thème, essaie autre chose');i.select();return}answer({o})},
  mdpskip(){const g=G();if(!g||g.giver!==S.me.pid)return;const cur=mdpClues(Object.assign({},Net.mine),g);Net.set({cl:{k:g.r,l:cur,skip:true}})},
  mdpguess(){const g=G();if(!g||myAns())return;const i=$('#mguess');const v=(i&&i.value||'').trim();if(!v)return toast('Écris ta réponse');if(/\s/.test(v)&&v.split(/\s+/).length>2)return toast('Un mot, pas une phrase !');
   const giver=present().find(p=>p.pid===g.giver);const n=mdpClues(giver,g).length;const tries=mdpTries(Object.assign({},Net.mine),g);if(tries.length>=n)return;
@@ -2073,7 +2214,7 @@ function loadPhoto(file){if(!file||!/^image\//.test(file.type))return toast('Cho
 document.addEventListener('change',e=>{if(e.target&&e.target.id==='photo'){loadPhoto(e.target.files&&e.target.files[0]);e.target.value=''}});
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const f=ACT[el.dataset.act];if(f)f(el,e)});
 document.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const id=e.target&&e.target.id;
- const map={clue:'sendclue',dans:'sendtxt',jcode:'join',aguess:'guessanim',mclue:'mdpclue',mguess:'mdpguess',name:null};if(id in map&&map[id])ACT[map[id]]()});
+ const map={clue:'sendclue',dans:'sendtxt',jcode:'join',aguess:'guessanim',mclue:'mdpclue',mguess:'mdpguess',ndans:'ndsend',name:null};if(id in map&&map[id])ACT[map[id]]()});
 // reset showWord à chaque manche
 let lastR=null;setInterval(()=>{const g=G();if(g&&g.r!==lastR){lastR=g.r;if(S.showWord){S.showWord=false;onNet()}}},400);
 
