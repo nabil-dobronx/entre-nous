@@ -16,7 +16,7 @@ Site de mini-jeux à jouer entre amis, chacun sur son téléphone. L'hôte crée
 - 🙅 **Ne dis pas la même chose que moi** — des thèmes de plus en plus précis : cite une réponse différente de celle choisie en secret par le site, sinon tu es éliminé
 - 🔍 **Qui suis-je ?** — indices progressifs, moins d'indices = plus de points
 
-Chaque jeu propose des catégories au choix : 🎲 Général, 🚂 Honkai: Star Rail, ⚔️ Genshin Impact, 🍙 Manga / Animé, 🎵 Musique, ⚽ Sport, 🎤 Rap FR, 🏛️ Politique (plus de 9 500 questions au total, thème affiché en haut de chaque question).
+Chaque jeu propose des catégories au choix : 🎲 Général, 🚂 Honkai: Star Rail, ⚔️ Genshin Impact, 🍙 Manga / Animé, 🎵 Musique, ⚽ Sport, 🎤 Rap FR, 🏛️ Politique — partis, orientations, leaders, élections (plus de 9 500 questions au total, thème affiché en haut de chaque question).
 
 ## Parties
 L'hôte choisit le nombre de manches (5, 10, 15, 20, 30 ou illimité) et les catégories. À la fin : podium, classement de la partie et total de la soirée, puis « Rejouer » ou « Changer de jeu ». Le menu ☰ permet de terminer une partie à tout moment.
